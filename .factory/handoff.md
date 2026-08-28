@@ -35,7 +35,24 @@ Browser coverage includes desktop and 390 × 844 mobile, keyboard scene tabs, vi
 
 ## Publish and deploy
 
-Do not publish the npm package from this worker. The release candidate is ready for `npm publish` by the factory after registry review. Deploy the static site root `dist/site/` using the existing `sf-audio-reactive-scene` Static Web App configuration. Live deployment and identity evidence are recorded below after the deployment step.
+Do not publish the npm package from this worker. The release candidate is ready for `npm publish` by the factory after registry review.
+
+Deployed `dist/site/` to the existing production Static Web App `sf-audio-reactive-scene` (resource group `sociobot`) with:
+
+```sh
+swa deploy dist/site --env production --app-name sf-audio-reactive-scene --resource-group sociobot --no-use-keychain
+```
+
+Live verification passed at `https://audio-reactive-scene.sociobot.in`:
+
+- `/demo` returned 200 and passed `verify-url.sh` with no console errors.
+- Axe found zero serious/critical violations on `/`, `/demo`, `/privacy`, `/terms`, and `/missing-signal`.
+- The live static-poster check found identical canvas frames before input and after Reset demo; it made 0 animation-frame requests before input and none after reset.
+- `/missing-signal` returned HTTP 404; the live `index.html` SHA-256 exactly matched local `dist/site/index.html` (`0c6cb4c5f5ce1a610a57a932efd6cbb781c3c221a296779c8d3ca28e0f2a40c5`).
+- The hashed JavaScript asset returned `Cache-Control: public, max-age=31536000, immutable`, with the required CSP, HSTS, referrer, content-type, permissions, and COOP headers.
+- `origin/main` resolved to deployed repair commit `517406af5d699b0811d06ccb4ad9564a5af15568` at verification time.
+
+Live evidence is in `.factory/evidence/repair-live-2/`.
 
 ---
 

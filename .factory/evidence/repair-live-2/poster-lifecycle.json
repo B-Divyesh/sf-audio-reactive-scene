@@ -1,0 +1,8 @@
+{
+  "staticStable": true,
+  "initialFrames": 0,
+  "activeFrames": 13,
+  "resetStable": true,
+  "resetFrames": 15,
+  "finalFrames": 15
+}
