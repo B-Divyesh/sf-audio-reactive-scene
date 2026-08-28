@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   build: {
@@ -7,7 +10,7 @@ export default defineConfig({
     outDir: 'dist/lib',
     emptyOutDir: false,
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(rootDir, 'src/index.ts'),
       name: 'AudioReactiveScene',
       formats: ['es', 'cjs'],
       cssFileName: 'audio-reactive-scene',

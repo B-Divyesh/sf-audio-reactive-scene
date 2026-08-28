@@ -17,13 +17,31 @@ test('production preview enforces the deployed CSP without violations', async ({
   expect(policy).toContain("style-src 'self'");
   expect(policy).not.toContain("'unsafe-inline'");
   await expect(page.locator('audio-reactive-scene > canvas.audio-reactive-scene__canvas')).toBeVisible();
-  expect(await page.evaluate(() => (window as Window & { __cspViolations: string[] }).__cspViolations)).toEqual([]);
+  expect(await page.evaluate(() => (window as typeof window & { __cspViolations?: string[] }).__cspViolations ?? [])).toEqual([]);
   expect(consoleErrors).toEqual([]);
   expect(await page.locator('[style], style').count()).toBe(0);
 });
 
 test('demo has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/demo');
+  const results = await new AxeBuilder({ page }).analyze();
+  const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
+  expect(blocking).toEqual([]);
+});
+
+test('every not-found route has a visible, accessible high-contrast error state', async ({ page }) => {
+  for (const path of ['/missing-signal', '/another-missing-signal']) {
+    await page.goto(path);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('This signal went quiet');
+    await expect(page.locator('.error-code')).toBeVisible();
+    const results = await new AxeBuilder({ page }).analyze();
+    const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
+    expect(blocking).toEqual([]);
+  }
+});
+
+test('the static deployment 404 document has no serious or critical accessibility violations', async ({ page }) => {
+  await page.goto('/404.html');
   const results = await new AxeBuilder({ page }).analyze();
   const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
   expect(blocking).toEqual([]);
@@ -55,6 +73,14 @@ test('mobile layout does not scroll sideways', async ({ page }) => {
   const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
   expect(sizes.scroll).toBe(sizes.client);
   await expect(page.getByRole('button', { name: 'Play sample audio' })).toBeVisible();
+  const targets = await page.locator('#reset-demo, .site-nav a[href="/demo"], .site-footer a').evaluateAll((elements) => elements.map((element) => {
+    const box = element.getBoundingClientRect();
+    return { width: box.width, height: box.height };
+  }));
+  for (const target of targets) {
+    expect(target.width).toBeGreaterThanOrEqual(44);
+    expect(target.height).toBeGreaterThanOrEqual(44);
+  }
 });
 
 test('reset demo restores the initial controls', async ({ page }) => {
@@ -65,6 +91,49 @@ test('reset demo restores the initial controls', async ({ page }) => {
   await expect(page.locator('audio-reactive-scene')).toHaveAttribute('scene', 'ribbons');
   await expect(page.locator('#intensity')).toHaveValue('70');
   await expect(page.locator('#audio-status')).toContainText('Demo reset');
+});
+
+test('a no-audio poster does not animate before audio or after Reset demo', async ({ page }) => {
+  await page.addInitScript(() => {
+    let calls = 0;
+    const request = window.requestAnimationFrame.bind(window);
+    Object.defineProperty(window, '__posterAnimationFrames', { get: () => calls });
+    window.requestAnimationFrame = (callback) => {
+      calls += 1;
+      return request(callback);
+    };
+  });
+  await page.goto('/demo');
+  const canvas = page.locator('audio-reactive-scene canvas');
+  const first = await canvas.screenshot();
+  await page.waitForTimeout(500);
+  expect((await canvas.screenshot()).equals(first)).toBe(true);
+  expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBe(0);
+
+  await page.getByRole('button', { name: 'Play sample audio' }).click();
+  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  await page.waitForTimeout(100);
+  expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Reset demo' }).click();
+  const reset = await canvas.screenshot();
+  const callsAfterReset = await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames);
+  await page.waitForTimeout(500);
+  expect((await canvas.screenshot()).equals(reset)).toBe(true);
+  expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBe(callsAfterReset);
+});
+
+test('browser Back restores the anchored scroll position and focus', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('Main navigation').getByRole('link', { name: 'How it works' }).click();
+  await expect(page).toHaveURL(/\/#how$/);
+  await page.waitForTimeout(100);
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+  await page.getByLabel('Main navigation').getByRole('link', { name: 'Privacy' }).click();
+  await expect(page).toHaveURL(/\/privacy$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/#how$/);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+  await expect(page.locator('#how')).toBeFocused();
 });
 
 test('service worker controls the demo and checks for updates', async ({ page }) => {

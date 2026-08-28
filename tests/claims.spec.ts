@@ -1,6 +1,24 @@
 import { expect, test } from '@playwright/test';
 import { access, readFile, stat } from 'node:fs/promises';
 
+async function browserUserStorage(page: import('@playwright/test').Page): Promise<{ local: string[]; session: string[]; databases: string[]; opfs: string[] }> {
+  return page.evaluate(async () => {
+    const databases = 'databases' in indexedDB
+      ? (await indexedDB.databases()).map((database) => database.name ?? '')
+      : [];
+    const directory = await navigator.storage.getDirectory();
+    const opfs: string[] = [];
+    const entries = (directory as FileSystemDirectoryHandle & { entries(): AsyncIterableIterator<[string, FileSystemHandle]> }).entries();
+    for await (const [name] of entries) opfs.push(name);
+    return {
+      local: Object.keys(localStorage),
+      session: Object.keys(sessionStorage),
+      databases,
+      opfs
+    };
+  });
+}
+
 test('@claim:one-click-demo opens a working sample scene in one click', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
@@ -44,21 +62,29 @@ test('@claim:local-only-audio keeps the complete demo flow on the same origin', 
   await expect(page.locator('#copy-result')).toContainText(/Embed copied|Copy was blocked/);
   expect(offOrigin).toEqual([]);
   expect(apiRequests).toEqual([]);
-  expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([]);
+  expect(await browserUserStorage(page)).toEqual({ local: [], session: [], databases: [], opfs: [] });
 });
 
-test('@claim:gesture-only-input does not request microphone access before its button is pressed', async ({ page }) => {
+test('@claim:gesture-only-input starts audio and microphone input only after their controls are pressed', async ({ page }) => {
   await page.addInitScript(() => {
-    (window as Window & { microphoneCalls?: number }).microphoneCalls = 0;
+    type InputSpies = { microphoneCalls: number; audioContextCalls: number };
+    const spies: InputSpies = { microphoneCalls: 0, audioContextCalls: 0 };
+    Object.defineProperty(window, '__inputSpies', { value: spies });
+    const NativeAudioContext = window.AudioContext;
+    Object.defineProperty(window, 'AudioContext', { configurable: true, value: class extends NativeAudioContext {
+      constructor(options?: AudioContextOptions) { super(options); spies.audioContextCalls += 1; }
+    } });
     Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia: async () => {
-      (window as Window & { microphoneCalls?: number }).microphoneCalls! += 1;
+      spies.microphoneCalls += 1;
       return new MediaStream();
     } } });
   });
   await page.goto('/demo');
-  expect(await page.evaluate(() => (window as Window & { microphoneCalls?: number }).microphoneCalls)).toBe(0);
+  expect(await page.evaluate(() => (window as typeof window & { __inputSpies?: { microphoneCalls: number; audioContextCalls: number } }).__inputSpies)).toEqual({ microphoneCalls: 0, audioContextCalls: 0 });
   await page.getByRole('button', { name: 'Use microphone' }).click();
-  await expect.poll(() => page.evaluate(() => (window as Window & { microphoneCalls?: number }).microphoneCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as typeof window & { __inputSpies?: { microphoneCalls: number; audioContextCalls: number } }).__inputSpies)).toEqual({ microphoneCalls: 1, audioContextCalls: 1 });
+  await page.getByRole('button', { name: 'Play sample audio' }).click();
+  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
 });
 
 test('@claim:offline-reload reloads the demo without a network', async ({ page, context }) => {
@@ -86,16 +112,36 @@ test('@claim:motion-reduction draws a stable poster when the system reduces moti
   await context.close();
 });
 
-test('@claim:package-formats ships ESM, CommonJS, declarations, and component styles', async () => {
+test('@claim:package-formats ships ESM, CommonJS, declarations, component styles, and no runtime dependencies', async () => {
   await access('dist/lib/audio-reactive-scene.js');
   await access('dist/lib/audio-reactive-scene.cjs');
   await access('dist/lib/index.d.ts');
   await access('dist/lib/audio-reactive-scene.css');
   expect((await stat('dist/lib/audio-reactive-scene.js')).size).toBeLessThan(20_000);
+  const pkg = JSON.parse(await readFile('package.json', 'utf8')) as { dependencies?: Record<string, string> };
+  expect(pkg.dependencies ?? {}).toEqual({});
 });
 
 test('@claim:mit-license ships the MIT license', async () => {
   const pkg = JSON.parse(await readFile('package.json', 'utf8')) as { license: string };
   expect(pkg.license).toBe('MIT');
   await expect(readFile('LICENSE', 'utf8')).resolves.toContain('MIT License');
+});
+
+test('@claim:privacy-no-personal-data keeps demo data in this browser without collecting it', async ({ page }) => {
+  const offOrigin: string[] = [];
+  const apiRequests: string[] = [];
+  page.on('request', (request) => {
+    if (new URL(request.url()).origin !== 'http://127.0.0.1:4173') offOrigin.push(request.url());
+    if (request.resourceType() === 'fetch' || request.resourceType() === 'xhr') apiRequests.push(request.url());
+  });
+  await page.goto('/privacy');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Privacy in plain words');
+  await expect(page.getByText('This site does not collect, store, or sell personal data.')).toBeVisible();
+  await page.goto('/demo');
+  await page.getByRole('button', { name: 'Play sample audio' }).click();
+  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  expect(offOrigin).toEqual([]);
+  expect(apiRequests).toEqual([]);
+  expect(await browserUserStorage(page)).toEqual({ local: [], session: [], databases: [], opfs: [] });
 });

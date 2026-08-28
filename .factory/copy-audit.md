@@ -25,7 +25,7 @@ Word counts use whitespace-separated words. Interface fragments are included bec
 | It does not ask for microphone access by itself. | 9 | — |
 | It does not upload or save an audio file. | 9 | — |
 | It does not load scripts or fonts from another site. | 10 | — |
-| The package ships ESM, CommonJS, and TypeScript declarations. | 8 | — |
+| The package ships ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies. | 12 | — |
 
 No sentence exceeds 22 words. No sentence contains a banned word.
 

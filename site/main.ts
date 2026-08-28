@@ -6,6 +6,8 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 const announce = document.querySelector<HTMLDivElement>('#route-status')!;
 const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')!;
 
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
 const snippet = `<script type="module">
   import 'audio-reactive-scene';
   import 'audio-reactive-scene/style.css';
@@ -22,13 +24,18 @@ let mediaStream: MediaStream | undefined;
 let mediaElement: HTMLAudioElement | undefined;
 let sampleNodes: AudioScheduledSourceNode[] = [];
 
+interface RouteState {
+  scrollY: number;
+  focusId?: string;
+}
+
 function header(current: string): string {
   return `<header class="site-header">
     <a class="wordmark" href="/" data-link aria-label="Audio Reactive Scene home"><span class="wordmark-mark" aria-hidden="true"></span><span>Audio Reactive Scene</span></a>
     <nav class="site-nav" aria-label="Main navigation">
       <a href="/demo" data-link ${current === 'demo' ? 'aria-current="page"' : ''}>Demo</a>
-      <a href="/#how">How it works</a>
-      <a href="/#install">Install</a>
+      <a href="/#how" data-link>How it works</a>
+      <a href="/#install" data-link>Install</a>
       <a href="/privacy" data-link ${current === 'privacy' ? 'aria-current="page"' : ''}>Privacy</a>
     </nav>
   </header>`;
@@ -37,7 +44,7 @@ function header(current: string): string {
 function footer(): string {
   return `<footer class="site-footer"><div class="footer-grid">
     <span>Make page audio move a small canvas.</span>
-    <span class="footer-links"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://hello-factory.sociobot.in" rel="noreferrer">Built by Param Factory <span class="sr-only">(external site)</span></a><span>v0.1.1 · build 2026.08.28</span></span>
+    <span class="footer-links"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://hello-factory.sociobot.in" rel="noreferrer">Built by Param Factory <span class="sr-only">(external site)</span></a><span>v0.1.2 · build 2026.08.28</span></span>
   </div></footer><div class="offline-note" role="status">You are offline. The demo and sample scene still work.</div>`;
 }
 
@@ -115,7 +122,7 @@ function home(isDemo = false): string {
       <div><p class="section-kicker">Clear boundaries</p><h2>Your audio does not leave</h2><p class="section-intro">The component has no analytics or account system. It reads levels from the browser audio graph and sends no audio to an API.</p></div>
       <ul class="not-list"><li>It does not start audio on page load.</li><li>It does not ask for microphone access by itself.</li><li>It does not upload or save an audio file.</li><li>It does not load scripts or fonts from another site.</li></ul>
     </div></section>
-    <section class="section" id="install"><div class="narrow"><p class="section-kicker">Open package</p><h2>Install it in one line</h2><p>The package ships ESM, CommonJS, and TypeScript declarations.</p><div class="install-command"><code>npm install audio-reactive-scene</code><button class="button secondary" type="button" id="copy-install">Copy command</button></div></div></section>
+    <section class="section" id="install"><div class="narrow"><p class="section-kicker">Open package</p><h2>Install it in one line</h2><p>The package ships ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies.</p><div class="install-command"><code>npm install audio-reactive-scene</code><button class="button secondary" type="button" id="copy-install">Copy command</button></div></div></section>
   </main>${footer()}`;
 }
 
@@ -278,7 +285,24 @@ function setupPlayground(autoStart: boolean): void {
   if (autoStart) void playSample();
 }
 
-function route(path = location.pathname, autoStart = false): void {
+function focusRouteTarget(target: HTMLElement | null, fallback: HTMLHeadingElement | null): void {
+  const element = target ?? fallback;
+  if (!element) return;
+  element.setAttribute('tabindex', '-1');
+  element.focus({ preventScroll: true });
+}
+
+function hashTarget(): HTMLElement | null {
+  if (!location.hash) return null;
+  try { return document.querySelector<HTMLElement>(location.hash); }
+  catch { return null; }
+}
+
+function targetScrollY(target: HTMLElement): number {
+  return Math.max(0, target.getBoundingClientRect().top + window.scrollY);
+}
+
+function route(path = location.pathname, autoStart = false, restoredState?: RouteState | null): void {
   stopAudio();
   const isHome = path === '/';
   const isDemo = path === '/demo';
@@ -288,11 +312,31 @@ function route(path = location.pathname, autoStart = false): void {
   app.innerHTML = isHome || isDemo ? home(isDemo) : path === '/privacy' ? legal('privacy') : path === '/terms' ? legal('terms') : notFound();
   setupLinks();
   if (isHome || isDemo) setupPlayground(autoStart);
-  window.scrollTo(0, 0);
   const heading = document.querySelector<HTMLHeadingElement>('h1');
-  heading?.setAttribute('tabindex', '-1');
-  if (!isHome || autoStart) heading?.focus({ preventScroll: true });
+  if (restoredState) {
+    requestAnimationFrame(() => {
+      window.scrollTo(0, restoredState.scrollY);
+      focusRouteTarget(restoredState.focusId ? document.getElementById(restoredState.focusId) : hashTarget(), heading);
+    });
+  } else {
+    window.scrollTo(0, 0);
+    const target = hashTarget();
+    if (target) {
+      requestAnimationFrame(() => {
+        target.scrollIntoView();
+        history.replaceState({ ...history.state, scrollY: targetScrollY(target), focusId: target.id }, '', location.href);
+      });
+    }
+    if (!isHome || autoStart) focusRouteTarget(null, heading);
+  }
   announce.textContent = title;
+}
+
+function rememberCurrentRoute(): void {
+  const active = document.activeElement;
+  const focusId = active instanceof HTMLElement && active.id ? active.id : location.hash.slice(1);
+  const target = hashTarget();
+  history.replaceState({ ...history.state, scrollY: target ? targetScrollY(target) : window.scrollY, focusId }, '', location.href);
 }
 
 function setupLinks(): void {
@@ -302,16 +346,16 @@ function setupLinks(): void {
     if (url.origin !== location.origin) return;
     event.preventDefault();
     const start = link.hasAttribute('data-start-sample');
-    history.pushState({}, '', url.pathname + url.hash);
+    rememberCurrentRoute();
+    history.pushState({ scrollY: 0 }, '', url.pathname + url.hash);
     route(url.pathname, start);
-    if (url.hash) requestAnimationFrame(() => document.querySelector(url.hash)?.scrollIntoView());
   }));
 }
 
-window.addEventListener('popstate', () => route());
+window.addEventListener('popstate', (event) => route(location.pathname, false, event.state as RouteState | null));
 window.addEventListener('online', () => document.documentElement.classList.remove('offline'));
 window.addEventListener('offline', () => document.documentElement.classList.add('offline'));
 if (!navigator.onLine) document.documentElement.classList.add('offline');
-route(location.pathname, new URLSearchParams(location.search).get('demo') === '1');
+route(location.pathname, new URLSearchParams(location.search).get('demo') === '1', history.state as RouteState | null);
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));

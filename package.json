@@ -1,6 +1,6 @@
 {
   "name": "audio-reactive-scene",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A small, privacy-first audio-reactive canvas web component.",
   "type": "module",
   "license": "MIT",
@@ -41,6 +41,8 @@
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
     "build:site": "vite build --config vite.site.config.ts && node scripts/write-sw.mjs",
     "build": "npm run clean && npm run build:lib && npm run build:site",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
     "test": "npm run build && playwright test",
     "test:unit": "vitest run",
     "pack:check": "npm pack --dry-run"
@@ -48,7 +50,10 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "1.58.2",
+    "@types/node": "^22.20.1",
+    "eslint": "^9.39.5",
     "typescript": "5.9.2",
+    "typescript-eslint": "^8.68.0",
     "vite": "^7.3.6",
     "vitest": "^3.2.7"
   },

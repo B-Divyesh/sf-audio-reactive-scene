@@ -1,4 +1,45 @@
-# Handoff — Independent verification of Audio Reactive Scene
+# Handoff — Audio Reactive Scene v0.1.2 release repair
+
+## Release verdict
+
+**PASS locally — the four release blockers in independent report `d52d91859ec656cc5d4664381dcfeb89d7d9c1b5` are repaired.** This repair starts from candidate `d194cb41ca4a25dccc8b2713871019fcc44d7fa7` and preserves the researched brief, npm-library artifact class, local-only demo, and static deployment class.
+
+## Repairs
+
+1. **QA-01 contrast:** Raised the coral 404 numeral opacity in both the SPA not-found screen and the static deployment `404.html` screen. Playwright axe now checks two unknown SPA routes and the static 404 document with zero serious/critical violations.
+2. **QA-02 static poster:** The element now schedules animation frames only when it has a connected audio node and motion is allowed. `disconnect()` cancels pending work, resets drawing time, and redraws the deterministic poster. The regression captures canvas pixels and counts `requestAnimationFrame` calls before input and after Reset demo.
+3. **QA-03 claims:** Gesture coverage now observes both `AudioContext` construction and microphone capture. Storage coverage inspects localStorage, sessionStorage, IndexedDB, and OPFS. The package claim now proves no runtime dependencies, and the privacy page's exact personal-data statement has a dedicated network-and-storage claim test. `.factory/claims.json` has nine exact, runnable claim entries.
+4. **QA-04 type checking:** Added local Node and Vite types; converted Vite config path resolution to ESM-safe `fileURLToPath`; corrected the browser test typing; and added `npm run typecheck` plus ESLint 9 / TypeScript ESLint through `npm run lint`.
+
+Additional verifier findings repaired without changing the component contract: immutable cache headers for hashed assets, known-route rewrites plus a real 404 response for unknown document routes, restored hash scroll/focus on Back, 44 px demo/nav/footer targets at 390 px, and nonnumeric intensity normalization to zero.
+
+## Verification
+
+Ran from a clean dependency installation on 2026-08-28:
+
+```sh
+npm ci
+npm run lint
+npm run typecheck
+npm run test:unit
+npm test
+npm run pack:check
+npm audit --audit-level=low
+```
+
+Results: lint passed; strict typecheck passed; 3 Vitest tests passed; `npm test` built `dist/lib` and `dist/site` and passed all 21 Chromium tests; `npm pack --dry-run` produced an 8-file, 7.5 KB package; audit found 0 vulnerabilities. A fresh temporary npm consumer successfully imported ESM, required CommonJS, and resolved the package stylesheet.
+
+Browser coverage includes desktop and 390 × 844 mobile, keyboard scene tabs, visible focus, no overflow, route and static-404 axe checks, all nine claims, no console/CSP errors, same-origin privacy checks, service-worker control/update, offline reload, reduced motion, stable no-audio/reset poster frames, and history scroll/focus restoration.
+
+`/opt/fleet/lib/verify-url.sh` passed against the production local preview at `/demo`: HTTP 200, title, `lang=en`, one h1, main, image alt coverage, labelled buttons, and no console errors. Local mobile Lighthouse scored Performance 100, Accessibility 100, Best Practices 100, and SEO 100 (LCP 1,644 ms, CLS 0, TBT 41 ms). Evidence is in `.factory/evidence/repair-local-2/`.
+
+## Publish and deploy
+
+Do not publish the npm package from this worker. The release candidate is ready for `npm publish` by the factory after registry review. Deploy the static site root `dist/site/` using the existing `sf-audio-reactive-scene` Static Web App configuration. Live deployment and identity evidence are recorded below after the deployment step.
+
+---
+
+# Historical handoff — Independent verification of Audio Reactive Scene
 
 ## Release verdict
 

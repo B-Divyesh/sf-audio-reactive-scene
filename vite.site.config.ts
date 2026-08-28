@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 const deploymentConfig = JSON.parse(
-  readFileSync(resolve(__dirname, 'site/public/staticwebapp.config.json'), 'utf8')
+  readFileSync(resolve(rootDir, 'site/public/staticwebapp.config.json'), 'utf8')
 ) as { globalHeaders: Record<string, string> };
 
 export default defineConfig({
@@ -15,7 +18,7 @@ export default defineConfig({
   },
   build: {
     target: 'es2022',
-    outDir: resolve(__dirname, 'dist/site'),
+    outDir: resolve(rootDir, 'dist/site'),
     emptyOutDir: true,
     sourcemap: false
   }

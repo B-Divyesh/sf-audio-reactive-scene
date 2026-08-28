@@ -2,7 +2,7 @@
 
 Make page audio move a small, private canvas.
 
-Audio Reactive Scene is a typed web component for indie sites, streams, and event pages. It ships three canvas scenes, an intensity control, automatic motion reduction, and a static poster. Audio stays inside the browser tab. The package has no runtime dependencies, telemetry, remote fonts, or hosted scripts.
+Audio Reactive Scene is a typed web component for indie sites, streams, and event pages. It ships three canvas scenes, an intensity control, automatic motion reduction, and a static poster. Audio stays inside the browser tab. The package has no runtime dependencies.
 
 [Try the sample demo](https://audio-reactive-scene.sociobot.in/demo). It starts a local three-tone loop in one click. Nothing is saved.
 
@@ -12,7 +12,7 @@ Audio Reactive Scene is a typed web component for indie sites, streams, and even
 npm install audio-reactive-scene
 ```
 
-The package ships ESM, CommonJS, and TypeScript declarations.
+The package ships ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies.
 
 ## Use it
 

@@ -10,7 +10,7 @@ export interface SceneOptions {
   label?: string;
 }
 
-const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+const clamp = (value: number, min = 0, max = 1) => Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : min;
 const HTMLElementBase = (typeof HTMLElement === 'undefined' ? class {} : HTMLElement) as typeof HTMLElement;
 
 /**
@@ -103,6 +103,7 @@ export class AudioReactiveScene extends HTMLElementBase {
 
   /** Stop reading audio. This does not close the host page's AudioContext. */
   disconnect(): void {
+    cancelAnimationFrame(this.#frame);
     if (this.#source && this.#analyser) {
       try { this.#source.disconnect(this.#analyser); } catch { /* The host may have disconnected its graph first. */ }
     }
@@ -110,16 +111,25 @@ export class AudioReactiveScene extends HTMLElementBase {
     this.#analyser = undefined;
     this.#source = undefined;
     this.#connected = false;
+    this.#time = 0;
     this.#updateLabel();
+    this.drawPoster();
   }
 
   /** Redraw a deterministic poster frame, useful for screenshots and reduced motion. */
-  drawPoster(): void { this.#draw(0.34); }
+  drawPoster(): void {
+    this.#time = 0;
+    this.#draw(0.34);
+  }
 
   #motionChange = (): void => { this.#start(); };
 
   #isStatic(): boolean {
     return this.motion === 'static' || (this.motion === 'auto' && this.#reduced.matches);
+  }
+
+  #shouldAnimate(): boolean {
+    return this.#connected && !this.#isStatic();
   }
 
   #updateLabel(): void {
@@ -132,12 +142,13 @@ export class AudioReactiveScene extends HTMLElementBase {
     const ratio = Math.min(devicePixelRatio || 1, 2);
     this.#canvas.width = Math.max(1, Math.round(box.width * ratio));
     this.#canvas.height = Math.max(1, Math.round(box.height * ratio));
-    this.#draw(this.#energy());
+    if (this.#shouldAnimate()) this.#draw(this.#energy());
+    else this.drawPoster();
   }
 
   #start(): void {
     cancelAnimationFrame(this.#frame);
-    if (this.#isStatic()) {
+    if (!this.#shouldAnimate()) {
       this.drawPoster();
       return;
     }
@@ -146,6 +157,10 @@ export class AudioReactiveScene extends HTMLElementBase {
   }
 
   #tick = (now: number): void => {
+    if (!this.#shouldAnimate()) {
+      this.#start();
+      return;
+    }
     const delta = Math.min(40, now - this.#last);
     this.#last = now;
     this.#time += delta / 1000;
@@ -189,7 +204,8 @@ export class AudioReactiveScene extends HTMLElementBase {
       for (let x = -20; x <= w + 20; x += 10) {
         const wave = Math.sin(x / (80 + lane * 20) + this.#time * (0.7 + lane * .13) + lane * 2);
         const y = h * (.3 + lane * .2) + wave * h * (.04 + energy * .13);
-        x === -20 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        if (x === -20) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(4, w / 170) * (0.75 + energy);

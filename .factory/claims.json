@@ -18,14 +18,14 @@
     "claim": "Sample and file audio stay in this tab; the demo sends no API requests and writes no user storage.",
     "where": "landing hero, privacy section, privacy page, and README",
     "test": "npm test -- --grep @claim:local-only-audio",
-    "sandbox": "fresh browser context; play sample and generated WAV inputs, record requests, and inspect localStorage"
+    "sandbox": "fresh browser context; play sample and generated WAV inputs, record requests, and inspect localStorage, sessionStorage, IndexedDB, and OPFS"
   },
   {
     "id": "gesture-only-input",
     "claim": "Audio and microphone input start only after a user action.",
     "where": "playground, privacy section, privacy page, and README",
     "test": "npm test -- --grep @claim:gesture-only-input",
-    "sandbox": "fresh browser context with a microphone spy; assert no call on load and one call after pressing Use microphone"
+    "sandbox": "fresh browser context with AudioContext and microphone spies; assert neither starts on load and each starts only after its control is pressed"
   },
   {
     "id": "offline-reload",
@@ -43,10 +43,10 @@
   },
   {
     "id": "package-formats",
-    "claim": "The package ships ESM, CommonJS, TypeScript declarations, and component styles.",
+    "claim": "The package ships ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies.",
     "where": "install section and README",
     "test": "npm test -- --grep @claim:package-formats",
-    "sandbox": "clean build; assert all four package outputs exist and the ESM library stays below 20 KB"
+    "sandbox": "clean build; assert all four package outputs exist, package dependencies are empty, and the ESM library stays below 20 KB"
   },
   {
     "id": "mit-license",
@@ -54,5 +54,12 @@
     "where": "landing hero, terms page, and README",
     "test": "npm test -- --grep @claim:mit-license",
     "sandbox": "repository files; assert package license field and MIT license text"
+  },
+  {
+    "id": "privacy-no-personal-data",
+    "claim": "This site does not collect, store, or sell personal data.",
+    "where": "privacy page",
+    "test": "npm test -- --grep @claim:privacy-no-personal-data",
+    "sandbox": "fresh browser context; exercise the sample demo and assert no off-origin/API requests and no local, session, IndexedDB, or OPFS user data"
   }
 ]
