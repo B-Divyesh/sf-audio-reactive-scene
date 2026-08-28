@@ -86,10 +86,11 @@ test('@claim:motion-reduction draws a stable poster when the system reduces moti
   await context.close();
 });
 
-test('@claim:package-formats ships ESM, CommonJS, and declarations', async () => {
+test('@claim:package-formats ships ESM, CommonJS, declarations, and component styles', async () => {
   await access('dist/lib/audio-reactive-scene.js');
   await access('dist/lib/audio-reactive-scene.cjs');
   await access('dist/lib/index.d.ts');
+  await access('dist/lib/audio-reactive-scene.css');
   expect((await stat('dist/lib/audio-reactive-scene.js')).size).toBeLessThan(20_000);
 });
 

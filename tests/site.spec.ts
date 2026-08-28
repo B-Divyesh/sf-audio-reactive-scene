@@ -1,6 +1,27 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+test('production preview enforces the deployed CSP without violations', async ({ page }) => {
+  const consoleErrors: string[] = [];
+  page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
+  await page.addInitScript(() => {
+    const violations: string[] = [];
+    Object.defineProperty(window, '__cspViolations', { value: violations });
+    document.addEventListener('securitypolicyviolation', (event) => {
+      violations.push(`${event.violatedDirective}: ${event.blockedURI}`);
+    });
+  });
+
+  const response = await page.goto('/demo');
+  const policy = response?.headers()['content-security-policy'] ?? '';
+  expect(policy).toContain("style-src 'self'");
+  expect(policy).not.toContain("'unsafe-inline'");
+  await expect(page.locator('audio-reactive-scene > canvas.audio-reactive-scene__canvas')).toBeVisible();
+  expect(await page.evaluate(() => (window as Window & { __cspViolations: string[] }).__cspViolations)).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+  expect(await page.locator('[style], style').count()).toBe(0);
+});
+
 test('demo has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/demo');
   const results = await new AxeBuilder({ page }).analyze();
@@ -44,6 +65,27 @@ test('reset demo restores the initial controls', async ({ page }) => {
   await expect(page.locator('audio-reactive-scene')).toHaveAttribute('scene', 'ribbons');
   await expect(page.locator('#intensity')).toHaveValue('70');
   await expect(page.locator('#audio-status')).toContainText('Demo reset');
+});
+
+test('service worker controls the demo and checks for updates', async ({ page }) => {
+  await page.goto('/demo');
+  const state = await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) {
+      await new Promise<void>((resolve) => navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true }));
+    }
+    await registration.update();
+    return {
+      controlled: Boolean(navigator.serviceWorker.controller),
+      caches: await caches.keys(),
+      script: registration.active?.scriptURL
+    };
+  });
+
+  expect(state.controlled).toBe(true);
+  expect(state.caches).toHaveLength(1);
+  expect(state.caches[0]).toMatch(/^audio-reactive-scene-[a-f0-9]{10}$/);
+  expect(state.script).toMatch(/\/sw\.js$/);
 });
 
 test('pages load without console errors', async ({ page }) => {

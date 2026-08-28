@@ -1,3 +1,5 @@
+import './style.css';
+
 export type SceneName = 'ribbons' | 'lanterns' | 'horizon';
 export type MotionMode = 'auto' | 'full' | 'static';
 
@@ -39,9 +41,10 @@ export class AudioReactiveScene extends HTMLElementBase {
 
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
-    root.innerHTML = `<style>:host{display:block;contain:content;background:#090b12;min-height:220px}canvas{display:block;width:100%;height:100%;min-height:inherit}</style><canvas part="canvas"></canvas>`;
-    this.#canvas = root.querySelector('canvas')!;
+    this.#canvas = document.createElement('canvas');
+    this.#canvas.className = 'audio-reactive-scene__canvas';
+    this.#canvas.part.add('canvas');
+    this.append(this.#canvas);
     this.#ctx = this.#canvas.getContext('2d', { alpha: false })!;
   }
 

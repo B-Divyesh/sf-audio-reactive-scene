@@ -21,6 +21,7 @@ Import the package and add the element:
 ```html
 <script type="module">
   import 'audio-reactive-scene';
+  import 'audio-reactive-scene/style.css';
 </script>
 
 <audio-reactive-scene

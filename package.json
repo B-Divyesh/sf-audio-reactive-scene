@@ -1,6 +1,6 @@
 {
   "name": "audio-reactive-scene",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A small, privacy-first audio-reactive canvas web component.",
   "type": "module",
   "license": "MIT",
@@ -26,7 +26,8 @@
       "types": "./dist/lib/index.d.ts",
       "import": "./dist/lib/audio-reactive-scene.js",
       "require": "./dist/lib/audio-reactive-scene.cjs"
-    }
+    },
+    "./style.css": "./dist/lib/audio-reactive-scene.css"
   },
   "files": [
     "dist/lib",

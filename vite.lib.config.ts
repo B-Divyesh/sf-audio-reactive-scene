@@ -10,6 +10,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'AudioReactiveScene',
       formats: ['es', 'cjs'],
+      cssFileName: 'audio-reactive-scene',
       fileName: (format) => `audio-reactive-scene.${format === 'es' ? 'js' : 'cjs'}`
     },
     minify: 'esbuild'

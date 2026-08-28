@@ -1,4 +1,13 @@
-# Handoff — Audio Reactive Scene v0.1.0
+# Handoff — Audio Reactive Scene v0.1.1 CSP repair
+
+## Repair summary
+
+- Reproduced the deployed failure at `https://audio-reactive-scene.sociobot.in/demo`: Chromium reported `Applying inline style violates ... style-src 'self'`.
+- Root cause: `AudioReactiveScene` inserted a `<style>` element into its shadow root. The original Vite preview omitted deployment headers, so the console test could not reproduce production CSP.
+- Replaced the shadow-root style with `src/style.css` and a namespaced light-DOM canvas class. The package exports the built file as `audio-reactive-scene/style.css`.
+- Kept the deployed policy strict: `style-src 'self'` remains and no `unsafe-inline` exception was added.
+- The production preview now reads the exact `globalHeaders` from `staticwebapp.config.json`.
+- Added a browser regression that asserts the deployed CSP header, no inline styles, no policy violations, and no console errors. Added focused unit coverage for the source and policy.
 
 ## What shipped
 
@@ -24,15 +33,18 @@ npm run pack:check
 
 The static deploy root is exactly `dist/site/`. Its root contains `index.html`. The npm library outputs are in `dist/lib/`.
 
-Verification completed on 2026-08-28:
+Repair verification completed on 2026-08-28:
 
-- `npm test`: 14 passed in Chromium. This includes every `.factory/claims.json` test, 390 px layout, keyboard tabs, route structure, console errors, and axe-core.
+- Exact work-order command `npm ci && npm test && npm run build:site`: passed. `npm test` ran 16 Chromium tests, including every claim, deployed CSP, 390 px layout, keyboard tabs, service-worker update/control, offline reload, privacy, reduced motion, route structure, console errors, and axe-core.
+- `npm run test:unit`: 2 passed.
 - Axe: 0 serious or critical violations on `/demo`.
-- `/opt/fleet/lib/verify-url.sh`: passed at the local production preview. No console errors; one `h1`; `lang`, `main`, image alt, and button labels present. Evidence is in `.factory/evidence/`.
-- Mobile Lighthouse on the production preview: Performance 100, Accessibility 100, Best Practices 100, SEO 100. LCP 1.4 s, CLS 0, total blocking time 60 ms, speed index 0.9 s. Lab INP was unavailable because Lighthouse made no interaction.
-- Production assets: 7.31 KB gzip initial JavaScript, 3.41 KB gzip CSS, 43 KB hero WebP. The npm tarball is 7.0 KB compressed.
+- `/opt/fleet/lib/verify-url.sh`: passed at the local production preview with zero console errors, one `h1`, `lang`, `main`, image alt, and button labels present. Evidence is in `.factory/evidence/repair-local/`.
+- Mobile Lighthouse on the production preview: Performance 100, Accessibility 100, Best Practices 100, SEO 100. LCP 1.4 s, CLS 0, total blocking time 50 ms, speed index 1.0 s.
+- Production assets: 7.23 KB gzip initial JavaScript, 3.45 KB gzip site CSS, 0.14 KB gzip package CSS, and 43 KB hero WebP. The npm tarball is 7.2 KB compressed.
 - `npm audit`: 0 known vulnerabilities.
 - `npm pack --dry-run`: passed. Publishing was not attempted.
+
+Deployment and live verification evidence will be appended after the required commit and push.
 
 ## Known gaps
 
@@ -42,5 +54,5 @@ Verification completed on 2026-08-28:
 
 ## Next steps
 
-- The factory can publish version `0.1.0` after registry review.
-- After deployment, rerun the URL verifier against `https://audio-reactive-scene.sociobot.in/demo`.
+- The factory can publish version `0.1.1` after registry review. Publishing was not attempted by this worker.
+- Deploy `dist/site/` with `/opt/fleet/lib/deploy-static.sh audio-reactive-scene dist/site`, then record live identity and console evidence.

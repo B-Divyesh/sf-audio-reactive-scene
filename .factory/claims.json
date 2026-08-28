@@ -43,10 +43,10 @@
   },
   {
     "id": "package-formats",
-    "claim": "The package ships ESM, CommonJS, and TypeScript declarations.",
+    "claim": "The package ships ESM, CommonJS, TypeScript declarations, and component styles.",
     "where": "install section and README",
     "test": "npm test -- --grep @claim:package-formats",
-    "sandbox": "clean build; assert all three package outputs exist and the ESM library stays below 20 KB"
+    "sandbox": "clean build; assert all four package outputs exist and the ESM library stays below 20 KB"
   },
   {
     "id": "mit-license",
