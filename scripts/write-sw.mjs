@@ -25,7 +25,10 @@ self.addEventListener('fetch', event => {
   event.respondWith(fetch(event.request).then(response => {
     if (response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone()));
     return response;
-  }).catch(async () => (await caches.match(event.request)) || (event.request.mode === 'navigate' ? caches.match('/index.html') : Response.error())));
+  }).catch(async () => {
+    const path = new URL(event.request.url).pathname;
+    return (await caches.match(path, { ignoreVary: true })) || (event.request.mode === 'navigate' ? caches.match('/index.html', { ignoreVary: true }) : Response.error());
+  }));
 });
 `;
 await writeFile(new URL('sw.js', root), source);

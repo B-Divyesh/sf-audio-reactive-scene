@@ -9,6 +9,7 @@ export interface SceneOptions {
 }
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+const HTMLElementBase = (typeof HTMLElement === 'undefined' ? class {} : HTMLElement) as typeof HTMLElement;
 
 /**
  * A canvas scene driven by a Web Audio AnalyserNode.
@@ -21,12 +22,13 @@ const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, v
  * scene.connect(source);
  * source.connect(context.destination);
  */
-export class AudioReactiveScene extends HTMLElement {
+export class AudioReactiveScene extends HTMLElementBase {
   static observedAttributes = ['scene', 'intensity', 'motion', 'label'];
 
   #canvas: HTMLCanvasElement;
   #ctx: CanvasRenderingContext2D;
   #analyser?: AnalyserNode;
+  #source?: AudioNode;
   #data = new Uint8Array(64);
   #frame = 0;
   #resize?: ResizeObserver;
@@ -89,6 +91,7 @@ export class AudioReactiveScene extends HTMLElement {
     this.#analyser.fftSize = 128;
     this.#analyser.smoothingTimeConstant = 0.82;
     source.connect(this.#analyser);
+    this.#source = source;
     this.#connected = true;
     this.#updateLabel();
     this.#start();
@@ -97,8 +100,12 @@ export class AudioReactiveScene extends HTMLElement {
 
   /** Stop reading audio. This does not close the host page's AudioContext. */
   disconnect(): void {
+    if (this.#source && this.#analyser) {
+      try { this.#source.disconnect(this.#analyser); } catch { /* The host may have disconnected its graph first. */ }
+    }
     this.#analyser?.disconnect();
     this.#analyser = undefined;
+    this.#source = undefined;
     this.#connected = false;
     this.#updateLabel();
   }

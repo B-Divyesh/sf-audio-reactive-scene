@@ -1,0 +1,58 @@
+[
+  {
+    "id": "one-click-demo",
+    "claim": "Try it with sample data opens the playground and starts a local sound loop.",
+    "where": "landing hero and README",
+    "test": "npm test -- --grep @claim:one-click-demo",
+    "sandbox": "fresh browser context; click the landing action; assert demo banner, live source status, and component connection"
+  },
+  {
+    "id": "three-scenes-controls",
+    "claim": "The component has three scenes, intensity control, and motion control.",
+    "where": "playground and README",
+    "test": "npm test -- --grep @claim:three-scenes-controls",
+    "sandbox": "demo route; select a scene, move the intensity slider, and choose static motion"
+  },
+  {
+    "id": "local-only-audio",
+    "claim": "Sample and file audio stay in this tab; the demo sends no API requests and writes no user storage.",
+    "where": "landing hero, privacy section, privacy page, and README",
+    "test": "npm test -- --grep @claim:local-only-audio",
+    "sandbox": "fresh browser context; play sample and generated WAV inputs, record requests, and inspect localStorage"
+  },
+  {
+    "id": "gesture-only-input",
+    "claim": "Audio and microphone input start only after a user action.",
+    "where": "playground, privacy section, privacy page, and README",
+    "test": "npm test -- --grep @claim:gesture-only-input",
+    "sandbox": "fresh browser context with a microphone spy; assert no call on load and one call after pressing Use microphone"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "The demo works offline after the first visit.",
+    "where": "landing hero, offline state, and README",
+    "test": "npm test -- --grep @claim:offline-reload",
+    "sandbox": "fresh browser context; wait for service worker, set context offline, and reload /demo"
+  },
+  {
+    "id": "motion-reduction",
+    "claim": "Automatic motion reduction shows a stable poster when the system reduces motion.",
+    "where": "playground, README, and design document",
+    "test": "npm test -- --grep @claim:motion-reduction",
+    "sandbox": "fresh browser context with reducedMotion=reduce; compare canvas pixels across time"
+  },
+  {
+    "id": "package-formats",
+    "claim": "The package ships ESM, CommonJS, and TypeScript declarations.",
+    "where": "install section and README",
+    "test": "npm test -- --grep @claim:package-formats",
+    "sandbox": "clean build; assert all three package outputs exist and the ESM library stays below 20 KB"
+  },
+  {
+    "id": "mit-license",
+    "claim": "The library is free under the MIT license.",
+    "where": "landing hero, terms page, and README",
+    "test": "npm test -- --grep @claim:mit-license",
+    "sandbox": "repository files; assert package license field and MIT license text"
+  }
+]

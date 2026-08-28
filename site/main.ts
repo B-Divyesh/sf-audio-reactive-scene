@@ -19,7 +19,7 @@ let audioContext: AudioContext | undefined;
 let sourceNode: AudioNode | undefined;
 let mediaStream: MediaStream | undefined;
 let mediaElement: HTMLAudioElement | undefined;
-let sampleTimer = 0;
+let sampleNodes: AudioScheduledSourceNode[] = [];
 
 function header(current: string): string {
   return `<header class="site-header">
@@ -103,7 +103,7 @@ function home(isDemo = false): string {
     </section>
     <section class="section" id="playground"><div class="wrap">
       <p class="section-kicker">The working component</p><h2>Shape the scene here</h2>
-      <p class="section-intro">Pick a look. Play the bundled sample, choose a file, or allow the microphone. The browser handles every audio source.</p>
+      <p class="section-intro">Pick a look. Play the bundled sample, choose a file, or allow the microphone. The browser handles the selected audio source.</p>
       ${playground()}
     </div></section>
     <section class="section" id="how"><div class="wrap">
@@ -111,7 +111,7 @@ function home(isDemo = false): string {
       <div class="steps"><article class="step"><h3>Add the element</h3><p>Install the package and place the custom element where the scene belongs.</p></article><article class="step"><h3>Connect your source</h3><p>Pass a Web Audio node after the visitor starts playback.</p></article><article class="step"><h3>Set the fallback</h3><p>Keep automatic motion reduction or choose the static poster.</p></article></div>
     </div></section>
     <section class="section"><div class="wrap boundary">
-      <div><p class="section-kicker">Clear boundaries</p><h2>Your audio does not leave</h2><p class="section-intro">The component has no analytics, recording code, server calls, or account system. It reads levels from the browser audio graph.</p></div>
+      <div><p class="section-kicker">Clear boundaries</p><h2>Your audio does not leave</h2><p class="section-intro">The component has no analytics or account system. It reads levels from the browser audio graph and sends no audio to an API.</p></div>
       <ul class="not-list"><li>It does not start audio on page load.</li><li>It does not ask for microphone access by itself.</li><li>It does not upload or save an audio file.</li><li>It does not load scripts or fonts from another site.</li></ul>
     </div></section>
     <section class="section" id="install"><div class="narrow"><p class="section-kicker">Open package</p><h2>Install it in one line</h2><p>The package ships ESM, CommonJS, and TypeScript declarations.</p><div class="install-command"><code>npm install audio-reactive-scene</code><button class="button secondary" type="button" id="copy-install">Copy command</button></div></div></section>
@@ -130,15 +130,16 @@ function notFound(): string {
 }
 
 function stopAudio(): void {
-  window.clearInterval(sampleTimer);
   mediaStream?.getTracks().forEach((track) => track.stop());
   mediaStream = undefined;
   mediaElement?.pause();
   if (mediaElement?.src.startsWith('blob:')) URL.revokeObjectURL(mediaElement.src);
   mediaElement = undefined;
+  document.querySelector<AudioReactiveScene>('#scene')?.disconnect();
   sourceNode?.disconnect();
   sourceNode = undefined;
-  document.querySelector<AudioReactiveScene>('#scene')?.disconnect();
+  sampleNodes.forEach((node) => { try { node.stop(); } catch { /* The node has already stopped. */ } });
+  sampleNodes = [];
   document.querySelectorAll<HTMLElement>('.source').forEach((button) => delete button.dataset.active);
 }
 
@@ -171,6 +172,7 @@ async function playSample(): Promise<void> {
       gain.gain.value = .15;
       oscillator.connect(gain).connect(mix);
       oscillator.start();
+      sampleNodes.push(oscillator);
     });
     const pulse = context.createOscillator();
     const pulseGain = context.createGain();
@@ -178,6 +180,7 @@ async function playSample(): Promise<void> {
     pulseGain.gain.value = .14;
     pulse.connect(pulseGain).connect(mix);
     pulse.start();
+    sampleNodes.push(pulse);
     mix.connect(output).connect(context.destination);
     sourceNode = mix;
     document.querySelector<AudioReactiveScene>('#scene')?.connect(mix);
