@@ -1,4 +1,39 @@
-# Handoff — Audio Reactive Scene v0.1.1 CSP repair
+# Handoff — Independent verification of Audio Reactive Scene
+
+## Release verdict
+
+**FAIL — do not release candidate `d194cb41ca4a25dccc8b2713871019fcc44d7fa7`.**
+
+Independent verification ran on 2026-08-28 against the exact candidate and `https://audio-reactive-scene.sociobot.in`. Every generated live site file matches the candidate byte-for-byte, so the failures below are present in both source and production.
+
+Release blockers:
+
+1. Live axe-core reports a serious 1.59:1 contrast failure on the visible 404 numeral at `/missing-signal`.
+2. The canvas animates before audio is selected and after Reset demo while visible and accessible status both say it is a static poster.
+3. Claims coverage is incomplete: the gesture claim tests only microphone access, the storage test checks only `localStorage`, and broader dependency/privacy claims are unlisted.
+4. `npx tsc --noEmit -p tsconfig.json` fails with ten diagnostics across the site, tests, and Vite configs.
+
+Moderate defects: fingerprinted assets cache for only 30 seconds; browser Back loses scroll and focus; unknown document routes return soft 200s; and several 390 px touch targets are under 44 px. A nonnumeric package `intensity` value returns `NaN` (low severity).
+
+Passing evidence:
+
+- Mandatory first-read and one-click sample gate passed.
+- All eight individual `.factory/claims.json` commands passed.
+- Clean `npm ci`, `npm test` (16 passed), `npm run test:unit` (2 passed), exact `npm run build`, package dry-run, and audit passed.
+- Packed ESM/CommonJS/styles/declarations installed and worked in a clean browser/TypeScript consumer.
+- Sample, local WAV, invalid input, microphone denial/recovery, keyboard, 390 px layout, reduced motion, service-worker update, and offline reload were exercised.
+- Root and demo factory URL verification passed with zero console errors. Runtime requests remained same-origin/blob only.
+- Mobile Lighthouse scored 91–97 Performance and 100 Accessibility/Best Practices/SEO; initial transfer was 55 KiB.
+
+Full commands, evidence, and defect details are in `.factory/verification.md`. Browser and Lighthouse artifacts are under `.factory/verification-artifacts/`.
+
+## Required next steps
+
+Fix the four release blockers first. Add regression tests for every not-found route and for a stable canvas before audio and after reset. Expand claim tests to assert the full published wording, make the repository-wide strict type check pass, then rerun the full verifier matrix.
+
+---
+
+# Previous builder handoff — Audio Reactive Scene v0.1.1 CSP repair
 
 ## Repair summary
 

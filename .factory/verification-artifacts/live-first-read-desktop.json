@@ -1,0 +1,64 @@
+{
+  "status": 200,
+  "url": "https://audio-reactive-scene.sociobot.in/",
+  "first": {
+    "title": "Audio Reactive Scene — Make audio move a canvas",
+    "h1": [
+      "Make your audio move a scene"
+    ],
+    "viewportText": [
+      "Audio Reactive Scene",
+      "Demo",
+      "How it works",
+      "Install",
+      "Privacy",
+      "A web component for page audio",
+      "Make your audio move a scene",
+      "For site owners, streamers, and event makers who need a restrained visual without sending audio away.",
+      "Try it with sample data",
+      "It opens the playground and starts a local sound loop.",
+      "Three scenes / one small component / your audio"
+    ],
+    "actions": [
+      {
+        "tag": "A",
+        "text": "Audio Reactive Scene",
+        "href": "https://audio-reactive-scene.sociobot.in/"
+      },
+      {
+        "tag": "A",
+        "text": "Demo",
+        "href": "https://audio-reactive-scene.sociobot.in/demo"
+      },
+      {
+        "tag": "A",
+        "text": "How it works",
+        "href": "https://audio-reactive-scene.sociobot.in/#how"
+      },
+      {
+        "tag": "A",
+        "text": "Install",
+        "href": "https://audio-reactive-scene.sociobot.in/#install"
+      },
+      {
+        "tag": "A",
+        "text": "Privacy",
+        "href": "https://audio-reactive-scene.sociobot.in/privacy"
+      },
+      {
+        "tag": "A",
+        "text": "Try it with sample data",
+        "href": "https://audio-reactive-scene.sociobot.in/demo"
+      }
+    ],
+    "bodyText": "Skip to main content\nAUDIO REACTIVE SCENE\nDemo\nHow it works\nInstall\nPrivacy\n\nA WEB COMPONENT FOR PAGE AUDIO\n\nMAKE YOUR AUDIO MOVE A SCENE\n\nFor site owners, streamers, and event makers who need a restrained visual without sending audio away.\n\nTry it with sample data\nIt opens the playground and starts a local sound loop.\nAudio stays in this tab\nWorks after the first visit\nFree under the MIT license\nTHREE SCENES / ONE SMALL COMPONENT / YOUR AUDIO\n\nTHE WORKING COMPONENT\n\nSHAPE THE SCENE HERE\n\nPick a look. Play the bundled sample, choose a file, or allow the microphone. The browser handles the selected audio source.\n\nLIVE SCENE / RIBBONS\nCHOOSE A SCENE\nRibbons\nLanterns\nHorizon\nIntensity\n70%\nChanges how strongly the scene responds to audio.\nCHOOSE AUDIO\nPlay sample audio\nChoose audio file\nUse microphone\nMOTION\nSystem setting\nFull motion\nStatic\n\nStatic poster is ready. Choose audio to make it move.\n\nCOPY THIS EMBED\n<script type=\"module\">\n  import 'audio-reactive-scene';\n  import 'audio-reactive-scene/style.css';\n</script>\n<audio-reactive-scene\n  scene=\"ribbons\"\n  intensity=\"0.7\"\n  motion=\"auto\">\n</audio-reactive-scene>\n\nCopy embed\n\nHOW IT WORKS\n\nCONNECT AUDIO IN THREE STEPS\nADD THE ELEMENT\n\nInstall the package and place the custom element where the scene belongs.\n\nCONNECT YOUR SOURCE\n\nPass a Web Audio node after the visitor starts playback.\n\nSET THE FALLBACK\n\nKeep automatic motion reduction or choose the static poster.\n\nCLEAR BOUNDARIES\n\nYOUR AUDIO DOES NOT LEAVE\n\nThe component has no analytics or account system. It reads levels from the browser audio graph and sends no audio to an API.\n\nIt does not start audio on page load.\nIt does not ask for microphone access by itself.\nIt does not upload or save an audio file.\nIt does not load scripts or fonts from another site.\n\nOPEN PACKAGE\n\nINSTALL IT IN ONE LINE\n\nThe package ships ESM, CommonJS, and TypeScript declarations.\n\nnpm install audio-reactive-scene\nCopy command\nMake page audio move a small canvas.\nPrivacy\nTerms\nBuilt by Param Factory\n(external site)\nv0.1.1 · build 2026.08.28\nAudio Reactive Scene — Make audio move a canvas"
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "requests": [
+    "https://audio-reactive-scene.sociobot.in/",
+    "https://audio-reactive-scene.sociobot.in/assets/index-DYq6DzyL.js",
+    "https://audio-reactive-scene.sociobot.in/assets/index-DKJfrbnB.css",
+    "https://audio-reactive-scene.sociobot.in/assets/hero-market.webp"
+  ]
+}
