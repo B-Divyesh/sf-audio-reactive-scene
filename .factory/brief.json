@@ -1,0 +1,10 @@
+{
+  "slug": "audio-reactive-scene",
+  "title": "Audio Reactive Scene",
+  "territory": "games-creative",
+  "user": "Indie site owners, streamers, and event makers who want a tasteful, controllable audio-reactive visual scene without recording visitors or embedding a heavy visualiser product.",
+  "smallest_useful_product": "A copyable web component with three local canvas scenes, Web Audio analyser input, motion-reduction mode, manual intensity controls, and static poster fallback.",
+  "artifact_class": "library-npm",
+  "monetization": "free",
+  "constraints": "Audio and microphone activation require a user gesture; honour prefers-reduced-motion; ship only original visuals and sounds."
+}
