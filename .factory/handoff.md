@@ -44,7 +44,15 @@ Repair verification completed on 2026-08-28:
 - `npm audit`: 0 known vulnerabilities.
 - `npm pack --dry-run`: passed. Publishing was not attempted.
 
-Deployment and live verification evidence will be appended after the required commit and push.
+## Deployment and live verification
+
+- Repair commit `fa387440bb0d67c822bbba58599374301be64baf` was pushed to `origin/main` before deployment.
+- Factory static deployment `8c541811-67c9-4df3-a202-7e3cb55cf4b8` succeeded on the existing `sf-audio-reactive-scene` Azure Static Web App in Central US.
+- Live URL verifier: `https://audio-reactive-scene.sociobot.in/demo` returned 200 with zero console errors, one `h1`, `lang=en`, `main`, complete image alt text, and labelled buttons.
+- Live CSP browser check: zero console errors, zero `securitypolicyviolation` events, zero inline style nodes, no off-origin requests, and no 390 px overflow. The response still declares `style-src 'self'` without `unsafe-inline`.
+- Live axe: 0 total violations. Live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.1 s, CLS 0, total blocking time 60 ms, speed index 0.9 s.
+- Live identity: the deployed and local `index.html` SHA-256 values match, the page reports v0.1.1, its canonical URL uses the custom domain, and the repair commit was on `origin/main` when verified.
+- Live artifacts, headers, screenshots, and machine-readable results are in `.factory/evidence/repair-live/`.
 
 ## Known gaps
 
@@ -55,4 +63,4 @@ Deployment and live verification evidence will be appended after the required co
 ## Next steps
 
 - The factory can publish version `0.1.1` after registry review. Publishing was not attempted by this worker.
-- Deploy `dist/site/` with `/opt/fleet/lib/deploy-static.sh audio-reactive-scene dist/site`, then record live identity and console evidence.
+- Collect real-user INP only if the factory later adds privacy-respecting field monitoring.

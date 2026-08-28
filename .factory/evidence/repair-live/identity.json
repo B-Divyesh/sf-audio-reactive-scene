@@ -1,0 +1,16 @@
+{
+  "customDomain": "https://audio-reactive-scene.sociobot.in",
+  "defaultHost": "https://yellow-mud-087fec210.7.azurestaticapps.net",
+  "deployedIndexSha256": "dcb54cb40cae81234b387f528e251919ffe30d32ec5b8ac0d90dc85837c95f80",
+  "builtIndexSha256": "dcb54cb40cae81234b387f528e251919ffe30d32ec5b8ac0d90dc85837c95f80",
+  "deployedCommit": "fa387440bb0d67c822bbba58599374301be64baf",
+  "originMainCommit": "fa387440bb0d67c822bbba58599374301be64baf",
+  "routes": {
+    "/": 200,
+    "/demo": 200,
+    "/privacy": 200,
+    "/terms": 200,
+    "/robots.txt": 200,
+    "/sitemap.xml": 200
+  }
+}

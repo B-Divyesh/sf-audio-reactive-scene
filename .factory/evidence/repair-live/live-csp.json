@@ -1,0 +1,19 @@
+{
+  "url": "https://audio-reactive-scene.sociobot.in/demo",
+  "status": 200,
+  "title": "Demo — Audio Reactive Scene",
+  "canonical": "https://audio-reactive-scene.sociobot.in/demo",
+  "version": "v0.1.1",
+  "csp": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+  "unsafeInline": false,
+  "consoleErrors": [],
+  "violations": [],
+  "inlineStyleNodes": 0,
+  "component": {
+    "hostDisplay": "block",
+    "canvasDisplay": "block",
+    "label": "ribbons audio-reactive scene, connected to audio"
+  },
+  "offOriginRequests": [],
+  "mobileOverflow": 0
+}

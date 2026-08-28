@@ -1,0 +1,12 @@
+{
+  "url": "https://audio-reactive-scene.sociobot.in/demo",
+  "profile": "Lighthouse mobile",
+  "performance": 100,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 100,
+  "largestContentfulPaint": "1.1 s",
+  "cumulativeLayoutShift": 0,
+  "totalBlockingTime": "60 ms",
+  "speedIndex": "0.9 s"
+}
