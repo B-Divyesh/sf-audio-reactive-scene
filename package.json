@@ -1,0 +1,43 @@
+{
+  "name": "audio-reactive-scene",
+  "version": "0.1.0",
+  "description": "A small, privacy-first audio-reactive canvas web component.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Param Factory",
+  "homepage": "https://audio-reactive-scene.sociobot.in",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/B-Divyesh/sf-audio-reactive-scene.git"
+  },
+  "keywords": ["web-component", "audio", "canvas", "visualizer", "accessibility"],
+  "sideEffects": true,
+  "main": "./dist/lib/audio-reactive-scene.cjs",
+  "module": "./dist/lib/audio-reactive-scene.js",
+  "types": "./dist/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib/index.d.ts",
+      "import": "./dist/lib/audio-reactive-scene.js",
+      "require": "./dist/lib/audio-reactive-scene.cjs"
+    }
+  },
+  "files": ["dist/lib", "README.md", "LICENSE", "CHANGELOG.md"],
+  "scripts": {
+    "dev": "vite --config vite.site.config.ts",
+    "clean": "node scripts/clean.mjs",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
+    "build:site": "vite build --config vite.site.config.ts && node scripts/write-sw.mjs",
+    "build": "npm run clean && npm run build:lib && npm run build:site",
+    "test": "npm run build && playwright test",
+    "test:unit": "vitest run",
+    "pack:check": "npm pack --dry-run"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.3",
+    "vitest": "3.2.4"
+  },
+  "engines": {"node": ">=20"}
+}
