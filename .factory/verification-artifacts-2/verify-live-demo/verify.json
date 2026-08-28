@@ -1,0 +1,14 @@
+{
+  "url": "https://audio-reactive-scene.sociobot.in/demo",
+  "loadMs": 925,
+  "errors": [],
+  "a11y": {
+    "title": "Demo — Audio Reactive Scene",
+    "lang": "en",
+    "h1": 1,
+    "main": true,
+    "imgsMissingAlt": 0,
+    "buttonsUnlabeled": 0,
+    "textLength": 2168
+  }
+}
