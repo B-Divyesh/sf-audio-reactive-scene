@@ -1,0 +1,179 @@
+{
+  "generatedAt": "2026-08-29T04:37:08.625Z",
+  "firstScreen": {
+    "viewport": {
+      "width": 1365,
+      "height": 768
+    },
+    "headline": {
+      "text": "Make your audio move a scene",
+      "top": 171.046875,
+      "bottom": 348.515625,
+      "fullyVisible": true
+    },
+    "audience": {
+      "text": "For site owners, streamers, and event makers who need a restrained visual without sending audio away.",
+      "top": 368.515625,
+      "bottom": 461.515625,
+      "fullyVisible": true
+    },
+    "primaryAction": {
+      "text": "Try it with sample data",
+      "top": 479.515625,
+      "bottom": 530.3125,
+      "fullyVisible": true
+    },
+    "actionExplanation": {
+      "text": "It opens the playground and starts a local sound loop.",
+      "top": 542.3125,
+      "bottom": 591.90625,
+      "fullyVisible": true
+    },
+    "facts": [
+      {
+        "text": "Audio stays in this tab",
+        "top": 609.90625,
+        "bottom": 634.703125,
+        "fullyVisible": true
+      },
+      {
+        "text": "Works after the first visit",
+        "top": 644.703125,
+        "bottom": 669.5,
+        "fullyVisible": true
+      },
+      {
+        "text": "Free under the MIT license",
+        "top": 679.5,
+        "bottom": 704.296875,
+        "fullyVisible": true
+      }
+    ]
+  },
+  "focusSequence": [
+    {
+      "tag": "A",
+      "id": "",
+      "name": "Try it with sample data",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 260.84375,
+      "height": 50.796875
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "Ribbons",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 95.21875,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "Lanterns",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 104.8125,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "Horizon",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 95.21875,
+      "height": 44
+    },
+    {
+      "tag": "INPUT",
+      "id": "intensity",
+      "name": null,
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 767.59375,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "sample-audio",
+      "name": "Play sample audio",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 191.234375,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "choose-file",
+      "name": "Choose audio file",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 191.234375,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "use-mic",
+      "name": "Use microphone",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 162.421875,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "System setting",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 162.421875,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "Full motion",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 133.625,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "Static",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 85.609375,
+      "height": 44
+    },
+    {
+      "tag": "BUTTON",
+      "id": "copy-embed",
+      "name": "Copy embed",
+      "opacity": "1",
+      "outline": "rgb(97, 231, 223) solid 3px",
+      "width": 136.015625,
+      "height": 50.796875
+    }
+  ],
+  "notFoundStructure": {
+    "status": 404,
+    "skipLinks": 1,
+    "headers": 1,
+    "mains": 1,
+    "footers": 1,
+    "h1": "THIS SIGNAL WENT QUIET"
+  },
+  "mobileTextSizes": {
+    ".lede": "16.8px",
+    ".action-note": "16px",
+    ".facts": "16px",
+    ".control-label": "16px",
+    ".status-line": "16px",
+    ".site-footer": "16px"
+  }
+}

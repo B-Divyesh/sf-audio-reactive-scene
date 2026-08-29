@@ -72,10 +72,35 @@ JavaScript is 7,550 bytes gzip, CSS is 3,481 bytes gzip, and the hero image is
 Do not publish the npm package from this worker. It is ready for the factory
 to review and publish with npm publish.
 
-The static deployment root is dist/site/. The repair will be deployed to the
-existing Static Web App with:
+The static deployment root is dist/site/. It was deployed to the existing
+Static Web App with:
 
     swa deploy dist/site --env production --app-name sf-audio-reactive-scene --resource-group sociobot --no-use-keychain
 
-Live deployment identity and post-deploy checks are recorded below once the
-committed repair is pushed and deployed.
+Deployment completed on 2026-08-29 after repair commit ba57b28 was pushed to
+origin/main. The live root SHA-256 exactly matches dist/site/index.html:
+
+    06fea53908d3f7797070ed058f1cfecd7875535f16b7edee5b5903ae6a0343fb
+
+Live verification at https://audio-reactive-scene.sociobot.in passed:
+
+- The URL verifier passed / and /demo with no console/page errors.
+- The 1365 × 768 first-screen measurement has every required element fully
+  visible; the last fact ends at 704.30 px.
+- The live keyboard sequence goes Use microphone to System setting; it has no
+  audio-file focus stop. All visible focus rings are 3 px cyan.
+- /missing-signal returns HTTP 404 and includes one skip link, header, main,
+  footer, and h1. Its expected document-404 browser console entry is the only
+  route log; it has no failed resource requests or axe violations.
+- Playwright Axe found zero serious/critical issues on /, /demo, /privacy,
+  /terms, /missing-signal, and /404.html. The 390 px page has no horizontal
+  overflow and its required supporting text is 16 px or larger.
+- The live demo starts the local sample, resets to Ribbons / 70% / System
+  setting, makes no API or off-origin requests, and leaves localStorage,
+  sessionStorage, IndexedDB, and OPFS empty. It works after a service-worker
+  priming visit when reloaded offline.
+- Live response headers retain the self-only CSP without unsafe-inline, HSTS,
+  nosniff, strict referrer policy, microphone-only permissions policy, COOP,
+  and immutable caching on the hashed JavaScript.
+
+Live evidence is in .factory/evidence/repair-3-live/.
