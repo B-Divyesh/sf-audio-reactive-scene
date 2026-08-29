@@ -1,0 +1,22 @@
+{
+  "home": {
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "navRight": 370,
+    "privacyRight": 370,
+    "headerHeight": 230.40625
+  },
+  "demo": {
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "navRight": 370,
+    "privacyRight": 370,
+    "headerHeight": 230.40625
+  },
+  "label": {
+    "property": "Consumer visual",
+    "attribute": "Consumer visual",
+    "ariaLabel": "Consumer visual",
+    "role": "img"
+  }
+}

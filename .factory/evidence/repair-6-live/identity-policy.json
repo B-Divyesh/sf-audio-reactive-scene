@@ -1,0 +1,123 @@
+{
+  "checkedAt": "2026-08-29T09:03:38.953Z",
+  "commit": "bc3581b",
+  "checks": [
+    {
+      "file": "404.css",
+      "status": 200,
+      "local": "4f17b2cde45166ee71315e8d57cb8edc51d98d3af89361a0087206f56e5a69d2",
+      "live": "4f17b2cde45166ee71315e8d57cb8edc51d98d3af89361a0087206f56e5a69d2",
+      "match": true
+    },
+    {
+      "file": "404.html",
+      "status": 200,
+      "local": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+      "live": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+      "match": true
+    },
+    {
+      "file": "apple-touch-icon.png",
+      "status": 200,
+      "local": "d9d4a8e6f33ca0d2f039ec70db1f0824f56283f4d288f02404b796999b91ea78",
+      "live": "d9d4a8e6f33ca0d2f039ec70db1f0824f56283f4d288f02404b796999b91ea78",
+      "match": true
+    },
+    {
+      "file": "assets/hero-market.webp",
+      "status": 200,
+      "local": "c5189ca3a67563a41661891705270a49396533c6b45626bd7a2d0655e29ca390",
+      "live": "c5189ca3a67563a41661891705270a49396533c6b45626bd7a2d0655e29ca390",
+      "match": true
+    },
+    {
+      "file": "assets/index-BHSEKCsd.css",
+      "status": 200,
+      "local": "475a2a440a4260470fea41a33db88b6bc7bf4be61f64b45b10e6329c4719c11e",
+      "live": "475a2a440a4260470fea41a33db88b6bc7bf4be61f64b45b10e6329c4719c11e",
+      "match": true
+    },
+    {
+      "file": "assets/index-dTRR2Ail.js",
+      "status": 200,
+      "local": "73e090b7a9566a91ae327e987604c8d4cf85b13d51658d0247bc2fc30e6e906f",
+      "live": "73e090b7a9566a91ae327e987604c8d4cf85b13d51658d0247bc2fc30e6e906f",
+      "match": true
+    },
+    {
+      "file": "assets/social-card.webp",
+      "status": 200,
+      "local": "f68c4b133b5d67bfd27c4fe33379b64ddf5698638bd14ca81434e3ead2e5924a",
+      "live": "f68c4b133b5d67bfd27c4fe33379b64ddf5698638bd14ca81434e3ead2e5924a",
+      "match": true
+    },
+    {
+      "file": "favicon.svg",
+      "status": 200,
+      "local": "7e2e6c850b8f64bd807126f7d26d24546a2617e363ea43e372e89d81952857b3",
+      "live": "7e2e6c850b8f64bd807126f7d26d24546a2617e363ea43e372e89d81952857b3",
+      "match": true
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "local": "2f7b33fb2d0a213557a9e068fbec9c534585478a36e2dba429bf7497d54aeba9",
+      "live": "2f7b33fb2d0a213557a9e068fbec9c534585478a36e2dba429bf7497d54aeba9",
+      "match": true
+    },
+    {
+      "file": "robots.txt",
+      "status": 200,
+      "local": "c33725643d187b2b095ba2eb063a8b52329a497f9a9db52a2481321ae7fad290",
+      "live": "c33725643d187b2b095ba2eb063a8b52329a497f9a9db52a2481321ae7fad290",
+      "match": true
+    },
+    {
+      "file": "sitemap.xml",
+      "status": 200,
+      "local": "4bef87f09096eb2d26e3be2123b38ac94b861d6ba2b8ec0ebc541ac3ca1a9580",
+      "live": "4bef87f09096eb2d26e3be2123b38ac94b861d6ba2b8ec0ebc541ac3ca1a9580",
+      "match": true
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "local": "4c39e1d67948a875755dec0d494cc5be4c3a7ebcdd475a3b09b995f2a4e939f3",
+      "live": "4c39e1d67948a875755dec0d494cc5be4c3a7ebcdd475a3b09b995f2a4e939f3",
+      "match": true
+    }
+  ],
+  "allMatch": true,
+  "policy": {
+    "root": {
+      "cache-control": "public, must-revalidate, max-age=30",
+      "content-encoding": "br",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html",
+      "cross-origin-opener-policy": "same-origin",
+      "date": "Sat, 29 Aug 2026 09:03:38 GMT",
+      "etag": "\"15293943\"",
+      "last-modified": "Sat, 29 Aug 2026 09:02:19 GMT",
+      "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-xss-protection": "1; mode=block"
+    },
+    "conditionalStatus": 304,
+    "asset": {
+      "file": "assets/index-dTRR2Ail.js",
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    "serviceWorker": {
+      "status": 200,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    "unknownStatus": 404,
+    "configStatus": 404
+  }
+}
