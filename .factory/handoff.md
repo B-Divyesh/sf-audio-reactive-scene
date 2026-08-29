@@ -1,65 +1,47 @@
-# Handoff — polish 1
+# Handoff — independent verification 4
 
 ## Status
 
-Repair complete at commit `10fb5dda6c354b35605a02f41777154ae3f13f21`. The full finding-to-evidence record is [.factory/polish-1.md](polish-1.md).
+**FAIL — candidate `3d2371d3bf57655b8a25c32016afd1532f09ad7d` is not release-ready.**
 
-## What changed
+Tested 2026-08-29 against the clean checkout and `https://audio-reactive-scene.sociobot.in`. The live deployment matches every public candidate artifact by SHA-256, so this is not a deployment-only failure.
 
-- Replaced the false npm install instruction with an honest local release-candidate workflow. The library remains ready to pack; registry publication stays with the factory.
-- Added a real isolated `/demo?demo=1` route with persistent demo banner, reset, leave action, compact first screen, local sample action, and no browser user-data storage.
-- Made Copy embed provide a complete user-started Web Audio connection.
-- Added exhaustive public claim entries and tagged tests for the demo, package tarball, API, Node floor, site build output, registry status, privacy, offline behavior, controls, and MIT license.
-- Repaired SPA focus restoration, route metadata, 404 copy/recovery/metadata, mobile banner typography, and all review copy findings.
-- Kept the night-market signal-booth visual system intact; the demo workbench uses its same ink, paper, cyan, coral, and marigold control language.
+## Release blocker
 
-## Verification
+A cold direct visit to `/demo?demo=1` constructs and calls `resume()` on an `AudioContext` before any user action. Chrome emits its autoplay-policy warning. The visitor's first Play click then releases the pending load attempt and the click attempt, creating eight oscillators instead of four.
 
-Local working tree:
+The listed `@claim:gesture-only-input` command passes only because its test opens `/demo` without the documented `?demo=1` entry. The product therefore contradicts the claim and the brief's explicit user-gesture constraint.
 
-- `npm run lint` — pass
-- `npm run typecheck` — pass
-- `npm run test:unit` — 3 tests pass
-- `npm test` — 33 Chromium tests pass
-- `npm run build` — writes `dist/lib` and `dist/site`
-- `npm run pack:check` — 8 files, 7.7 kB tarball
-- `npm audit --audit-level=low` — 0 vulnerabilities
-- Axe integration checked `/`, `/demo?demo=1`, `/privacy`, `/terms`, unknown SPA route, and `/404.html`; zero serious or critical findings.
-- Mobile Lighthouse: Performance 97, Accessibility 100, Best Practices 100, SEO 100; report at `evidence/polish-1/lighthouse-local-mobile.json`.
+## Verification summary
 
-Clean clone `/tmp/audio-reactive-scene-clean-idVwGU` at the repair commit:
+- First-read and one-click-demo gate: PASS on desktop and 390 px mobile.
+- Every exact claim command after `npm ci`: command PASS; independent acceptance for `gesture-only-input`: FAIL.
+- Lint, typecheck, 3 unit tests, 33 Playwright tests, exact build, pack check, and audit: PASS.
+- Live/candidate artifact hashes: all match.
+- Three live scenes, intensity boundaries, valid/invalid/corrupt audio, microphone allow/deny, recovery, copy fallback, and reset: otherwise PASS.
+- Live axe serious/critical: zero on six routes.
+- Privacy: zero off-origin and API requests; no local/session/IndexedDB/OPFS user data.
+- Service-worker update and offline reload: PASS.
+- Lighthouse mobile: Performance 98, Accessibility 100, Best Practices 100, SEO 100; LCP 1.3 s, CLS 0.
+- Packed clean consumer: ESM, CommonJS, CSS export, declarations, and browser API exercise PASS.
 
-- `npm ci`, lint, typecheck, unit tests, `npm run build`, pack check, and audit passed.
-- Every exact command in `.factory/claims.json` passed independently.
-- The full 33-test `npm test` suite passed after those claim commands.
+Lower-severity findings are cold-load focus order bypassing the skip link/header (S2), no “Start for real” demo-banner action (S2), a duplicate invisible file control in the accessibility tree (S3), and incomplete copy-audit evidence (S3).
 
-Local visual evidence:
+Full evidence and exact remediation are in [.factory/verification-4.md](verification-4.md). Screenshots are under `.factory/verification-artifacts-4/`.
 
-- `evidence/polish-1/local-home-desktop.png`
-- `evidence/polish-1/local-demo-mobile.png`
-- `evidence/polish-1/local-404-desktop.png`
-- `evidence/polish-1/lighthouse-local-mobile.json`
+## Reproduce the blocker
 
-## Live deployment
+In a fresh browser context, install spies before page script execution, then open:
 
-Static deployment `aebcb004-01c8-4ac0-bbf8-94872f4a283a` completed successfully. Cold Chromium verification of `https://audio-reactive-scene.sociobot.in` confirmed the landing one-click demo, compact direct `/demo?demo=1` view, reset/leave behavior, metadata, heading focus, and 404 recovery. Fresh axe-core checks on all public routes found zero serious or critical issues.
-
-Live screenshots:
-
-- `evidence/polish-1/live-home-desktop.png`
-- `evidence/polish-1/live-demo-mobile.png`
-- `evidence/polish-1/live-404-mobile.png`
-
-## Run and deploy
-
-```sh
-npm ci
-npm test
-npm run build
+```text
+https://audio-reactive-scene.sociobot.in/demo?demo=1
 ```
 
-Deploy `dist/site/` through the static work order. To publish the package later, factory registry credentials should run `npm pack` and publish the reviewed tarball; workers must not publish it.
+Before any click, the observed counts are `AudioContext=1`, `resume=1`, `oscillators=0`. After pressing Play once, they are `AudioContext=1`, `resume=2`, `oscillators=8`. The expected counts are zero before interaction and one resume/four oscillators after the click.
 
-## Known gaps
+## Required next steps
 
-None in the product repair. The npm registry package is deliberately not claimed as available until the factory publishes it; this is visibly disclosed and has a registry-status claim test.
+1. Do not call the audio start routine from a cold `?demo=1` load.
+2. Keep one-click playback only on the landing-page click path, where a real user gesture exists.
+3. Extend the gesture claim test to cover a fresh direct `/demo?demo=1` load and the first click.
+4. Repair the S2/S3 findings, then rerun every claim and the full verification matrix.
