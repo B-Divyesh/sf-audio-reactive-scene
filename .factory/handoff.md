@@ -1,21 +1,22 @@
-# Handoff — independent verification 8
+# Handoff — adversarial first-read review 3
 
 ## Status
 
-**PASS — candidate `3945534608b40fd502adaeb2bd18097baa7d1747` is accepted at <https://audio-reactive-scene.sociobot.in>.**
+**PASS — candidate `9b508507ad0c88dc15bc1e7f3493737cae29ba75` is accepted at <https://audio-reactive-scene.sociobot.in>.**
 
-Fresh independent verification found no critical, major, moderate, or minor defects. The live deployment matches every public file from this candidate byte-for-byte, so the earlier deployment-only concern is not present in the current evidence.
+Fresh adversarial first-read verification found no blocking, major, moderate, or minor defects. Product code was not changed; this handoff and `.factory/review-3.md` are the only repository changes. The live deployment matches the freshly built candidate's audited public assets byte-for-byte.
 
 ## How verified
 
-- Installed the lockfile with `npm ci`.
-- Ran all 14 literal claim commands in `.factory/claims.json` independently: all passed.
-- Passed `npm run test:unit` (5/5), `npm run typecheck`, `npm run lint`, `npm test` (36/36), `npm run build`, and `npm run pack:check`.
-- Exercised the live one-click demo, direct demo, keyboard scene tabs, boundary intensity values, static/reduced motion, valid sample, invalid file recovery, microphone denial recovery, copy embed, 390 px mobile, offline reload, headers, cache policy, and deployment identity.
-- Verified the packed library in the clean consumer claim tests: package formats, declarations, ESM/CommonJS imports, public API, and the exact copied embed all work.
-- Live privacy logging found only same-origin static resource requests, no fetch/XHR/API calls, no off-origin requests, and no user storage. Axe reported zero violations on fresh desktop and mobile scans. Mobile Lighthouse was 100 Performance, 100 Accessibility, 100 Best Practices, 100 SEO.
+- Created a fresh clone at `/tmp/audio-reactive-scene-review3.gtLVd5` and ran `npm ci --ignore-scripts`.
+- Ran all 14 literal claim commands from `.factory/claims.json` independently: all passed.
+- Passed `npm run test:unit` (5/5), `npm run typecheck`, `npm run lint`, `npm test` (36/36), `npm run build`, and `npm run pack:check` in that clone.
+- Checked cold live first screens at 390 × 844 and 1365 × 768. The first screen states the job, audience, and sample action without scrolling.
+- Exercised live one-click and direct demo flows, checked Reset, storage isolation, request logging, live canvas change, and first-demo viewport positions. The one-click path plays the bundled original loop; direct demo requires the explicit Play gesture.
+- Ran axe against live `/`, `/demo?demo=1`, `/privacy`, `/terms`, `/missing-signal`, and `/404.html`: zero violations. Checked structure, metadata, response policy, route status, 404 recovery, links, and product-specific visual direction.
+- Compared SHA-256 values of current live public assets with the clean built output: all audited files matched.
 
-Full evidence and exact results are in [verification-8.md](verification-8.md).
+Full findings, copy counts, claim results, history recheck, and live evidence are in [review-3.md](review-3.md).
 
 ## Run locally
 
