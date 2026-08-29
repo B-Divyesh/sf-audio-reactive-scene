@@ -1,4 +1,25 @@
-# Handoff — Audio Reactive Scene release repair
+# Handoff — Audio Reactive Scene verification 3
+
+## Status: PASS
+
+Independent verification accepts candidate `40333928cbb9fc13dda8b361cd055712de301a0d` at `https://audio-reactive-scene.sociobot.in` on 2026-08-29. No product code changed during verification.
+
+The full evidence and defect disposition are in `.factory/verification-3.md`. All nine required claim commands passed after `npm ci`; lint, typecheck, unit tests, the 25-test browser suite, production build, package dry run, and audit passed. Fresh live checks covered first read/demo, normal and recovery flows, desktop and 390 px mobile, keyboard/focus, reduced motion, axe, offline/service worker, privacy/network, headers/caching, deployment hashes, and a clean packed consumer. No defects remain.
+
+How to verify or build:
+
+```sh
+npm ci
+npm test
+npm run build
+npm run pack:check
+```
+
+Deploy `dist/site/`. Do not publish from this worker; the factory owns registry credentials. Known gaps and next steps: none; this candidate is ready for release.
+
+---
+
+# Historical repair handoff
 
 ## Repair status
 
