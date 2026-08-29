@@ -1,0 +1,504 @@
+{
+  "testedAt": "2026-08-29T08:08:33.603Z",
+  "base": "https://audio-reactive-scene.sociobot.in",
+  "desktopFlow": {
+    "status": 200,
+    "headers": {
+      "cache-control": "public, must-revalidate, max-age=30",
+      "content-encoding": "br",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html",
+      "cross-origin-opener-policy": "same-origin",
+      "date": "Sat, 29 Aug 2026 08:08:33 GMT",
+      "etag": "\"85075119\"",
+      "last-modified": "Sat, 29 Aug 2026 08:08:19 GMT",
+      "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "vary": "Accept-Encoding",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-xss-protection": "1; mode=block"
+    },
+    "firstRead": {
+      "title": "Audio Reactive Scene — Make audio move a canvas",
+      "lang": "en",
+      "h1s": [
+        {
+          "text": "Make your audio move a scene",
+          "top": 161.9375,
+          "bottom": 339.40625,
+          "visibleInViewport": true
+        }
+      ],
+      "audience": {
+        "text": "For site owners, streamers, and event makers who need a restrained visual without sending audio away.",
+        "top": 359.40625,
+        "bottom": 452.40625,
+        "visibleInViewport": true
+      },
+      "action": {
+        "text": "Try it with sample data",
+        "top": 470.40625,
+        "bottom": 521.203125,
+        "visibleInViewport": true
+      },
+      "explanation": {
+        "text": "It opens the sample scene and starts a local sound loop.",
+        "top": 533.203125,
+        "bottom": 607.59375,
+        "visibleInViewport": true
+      },
+      "facts": {
+        "text": "Audio stays in this tabDemo works offline after your first visitFree under the MIT license",
+        "top": 625.59375,
+        "bottom": 719.984375,
+        "visibleInViewport": true
+      },
+      "mains": 1,
+      "skip": "Skip to main content",
+      "cspViolations": [],
+      "inlineStyles": 0
+    },
+    "oneClick": {
+      "url": "https://audio-reactive-scene.sociobot.in/demo?demo=1",
+      "banner": "Demo — sample data, nothing is savedReset demoStart for real",
+      "status": "Sample audio is playing. Press the button again to restart it.",
+      "label": "ribbons audio-reactive scene, connected to audio"
+    },
+    "sceneChecks": {
+      "ribbons": {
+        "first": "df3091bec51dcdd35c59fc6c36fc82b5f32153f4c261cac185e128e897077a44",
+        "second": "f4bf2277ed5011bf36de5c76aa1df45af1ea9038928e6e9e432bec6c3ab4873d",
+        "moves": true
+      },
+      "lanterns": {
+        "first": "9bf1c4f80830bff67c84468b02192f94ddea13c205af5e97a15d4a8645cc6706",
+        "second": "0e5e1c3191a2824556d8aee15450a829644295000a9a111f6614196d72ca7b84",
+        "moves": true
+      },
+      "horizon": {
+        "first": "8d8865bc528b669d240a2a5a1067b11291b25fe4ae92893501fee9d34c2c2045",
+        "second": "18311a972e03eaf36bd470749bd811aeb6b21e6f5999016cf079a0490f6c2652",
+        "moves": true
+      }
+    },
+    "boundaries": {
+      "zeroAttribute": "0",
+      "zeroAndOneDiffer": true,
+      "oneAttribute": "1"
+    },
+    "validFile": "Playing representative.wav in this tab. The file is not uploaded.",
+    "invalidType": "That file is not recognised as audio. Choose an MP3, WAV, or OGG file.",
+    "corruptAudio": "The audio file could not play. Choose another audio file.",
+    "microphone": "Microphone access was not allowed. Use the sample or choose an audio file.",
+    "recovered": "Sample audio is playing. Press the button again to restart it.",
+    "copyResult": "Copy was blocked. Select the code and copy it.",
+    "reset": {
+      "scene": "ribbons",
+      "intensity": "70",
+      "motion": "auto",
+      "status": "Demo reset. Play the sample to start again.",
+      "posterStable": true
+    },
+    "storage": {
+      "local": [],
+      "session": [],
+      "databases": [],
+      "opfs": [],
+      "caches": [
+        "audio-reactive-scene-2be8ed8391"
+      ]
+    },
+    "requestAudit": {
+      "count": 6,
+      "offOrigin": [],
+      "api": [],
+      "types": [
+        "document",
+        "script",
+        "stylesheet",
+        "image",
+        "media"
+      ]
+    },
+    "observed": {
+      "consoleErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "requests": [
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/",
+          "type": "document",
+          "method": "GET"
+        },
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/assets/index-CS1IFqWM.js",
+          "type": "script",
+          "method": "GET"
+        },
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/assets/index-BuJRuPAP.css",
+          "type": "stylesheet",
+          "method": "GET"
+        },
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/assets/hero-market.webp",
+          "type": "image",
+          "method": "GET"
+        },
+        {
+          "url": "blob:https://audio-reactive-scene.sociobot.in/57ac2030-12db-4085-9081-e5dfe2658cbe",
+          "type": "media",
+          "method": "GET"
+        },
+        {
+          "url": "blob:https://audio-reactive-scene.sociobot.in/abf8e8bd-ca4e-43ab-9910-82d72365f574",
+          "type": "media",
+          "method": "GET"
+        }
+      ],
+      "responses": [
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/",
+          "status": 200
+        },
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/assets/index-BuJRuPAP.css",
+          "status": 200
+        },
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/assets/index-CS1IFqWM.js",
+          "status": 200
+        },
+        {
+          "url": "https://audio-reactive-scene.sociobot.in/assets/hero-market.webp",
+          "status": 200
+        },
+        {
+          "url": "blob:https://audio-reactive-scene.sociobot.in/57ac2030-12db-4085-9081-e5dfe2658cbe",
+          "status": 206
+        },
+        {
+          "url": "blob:https://audio-reactive-scene.sociobot.in/abf8e8bd-ca4e-43ab-9910-82d72365f574",
+          "status": 206
+        }
+      ]
+    }
+  },
+  "directGesture": {
+    "before": {
+      "contexts": 0,
+      "resumes": 0,
+      "oscillators": 0,
+      "microphone": 0
+    },
+    "afterPlay": {
+      "contexts": 1,
+      "resumes": 1,
+      "oscillators": 4,
+      "microphone": 0
+    },
+    "afterReload": {
+      "contexts": 0,
+      "resumes": 0,
+      "oscillators": 0,
+      "microphone": 0
+    },
+    "afterMicrophone": {
+      "contexts": 1,
+      "resumes": 1,
+      "oscillators": 0,
+      "microphone": 1
+    },
+    "microphoneStatus": "Microphone access was not allowed. Use the sample or choose an audio file.",
+    "coldFocus": "BODY",
+    "firstTab": "Skip to main content",
+    "warnings": [],
+    "errors": []
+  },
+  "keyboard": {
+    "first": {
+      "text": "Skip to main content",
+      "outline": "rgb(97, 231, 223) solid 3px"
+    },
+    "skipTarget": {
+      "tag": "MAIN",
+      "id": "main"
+    },
+    "afterMain": {
+      "text": "Try it with sample data",
+      "outline": "rgb(97, 231, 223) solid 3px"
+    },
+    "arrowRight": {
+      "focused": "Lanterns",
+      "selected": "Lanterns"
+    },
+    "end": {
+      "focused": "Horizon",
+      "selected": "Horizon"
+    },
+    "home": {
+      "focused": "Ribbons",
+      "selected": "Ribbons"
+    },
+    "sliderMin": "0",
+    "sliderMax": "100",
+    "anchorScroll": 111,
+    "history": {
+      "href": "https://audio-reactive-scene.sociobot.in/#how",
+      "scrollY": 165,
+      "activeId": "how"
+    }
+  },
+  "mobile": {
+    "landing": {
+      "width": 390,
+      "scrollWidth": 390,
+      "actionBottom": 610.046875,
+      "factsBottom": 833.625
+    },
+    "demo": {
+      "width": 390,
+      "scrollWidth": 390,
+      "sceneBottom": 725.640625,
+      "statusBottom": 815.234375,
+      "undersizedTargets": [],
+      "supportingFonts": [
+        {
+          "text": "Static poster is ready. Choose audio to make it move.",
+          "px": 16
+        },
+        {
+          "text": "Choose a scene",
+          "px": 16
+        },
+        {
+          "text": "Choose audio",
+          "px": 16
+        },
+        {
+          "text": "Motion",
+          "px": 16
+        },
+        {
+          "text": "Copy this embed",
+          "px": 16
+        },
+        {
+          "text": "Make page audio move a small canvas. PrivacyTermsBuilt by Param Factory (externa",
+          "px": 16
+        }
+      ]
+    }
+  },
+  "reducedMotion": {
+    "beforeStable": true,
+    "connectedStable": true,
+    "css": {
+      "buttonTransition": "1e-05s",
+      "animations": []
+    }
+  },
+  "routes": {
+    "desktop": [
+      {
+        "path": "/",
+        "status": 200,
+        "title": "Audio Reactive Scene — Make audio move a canvas",
+        "h1": [
+          "Make your audio move a scene"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/demo?demo=1",
+        "status": 200,
+        "title": "Demo — Audio Reactive Scene",
+        "h1": [
+          "Try sample audio"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/privacy",
+        "status": 200,
+        "title": "Privacy — Audio Reactive Scene",
+        "h1": [
+          "Privacy in plain words"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/terms",
+        "status": 200,
+        "title": "Terms — Audio Reactive Scene",
+        "h1": [
+          "Terms for using the library"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/missing-signal",
+        "status": 404,
+        "title": "Page not found — Audio Reactive Scene",
+        "h1": [
+          "This page does not exist"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ],
+        "pageErrors": []
+      },
+      {
+        "path": "/404.html",
+        "status": 200,
+        "title": "Page not found — Audio Reactive Scene",
+        "h1": [
+          "This page does not exist"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      }
+    ],
+    "mobile": [
+      {
+        "path": "/",
+        "status": 200,
+        "title": "Audio Reactive Scene — Make audio move a canvas",
+        "h1": [
+          "Make your audio move a scene"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/demo?demo=1",
+        "status": 200,
+        "title": "Demo — Audio Reactive Scene",
+        "h1": [
+          "Try sample audio"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/privacy",
+        "status": 200,
+        "title": "Privacy — Audio Reactive Scene",
+        "h1": [
+          "Privacy in plain words"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/terms",
+        "status": 200,
+        "title": "Terms — Audio Reactive Scene",
+        "h1": [
+          "Terms for using the library"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "path": "/missing-signal",
+        "status": 404,
+        "title": "Page not found — Audio Reactive Scene",
+        "h1": [
+          "This page does not exist"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ],
+        "pageErrors": []
+      },
+      {
+        "path": "/404.html",
+        "status": 200,
+        "title": "Page not found — Audio Reactive Scene",
+        "h1": [
+          "This page does not exist"
+        ],
+        "mains": 1,
+        "headers": 1,
+        "footers": 1,
+        "seriousCritical": [],
+        "consoleErrors": [],
+        "pageErrors": []
+      }
+    ]
+  },
+  "serviceWorker": {
+    "before": {
+      "controlled": true,
+      "caches": [
+        "audio-reactive-scene-2be8ed8391"
+      ],
+      "active": "https://audio-reactive-scene.sociobot.in/sw.js"
+    },
+    "offline": {
+      "status": 200,
+      "title": "Demo — Audio Reactive Scene",
+      "h1": "TRY SAMPLE AUDIO",
+      "notice": "You are offline. The demo and sample scene still work.",
+      "visible": true
+    },
+    "after": {
+      "caches": [
+        "audio-reactive-scene-2be8ed8391"
+      ],
+      "active": "https://audio-reactive-scene.sociobot.in/sw.js"
+    }
+  }
+}
