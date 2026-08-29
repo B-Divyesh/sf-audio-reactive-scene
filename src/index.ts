@@ -27,8 +27,8 @@ const HTMLElementBase = (typeof HTMLElement === 'undefined' ? class {} : HTMLEle
 export class AudioReactiveScene extends HTMLElementBase {
   static observedAttributes = ['scene', 'intensity', 'motion', 'label'];
 
-  #canvas: HTMLCanvasElement;
-  #ctx: CanvasRenderingContext2D;
+  #canvas?: HTMLCanvasElement;
+  #ctx?: CanvasRenderingContext2D;
   #analyser?: AnalyserNode;
   #source?: AudioNode;
   #data = new Uint8Array(64);
@@ -41,14 +41,10 @@ export class AudioReactiveScene extends HTMLElementBase {
 
   constructor() {
     super();
-    this.#canvas = document.createElement('canvas');
-    this.#canvas.className = 'audio-reactive-scene__canvas';
-    this.#canvas.part.add('canvas');
-    this.append(this.#canvas);
-    this.#ctx = this.#canvas.getContext('2d', { alpha: false })!;
   }
 
   connectedCallback(): void {
+    this.#ensureCanvas();
     this.setAttribute('role', 'img');
     this.#updateLabel();
     this.#resize = new ResizeObserver(() => this.#fit());
@@ -137,7 +133,23 @@ export class AudioReactiveScene extends HTMLElementBase {
     this.setAttribute('aria-label', this.getAttribute('label') || `${this.scene} audio-reactive scene, ${state}`);
   }
 
+  /**
+   * Custom-element constructors must return before creating child nodes.
+   * Creating the rendering surface on connection keeps parser, direct, and
+   * document.createElement() construction on the same standards-compliant path.
+   */
+  #ensureCanvas(): void {
+    if (this.#canvas) return;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'audio-reactive-scene__canvas';
+    canvas.part.add('canvas');
+    this.append(canvas);
+    this.#canvas = canvas;
+    this.#ctx = canvas.getContext('2d', { alpha: false })!;
+  }
+
   #fit(): void {
+    if (!this.#canvas) return;
     const box = this.getBoundingClientRect();
     const ratio = Math.min(devicePixelRatio || 1, 2);
     this.#canvas.width = Math.max(1, Math.round(box.width * ratio));
@@ -177,6 +189,7 @@ export class AudioReactiveScene extends HTMLElementBase {
   }
 
   #draw(energy: number): void {
+    if (!this.#canvas || !this.#ctx) return;
     const { width: w, height: h } = this.#canvas;
     if (!w || !h) return;
     const ctx = this.#ctx;

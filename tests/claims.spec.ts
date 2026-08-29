@@ -179,6 +179,9 @@ test('@claim:package-formats ships ESM, CommonJS, declarations, component styles
 test('@claim:library-api supports the documented component API', async ({ browser }) => {
   const context = await browser.newContext({ bypassCSP: true });
   const page = await context.newPage();
+  const errors: string[] = [];
+  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+  page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/404.html');
   const library = (await readFile('dist/lib/audio-reactive-scene.js')).toString('base64');
   const result = await page.evaluate(async (encodedLibrary) => {
@@ -187,9 +190,10 @@ test('@claim:library-api supports the documented component API', async ({ browse
       defineAudioReactiveScene(name: string): unknown;
     };
     await customElements.whenDefined('audio-reactive-scene');
-    const scene = new module.AudioReactiveScene() as HTMLElement & {
+    type SceneElement = HTMLElement & {
       intensity: number; motion: string; connect(source: AudioNode): AnalyserNode; disconnect(): void; drawPoster(): void;
     };
+    const scene = new module.AudioReactiveScene() as SceneElement;
     document.body.append(scene);
     const context = new AudioContext();
     const source = context.createGain();
@@ -202,8 +206,17 @@ test('@claim:library-api supports the documented component API', async ({ browse
     scene.disconnect();
     scene.drawPoster();
     module.defineAudioReactiveScene('audio-reactive-scene-test');
-    const CustomScene = customElements.get('audio-reactive-scene-test')!;
-    const custom = new CustomScene();
+    const defaultCreated = document.createElement('audio-reactive-scene') as SceneElement;
+    const customCreated = document.createElement('audio-reactive-scene-test') as SceneElement;
+    const preConnectionChildren = {
+      default: defaultCreated.children.length,
+      custom: customCreated.children.length
+    };
+    document.body.append(defaultCreated, customCreated);
+    const defaultAnalyser = defaultCreated.connect(source);
+    const customAnalyser = customCreated.connect(source);
+    defaultCreated.disconnect();
+    customCreated.disconnect();
     const firstPoster = scene.querySelector('canvas')!.toDataURL();
     scene.drawPoster();
     const secondPoster = scene.querySelector('canvas')!.toDataURL();
@@ -214,11 +227,39 @@ test('@claim:library-api supports the documented component API', async ({ browse
       scene: scene.getAttribute('scene'),
       intensity: scene.intensity,
       motion: scene.motion,
-      custom: custom instanceof HTMLElement && Boolean(custom.querySelector('canvas')),
+      documentCreated: {
+        preConnectionChildren,
+        default: {
+          component: defaultCreated instanceof module.AudioReactiveScene,
+          connect: typeof defaultCreated.connect,
+          canvas: Boolean(defaultCreated.querySelector('canvas')),
+          analyser: defaultAnalyser instanceof AnalyserNode
+        },
+        custom: {
+          component: customCreated instanceof module.AudioReactiveScene,
+          connect: typeof customCreated.connect,
+          canvas: Boolean(customCreated.querySelector('canvas')),
+          analyser: customAnalyser instanceof AnalyserNode
+        }
+      },
       deterministic: firstPoster === secondPoster
     };
   }, library);
-  expect(result).toEqual({ analyser: true, connected: 'A custom scene label', label: 'A custom scene label', scene: 'horizon', intensity: 1, motion: 'static', custom: true, deterministic: true });
+  expect(result).toEqual({
+    analyser: true,
+    connected: 'A custom scene label',
+    label: 'A custom scene label',
+    scene: 'horizon',
+    intensity: 1,
+    motion: 'static',
+    documentCreated: {
+      preConnectionChildren: { default: 0, custom: 0 },
+      default: { component: true, connect: 'function', canvas: true, analyser: true },
+      custom: { component: true, connect: 'function', canvas: true, analyser: true }
+    },
+    deterministic: true
+  });
+  expect(errors).toEqual([]);
   await context.close();
 });
 
