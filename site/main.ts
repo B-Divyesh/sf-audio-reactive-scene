@@ -58,7 +58,7 @@ function footer(): string {
 }
 
 function demoBanner(): string {
-  return `<aside class="demo-banner" aria-label="Demo mode"><span>Demo — sample data, nothing is saved</span><button id="reset-demo" type="button">Reset demo</button><a href="/" data-link>Leave demo</a></aside>`;
+  return `<aside class="demo-banner" aria-label="Demo mode"><span>Demo — sample data, nothing is saved</span><button id="reset-demo" type="button">Reset demo</button><a href="/#install" data-link>Start for real</a></aside>`;
 }
 
 function playground(): string {
@@ -89,7 +89,7 @@ function playground(): string {
         <div class="source-list">
           <button class="source" id="choose-file" type="button">Choose audio file</button>
           <button class="source" id="use-mic" type="button">Use microphone</button>
-          <input class="file-input" id="audio-file" type="file" accept="audio/*" tabindex="-1" aria-label="Choose an audio file" />
+          <input id="audio-file" type="file" accept="audio/*" tabindex="-1" hidden />
         </div>
         <span class="control-label motion-heading">Motion</span>
         <div class="motion-list">
@@ -333,7 +333,7 @@ function setMetadata(metadata: Metadata): void {
   document.querySelector<HTMLMetaElement>('meta[name="twitter:description"]')!.content = metadata.description;
 }
 
-function route(path = location.pathname, autoStart = false, restoredState?: RouteState | null): void {
+function route(path = location.pathname, autoStart = false, restoredState?: RouteState | null, focusAfterRoute = true): void {
   stopAudio();
   const isHome = path === '/';
   const isDemo = path === '/demo';
@@ -351,7 +351,7 @@ function route(path = location.pathname, autoStart = false, restoredState?: Rout
   setupLinks();
   if (isHome || isDemo) setupPlayground(autoStart);
   const heading = document.querySelector<HTMLHeadingElement>('h1');
-  if (restoredState) {
+  if (restoredState && focusAfterRoute) {
     requestAnimationFrame(() => {
       window.scrollTo(0, restoredState.scrollY);
       focusRouteTarget(restoredState.focusId ? document.getElementById(restoredState.focusId) : hashTarget(), heading);
@@ -365,7 +365,7 @@ function route(path = location.pathname, autoStart = false, restoredState?: Rout
         history.replaceState({ ...history.state, scrollY: targetScrollY(target), focusId: target.id }, '', location.href);
       });
     }
-    focusRouteTarget(target, heading);
+    if (focusAfterRoute) focusRouteTarget(target, heading);
   }
   announce.textContent = metadata.title;
 }
@@ -394,6 +394,8 @@ window.addEventListener('popstate', (event) => route(location.pathname, false, e
 window.addEventListener('online', () => document.documentElement.classList.remove('offline'));
 window.addEventListener('offline', () => document.documentElement.classList.add('offline'));
 if (!navigator.onLine) document.documentElement.classList.add('offline');
-route(location.pathname, new URLSearchParams(location.search).get('demo') === '1', history.state as RouteState | null);
+// A direct demo visit has no trusted user gesture. Sample playback starts only
+// when this route is reached from the landing action or Play is pressed.
+route(location.pathname, false, history.state as RouteState | null, false);
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));

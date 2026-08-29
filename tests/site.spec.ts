@@ -52,14 +52,27 @@ test('QA2-01: desktop first screen keeps the action, explanation, and facts abov
   }
 });
 
-test('QA2-02: the hidden file picker is not a keyboard focus stop', async ({ page }) => {
+test('QA4-03: the hidden file picker is neither a keyboard stop nor a duplicate accessible control', async ({ page }) => {
   await page.goto('/demo');
+  await expect(page.getByRole('button', { name: /Choose (an )?audio file/ })).toHaveCount(1);
   const microphone = page.getByRole('button', { name: 'Use microphone' });
   await microphone.focus();
   await page.keyboard.press('Tab');
 
   await expect(page.getByRole('button', { name: 'System setting' })).toBeFocused();
   await expect(page.locator('#audio-file')).toHaveAttribute('tabindex', '-1');
+  await expect(page.locator('#audio-file')).toBeHidden();
+});
+
+test('QA4-02: cold routes leave focus at the document so Tab reaches the skip link first', async ({ page }) => {
+  for (const path of ['/', '/demo?demo=1']) {
+    await page.goto(path);
+    expect(await page.evaluate(() => document.activeElement === document.body)).toBe(true);
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('main')).toBeFocused();
+  }
 });
 
 test('every not-found route has a visible, accessible high-contrast error state', async ({ page }) => {
@@ -221,15 +234,15 @@ test('browser Back restores the anchored scroll position and focus', async ({ pa
   await expect(page.locator('#how')).toBeFocused();
 });
 
-test('ordinary Home navigation focuses the destination heading', async ({ page }) => {
+test('route navigation focuses the Home heading and Start for real install section', async ({ page }) => {
   await page.goto('/privacy');
   await page.getByRole('link', { name: 'Audio Reactive Scene home' }).click();
   await expect(page).toHaveURL('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
   await page.goto('/demo?demo=1');
-  await page.getByRole('link', { name: 'Leave demo' }).click();
-  await expect(page).toHaveURL('/');
-  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await page.getByRole('link', { name: 'Start for real' }).click();
+  await expect(page).toHaveURL('/#install');
+  await expect(page.locator('#install')).toBeFocused();
 });
 
 test('service worker controls the demo and checks for updates', async ({ page }) => {

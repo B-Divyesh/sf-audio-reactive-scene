@@ -88,26 +88,40 @@ test('@claim:local-only-audio keeps the complete demo flow on the same origin', 
   expect(await browserUserStorage(page)).toEqual({ local: [], session: [], databases: [], opfs: [] });
 });
 
-test('@claim:gesture-only-input starts audio and microphone input only after their controls are pressed', async ({ page }) => {
+test('@claim:gesture-only-input starts exactly one audio loop only after a direct-demo Play gesture', async ({ page }) => {
   await page.addInitScript(() => {
-    type InputSpies = { microphoneCalls: number; audioContextCalls: number };
-    const spies: InputSpies = { microphoneCalls: 0, audioContextCalls: 0 };
+    type InputSpies = { microphoneCalls: number; audioContextCalls: number; resumeCalls: number; oscillatorCalls: number };
+    const spies: InputSpies = { microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, oscillatorCalls: 0 };
     Object.defineProperty(window, '__inputSpies', { value: spies });
     const NativeAudioContext = window.AudioContext;
     Object.defineProperty(window, 'AudioContext', { configurable: true, value: class extends NativeAudioContext {
       constructor(options?: AudioContextOptions) { super(options); spies.audioContextCalls += 1; }
+      override resume(): Promise<void> { spies.resumeCalls += 1; return super.resume(); }
+      override createOscillator(): OscillatorNode { spies.oscillatorCalls += 1; return super.createOscillator(); }
     } });
     Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia: async () => {
       spies.microphoneCalls += 1;
       return new MediaStream();
     } } });
   });
-  await page.goto('/demo');
-  expect(await page.evaluate(() => (window as typeof window & { __inputSpies?: { microphoneCalls: number; audioContextCalls: number } }).__inputSpies)).toEqual({ microphoneCalls: 0, audioContextCalls: 0 });
-  await page.getByRole('button', { name: 'Use microphone' }).click();
-  await expect.poll(() => page.evaluate(() => (window as typeof window & { __inputSpies?: { microphoneCalls: number; audioContextCalls: number } }).__inputSpies)).toEqual({ microphoneCalls: 1, audioContextCalls: 1 });
+  const autoplayWarnings: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'warning' && message.text().includes('AudioContext was not allowed to start')) autoplayWarnings.push(message.text());
+  });
+  await page.goto('/demo?demo=1');
+  const inputSpies = () => page.evaluate(() => (window as typeof window & {
+    __inputSpies?: { microphoneCalls: number; audioContextCalls: number; resumeCalls: number; oscillatorCalls: number };
+  }).__inputSpies);
+  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, oscillatorCalls: 0 });
   await page.getByRole('button', { name: 'Play sample audio' }).click();
   await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 1, resumeCalls: 1, oscillatorCalls: 4 });
+  expect(autoplayWarnings).toEqual([]);
+
+  await page.reload();
+  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, oscillatorCalls: 0 });
+  await page.getByRole('button', { name: 'Use microphone' }).click();
+  await expect.poll(inputSpies).toEqual({ microphoneCalls: 1, audioContextCalls: 1, resumeCalls: 1, oscillatorCalls: 0 });
 });
 
 test('@claim:offline-reload reloads the demo without a network', async ({ page, context }) => {

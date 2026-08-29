@@ -2,6 +2,8 @@
 
 ## 0.1.2 — 2026-08-28
 
+- Keep cold direct demo loads silent until Play; one gesture now creates one four-oscillator sample loop.
+- Restore skip-link-first cold focus, the Start for real path, and a single accessible file chooser.
 - Keep the poster deterministic and idle until a user connects audio, including after demo reset.
 - Repair the not-found contrast, add complete privacy and gesture claim checks, and make the repository-wide strict type check and lint gate pass.
 - Restore focus and anchored scroll on browser history navigation, provide 44 px mobile targets, immutable asset caching, and true HTTP 404 handling for unknown document routes.
