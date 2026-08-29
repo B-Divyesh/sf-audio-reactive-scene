@@ -14,7 +14,7 @@ describe('copy audit', () => {
       'It does not ask for microphone access by itself.',
       'It does not upload or save an audio file.',
       'It does not load scripts or fonts from another site.',
-      'Night-market sample is playing.',
+      'Percussion loop is playing.',
       'The sample could not start.',
       'That file is not recognised as audio.',
       'The audio file could not play.',

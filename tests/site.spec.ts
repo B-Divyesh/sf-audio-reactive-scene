@@ -245,7 +245,7 @@ test('a no-audio poster does not animate before audio or after Reset demo', asyn
   expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBe(0);
 
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  await expect(page.locator('#audio-status')).toContainText('Percussion loop is playing');
   await page.waitForTimeout(100);
   expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Reset demo' }).click();

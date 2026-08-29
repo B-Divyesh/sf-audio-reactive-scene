@@ -60,7 +60,7 @@ test('@claim:one-click-demo opens a working sample scene in one click', async ({
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
   await expect(page).toHaveURL(/\/demo\?demo=1$/);
   await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
-  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  await expect(page.locator('#audio-status')).toContainText('Percussion loop is playing');
   await expect(page.locator('audio-reactive-scene')).toHaveAttribute('aria-label', /connected to audio/);
   await expect.poll(() => sampleResponses.length).toBeGreaterThan(0);
   expect([200, 206]).toContain(sampleResponses[0].status);
@@ -69,7 +69,7 @@ test('@claim:one-click-demo opens a working sample scene in one click', async ({
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Try sample audio');
   await expect(page.locator('.scene-stage')).toBeVisible();
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  await expect(page.locator('#audio-status')).toContainText('Percussion loop is playing');
 });
 
 test('@claim:three-scenes-controls changes scene, intensity, and motion', async ({ page }) => {
@@ -185,7 +185,7 @@ test('@claim:gesture-only-input starts audio only after a direct-demo Play gestu
   }).__inputSpies);
   expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, mediaPlayCalls: 0 });
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  await expect(page.locator('#audio-status')).toContainText('Percussion loop is playing');
   expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 1, resumeCalls: 1, mediaPlayCalls: 1 });
   expect(autoplayWarnings).toEqual([]);
 
@@ -207,7 +207,7 @@ test('@claim:offline-reload reloads the demo without a network', async ({ page, 
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Try sample audio');
   await expect(page.getByText('You are offline. The demo and sample scene still work.')).toBeVisible();
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  await expect(page.locator('#audio-status')).toContainText('Percussion loop is playing');
 });
 
 test('@claim:motion-reduction draws a stable poster when the system reduces motion', async ({ browser }) => {
@@ -421,7 +421,7 @@ test('@claim:privacy-no-personal-data keeps demo data in this browser without co
   await expect(page.getByText('This site does not collect, store, or sell personal data.')).toBeVisible();
   await page.goto('/demo');
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  await expect(page.locator('#audio-status')).toContainText('Percussion loop is playing');
   expect(offOrigin).toEqual([]);
   expect(apiRequests).toEqual([]);
   expect(await browserUserStorage(page)).toEqual({ local: [], session: [], databases: [], opfs: [] });

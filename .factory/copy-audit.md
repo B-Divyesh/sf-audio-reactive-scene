@@ -95,8 +95,7 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 
 | Copy | Words |
 | --- | ---: |
-| Night-market sample is playing. | 4 |
-| Press the button again to restart it. | 7 |
+| Percussion loop is playing. | 4 |
 | The sample could not start. | 5 |
 | Check browser audio permission and try again. | 7 |
 | That file is not recognised as audio. | 7 |

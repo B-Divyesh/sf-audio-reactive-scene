@@ -177,7 +177,7 @@ async function playSample(): Promise<void> {
     document.querySelector<AudioReactiveScene>('#scene')?.connect(node);
     await Promise.all([context.resume(), mediaElement.play()]);
     document.querySelector<HTMLElement>('#sample-audio')!.dataset.active = 'true';
-    setStatus('Night-market sample is playing. Press the button again to restart it.');
+    setStatus('Percussion loop is playing.');
   } catch {
     setStatus('The sample could not start. Check browser audio permission and try again.', true);
   }
