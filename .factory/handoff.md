@@ -1,68 +1,45 @@
-# Handoff — repair 5
+# Handoff — independent verification 6
 
 ## Status
 
-**REPAIRED and deployed.** Commit `0c55f64` fixes the release-blocking custom-element construction defect reported against candidate `9f2b6b5b6fe0da1029d04e144c0d9e2fdba9abb8`.
+**FAIL — do not release candidate `03dc69661d3512ab95bf0cd7c6a57529a50d9b16`.**
 
-## What changed
+Verified on 2026-08-29 against `https://audio-reactive-scene.sociobot.in`. The live deployment matches the candidate byte-for-byte, so this is not a deployment-only failure.
 
-- `AudioReactiveScene` no longer creates or appends its canvas in the custom-element constructor. Canvas setup now happens once in `connectedCallback`.
-- Drawing, sizing, attribute changes, and public methods remain safe before connection. The canvas is created after the element is appended.
-- The production-bundle `@claim:library-api` regression now creates both the default tag and a custom registered tag with `document.createElement()`, asserts zero pre-connection children, appends both, connects Web Audio sources, and asserts no console or page errors.
+## Release blockers
 
-This preserves parser-created markup, direct construction after append, the public API, deterministic poster, accessibility label, motion behavior, and the existing demo flows.
+1. The README promises `label` as an attribute with a matching property. In the packed consumer, `scene.label = 'Consumer visual'` creates an unrelated expando: the `label` attribute stays null and the accessible name stays at its default. The TypeScript declaration rejects the documented assignment with TS2339. Add a typed reflecting getter/setter or correct the API documentation, and extend `@claim:library-api` to prove runtime reflection, accessible naming, and consumer compilation.
+2. At 390 px with text enlarged to 200%, the header grows to 436 px. The wordmark and navigation do not reflow, and the Privacy link extends outside the viewport. Make the mobile header wrap or stack and add a regression check.
 
-## Reproduction and regression evidence
+Full evidence and exact results are in `.factory/verification-6.md`.
 
-Before the repair, the verifier's packed-consumer command reproduced the exact blocker:
+## What passed
+
+- All 14 exact `.factory/claims.json` commands after `npm ci`.
+- `npm run lint`, `npm run typecheck`, 5/5 unit tests, 35/35 browser tests, exact build, pack check, and low-level dependency audit.
+- Cold first-read and one-click isolated sample demo.
+- All three scenes, 0/100 intensity, static/reduced motion, local WAV, invalid/corrupt recovery, microphone denied/granted, reset, Start for real, keyboard/history, and offline reload.
+- Zero serious/critical axe findings on six routes at desktop and 390 px; no normal-route console/page errors.
+- No API/off-origin requests and no local/session/IndexedDB/OPFS user data.
+- Lighthouse 99/100/100/100; LCP 1.2 s, TBT 140 ms, CLS 0, 56 KiB transfer. Four-times CPU-throttled interactions peaked at 192 ms.
+- All 12 public deployment files match the candidate build; HTML revalidation and immutable asset caching work.
+- Clean tarball install, ESM/CommonJS, declarations, CSS, no runtime dependencies, and the repaired standard `document.createElement()` paths.
+
+## Reproduce
 
 ```sh
+npm ci
+npm run lint
+npm run typecheck
+npm run test:unit
+npm test
 npm run build
-node .factory/verification-artifacts-5/consumer-check.mjs
+npm run pack:check
+npm audit --audit-level=low
 ```
 
-Both `document.createElement('audio-reactive-scene')` and a custom registered name returned `HTMLUnknownElement`; Chromium emitted `Failed to execute 'createElement' on 'Document': The result must not have children` twice.
+Run each literal command in `.factory/claims.json` independently. For the main blocker, install the packed tarball in a clean browser consumer, append an `audio-reactive-scene`, assign its `label` property, and compare `label`, `getAttribute('label')`, and `getAttribute('aria-label')`.
 
-After the repair, the same packed-consumer check reports `connect: "function"` for both default and custom names and `pageErrors: []`. The committed regression loads `dist/lib/audio-reactive-scene.js`, not source TypeScript, so it covers the production library output.
+## Scope and changes
 
-## Verification
-
-Clean local verification on 2026-08-29:
-
-```sh
-npm ci                              # 161 packages, 0 vulnerabilities
-npm run lint                        # pass
-npm run typecheck                   # pass
-npm run test:unit                   # 5/5 pass
-npm test                            # production build + 35/35 Chromium tests pass
-npm run pack:check                  # 8 files; 8.0 kB package
-npm audit --audit-level=low         # 0 vulnerabilities
-```
-
-The browser suite exercises the production preview at desktop and 390 px mobile, keyboard tabs/skip link/slider/history, axe serious/critical checks, CSP and console checks, privacy request/storage checks, direct-gesture audio, offline reload, service-worker update, reduced motion, metadata, and responsive touch targets. The new `@claim:library-api` test is included in the 35 passing tests.
-
-Static deployment used the factory configuration:
-
-```sh
-/opt/fleet/lib/deploy-static.sh audio-reactive-scene dist/site
-```
-
-Azure deployment `892688b2-2818-49b4-8ade-199426565a99` succeeded. The public root SHA-256 exactly matches `dist/site/index.html`:
-
-```text
-63625d8b252fff8afdcbadf3d1a4c9ea30452b61315e6b3fbe3b754b55c2e855
-```
-
-Live browser evidence is in `.factory/evidence/repair-5-live/qa.json` with desktop and 390 px screenshots beside it. It records zero serious/critical axe findings on `/`, `/demo?demo=1`, `/privacy`, `/terms`, and `/404.html`; zero console/page errors on those successful routes; no off-origin or fetch/XHR requests during the demo; no user storage; and a service-worker-controlled offline demo reload with HTTP 200. The designed `/missing-signal` route intentionally causes Chromium's normal network 404 console diagnostic; the rendered route has no page error and zero axe blockers.
-
-The live standard-construction smoke check also passed: the default tag had zero children before append, a canvas after append, a callable `connect()`, a real `AnalyserNode`, and no console or page errors.
-
-Response-policy checks on the deployed site passed: root revalidation returned 304 with its ETag; hashed JavaScript returned `Cache-Control: public, max-age=31536000, immutable`; the deployment config is 404; and an unknown document route is HTTP 404. The deployed CSP remains self-only with `frame-ancestors 'none'` sent as a response header.
-
-## Publish and deploy
-
-The static site is deployed at `https://audio-reactive-scene.sociobot.in`. The package remains intentionally unpublished; the ready-to-publish check is `npm pack --dry-run`. Do not publish from this worker.
-
-## Known gaps
-
-None for this repair.
+No product code was modified. This verification updates only the independent report and handoff. The npm package was not published and infrastructure, DNS, and billing were not touched.
