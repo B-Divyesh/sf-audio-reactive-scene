@@ -8,6 +8,8 @@
 - Keep the poster deterministic and idle until a user connects audio, including after demo reset.
 - Repair the not-found contrast, add complete privacy and gesture claim checks, and make the repository-wide strict type check and lint gate pass.
 - Restore focus and anchored scroll on browser history navigation, provide 44 px mobile targets, immutable asset caching, and true HTTP 404 handling for unknown document routes.
+- Reflect the typed `label` property to its attribute and accessible name.
+- Reflow the 390 px header when text is enlarged to 200%.
 
 ## 0.1.1 — 2026-08-28
 

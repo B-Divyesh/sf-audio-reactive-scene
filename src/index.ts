@@ -83,6 +83,10 @@ export class AudioReactiveScene extends HTMLElementBase {
   }
   set motion(value: MotionMode) { this.setAttribute('motion', value); }
 
+  /** Optional accessible name reflected by the `label` attribute. */
+  get label(): string { return this.getAttribute('label') ?? ''; }
+  set label(value: string) { this.setAttribute('label', value); }
+
   /** Connect an existing audio graph node. The component never starts capture. */
   connect(source: AudioNode): AnalyserNode {
     this.disconnect();

@@ -149,8 +149,10 @@ input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cyan); 
 
 @media (max-width: 480px) {
   .wrap, .narrow { width: min(100% - 28px, 1180px); }
-  .wordmark span:last-child { max-width: 130px; line-height: 1.1; }
-  .site-nav { gap: 8px; }
+  .site-header { flex-wrap: wrap; gap: 8px 16px; }
+  .wordmark { min-width: 0; }
+  .wordmark span:last-child { max-width: 130px; line-height: 1.1; overflow-wrap: anywhere; }
+  .site-nav { flex: 1 1 auto; min-width: 0; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
   .site-nav a { font-size: 1rem; }
   h1 { font-size: clamp(3rem, 16vw, 4.3rem); }
   .hero-action, .button { width: 100%; }

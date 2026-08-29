@@ -191,13 +191,26 @@ test('@claim:library-api supports the documented component API', async ({ browse
     };
     await customElements.whenDefined('audio-reactive-scene');
     type SceneElement = HTMLElement & {
-      intensity: number; motion: string; connect(source: AudioNode): AnalyserNode; disconnect(): void; drawPoster(): void;
+      intensity: number; motion: string; label: string; connect(source: AudioNode): AnalyserNode; disconnect(): void; drawPoster(): void;
     };
     const scene = new module.AudioReactiveScene() as SceneElement;
     document.body.append(scene);
     const context = new AudioContext();
     const source = context.createGain();
-    scene.setAttribute('label', 'A custom scene label');
+    scene.label = 'Consumer visual';
+    const propertyReflection = {
+      property: scene.label,
+      attribute: scene.getAttribute('label'),
+      accessibleLabel: scene.getAttribute('aria-label')
+    };
+    const attributeScene = document.createElement('audio-reactive-scene') as SceneElement;
+    document.body.append(attributeScene);
+    attributeScene.setAttribute('label', 'Attribute visual');
+    const attributeReflection = {
+      property: attributeScene.label,
+      attribute: attributeScene.getAttribute('label'),
+      accessibleLabel: attributeScene.getAttribute('aria-label')
+    };
     scene.setAttribute('scene', 'horizon');
     scene.intensity = 2;
     scene.motion = 'static';
@@ -223,7 +236,8 @@ test('@claim:library-api supports the documented component API', async ({ browse
     return {
       analyser: analyser instanceof AnalyserNode,
       connected,
-      label: scene.getAttribute('aria-label'),
+      propertyReflection,
+      attributeReflection,
       scene: scene.getAttribute('scene'),
       intensity: scene.intensity,
       motion: scene.motion,
@@ -247,8 +261,17 @@ test('@claim:library-api supports the documented component API', async ({ browse
   }, library);
   expect(result).toEqual({
     analyser: true,
-    connected: 'A custom scene label',
-    label: 'A custom scene label',
+    connected: 'Consumer visual',
+    propertyReflection: {
+      property: 'Consumer visual',
+      attribute: 'Consumer visual',
+      accessibleLabel: 'Consumer visual'
+    },
+    attributeReflection: {
+      property: 'Attribute visual',
+      attribute: 'Attribute visual',
+      accessibleLabel: 'Attribute visual'
+    },
     scene: 'horizon',
     intensity: 1,
     motion: 'static',
@@ -259,8 +282,35 @@ test('@claim:library-api supports the documented component API', async ({ browse
     },
     deterministic: true
   });
+  await expect(page.getByRole('img', { name: 'Consumer visual', exact: true })).toHaveCount(1);
+  await expect(page.getByRole('img', { name: 'Attribute visual', exact: true })).toHaveCount(1);
   expect(errors).toEqual([]);
   await context.close();
+
+  const root = process.cwd();
+  const temporary = await mkdtemp(join(tmpdir(), 'audio-reactive-scene-api-consumer-'));
+  try {
+    const packed = JSON.parse((await execFile('npm', ['pack', '--json', '--pack-destination', temporary], { cwd: root })).stdout) as Array<{ filename: string }>;
+    const tarball = join(temporary, packed[0].filename);
+    const consumer = join(temporary, 'consumer');
+    await mkdir(consumer);
+    await writeFile(join(consumer, 'package.json'), '{"type":"module"}');
+    await execFile('npm', ['install', '--ignore-scripts', '--no-package-lock', tarball], { cwd: consumer });
+    await writeFile(join(consumer, 'consumer.ts'), [
+      "import { AudioReactiveScene } from 'audio-reactive-scene';",
+      "const scene = new AudioReactiveScene();",
+      "scene.label = 'Consumer visual';",
+      "const reflectedLabel: string = scene.label;",
+      'void reflectedLabel;'
+    ].join('\n'));
+    const typecheck = await execFile(process.execPath, [
+      resolve(root, 'node_modules/typescript/bin/tsc'),
+      '--noEmit', '--strict', '--target', 'ES2022', '--module', 'NodeNext', '--moduleResolution', 'NodeNext', 'consumer.ts'
+    ], { cwd: consumer });
+    expect(typecheck.stderr).toBe('');
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
 });
 
 test('@claim:node-support declares and uses Node.js 20 or newer', async () => {

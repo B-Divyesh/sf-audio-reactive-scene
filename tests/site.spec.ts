@@ -172,6 +172,30 @@ test('mobile layout does not scroll sideways', async ({ page }) => {
   }
 });
 
+test('V6-02: the 390px header reflows at 200 percent text without overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of ['/', '/demo?demo=1']) {
+    await page.goto(path);
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    const layout = await page.evaluate(() => {
+      const header = document.querySelector('.site-header')!;
+      const nav = document.querySelector('.site-nav')!;
+      const privacy = document.querySelector<HTMLAnchorElement>('.site-nav a[href="/privacy"]')!;
+      return {
+        clientWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        headerRight: header.getBoundingClientRect().right,
+        navRight: nav.getBoundingClientRect().right,
+        privacyRight: privacy.getBoundingClientRect().right
+      };
+    });
+    expect(layout.scrollWidth).toBe(layout.clientWidth);
+    expect(layout.headerRight).toBeLessThanOrEqual(layout.clientWidth);
+    expect(layout.navRight).toBeLessThanOrEqual(layout.clientWidth);
+    expect(layout.privacyRight).toBeLessThanOrEqual(layout.clientWidth);
+  }
+});
+
 test('demo puts the live scene and playback status in the first mobile and desktop viewports', async ({ page }) => {
   for (const viewport of [{ width: 390, height: 844 }, { width: 1365, height: 768 }]) {
     await page.setViewportSize(viewport);
