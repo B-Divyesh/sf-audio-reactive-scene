@@ -1,4 +1,4 @@
-HTTP/2 200 
+HTTP/2 200
 content-type: text/html
 date: Sat, 29 Aug 2026 04:36:57 GMT
 accept-ranges: bytes
@@ -14,4 +14,3 @@ x-dns-prefetch-control: off
 content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
 permissions-policy: camera=(), geolocation=(), microphone=(self)
 cross-origin-opener-policy: same-origin
-
