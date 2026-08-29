@@ -1,0 +1,47 @@
+{
+  "root": {
+    "status": 200,
+    "headers": {
+      "cache-control": "public, must-revalidate, max-age=30",
+      "content-encoding": "br",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html",
+      "cross-origin-opener-policy": "same-origin",
+      "date": "Sat, 29 Aug 2026 06:55:55 GMT",
+      "etag": "\"68447828\"",
+      "last-modified": "Sat, 29 Aug 2026 06:54:52 GMT",
+      "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-xss-protection": "1; mode=block"
+    }
+  },
+  "asset": {
+    "path": "assets/index-B9t5_k2q.js",
+    "status": 200,
+    "headers": {
+      "cache-control": "public, max-age=31536000, immutable",
+      "content-encoding": "br",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/javascript",
+      "cross-origin-opener-policy": "same-origin",
+      "date": "Sat, 29 Aug 2026 06:55:55 GMT",
+      "etag": "\"68447828\"",
+      "last-modified": "Sat, 29 Aug 2026 06:54:52 GMT",
+      "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-xss-protection": "1; mode=block"
+    }
+  },
+  "missingStatus": 404,
+  "configStatus": 404
+}

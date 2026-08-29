@@ -1,0 +1,72 @@
+{
+  "directDemo": {
+    "before": {
+      "contexts": 0,
+      "resumes": 0,
+      "oscillators": 0
+    },
+    "after": {
+      "contexts": 1,
+      "resumes": 1,
+      "oscillators": 4
+    },
+    "autoplayWarnings": [],
+    "coldFocus": "BODY",
+    "firstTab": "Skip to main content",
+    "fileChooserButtons": 1
+  },
+  "accessibility": {
+    "desktop": {
+      "/": [],
+      "/demo?demo=1": [],
+      "/privacy": [],
+      "/terms": [],
+      "/missing-signal": [],
+      "/404.html": []
+    },
+    "mobile": {
+      "/": [],
+      "/demo?demo=1": [],
+      "/privacy": [],
+      "/terms": [],
+      "/missing-signal": [],
+      "/404.html": []
+    }
+  },
+  "privacy": {
+    "offOrigin": [],
+    "apiRequests": [],
+    "storage": {
+      "local": [],
+      "session": [],
+      "databases": []
+    }
+  },
+  "offline": {
+    "serviceWorker": {
+      "controlled": true,
+      "caches": [
+        "audio-reactive-scene-2be8ed8391"
+      ],
+      "script": "https://audio-reactive-scene.sociobot.in/sw.js"
+    },
+    "reload": {
+      "status": 200,
+      "heading": "TRY SAMPLE AUDIO",
+      "noticeVisible": true
+    }
+  },
+  "landingClick": {
+    "url": "https://audio-reactive-scene.sociobot.in/demo?demo=1",
+    "counts": {
+      "contexts": 1,
+      "resumes": 1,
+      "oscillators": 4
+    }
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390
+  },
+  "consoleErrors": []
+}

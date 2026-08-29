@@ -1,0 +1,23 @@
+{
+  "before": {
+    "contexts": 0,
+    "resumes": 0,
+    "oscillators": 0
+  },
+  "after": {
+    "contexts": 1,
+    "resumes": 1,
+    "oscillators": 4
+  },
+  "warnings": [],
+  "coldFocus": "BODY",
+  "firstTab": {
+    "text": "Skip to main content",
+    "className": "skip-link"
+  },
+  "fileChooserButtons": 1,
+  "mobile": {
+    "viewport": 390,
+    "scrollWidth": 390
+  }
+}

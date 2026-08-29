@@ -1,0 +1,86 @@
+[
+  {
+    "path": "404.css",
+    "status": 200,
+    "local": "4f17b2cde45166ee71315e8d57cb8edc51d98d3af89361a0087206f56e5a69d2",
+    "remote": "4f17b2cde45166ee71315e8d57cb8edc51d98d3af89361a0087206f56e5a69d2",
+    "match": true
+  },
+  {
+    "path": "404.html",
+    "status": 200,
+    "local": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+    "remote": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+    "match": true
+  },
+  {
+    "path": "apple-touch-icon.png",
+    "status": 200,
+    "local": "d9d4a8e6f33ca0d2f039ec70db1f0824f56283f4d288f02404b796999b91ea78",
+    "remote": "d9d4a8e6f33ca0d2f039ec70db1f0824f56283f4d288f02404b796999b91ea78",
+    "match": true
+  },
+  {
+    "path": "assets/hero-market.webp",
+    "status": 200,
+    "local": "c5189ca3a67563a41661891705270a49396533c6b45626bd7a2d0655e29ca390",
+    "remote": "c5189ca3a67563a41661891705270a49396533c6b45626bd7a2d0655e29ca390",
+    "match": true
+  },
+  {
+    "path": "assets/index-B9t5_k2q.js",
+    "status": 200,
+    "local": "4c99c8ba2c2e1210f156c76d6979de3cb5320e50c0a8c23b917265efb0eb0a1d",
+    "remote": "4c99c8ba2c2e1210f156c76d6979de3cb5320e50c0a8c23b917265efb0eb0a1d",
+    "match": true
+  },
+  {
+    "path": "assets/index-BuJRuPAP.css",
+    "status": 200,
+    "local": "4a661bab1201393a91deeb6037b19f9feb99d9df6847fabf54bc146601b0d084",
+    "remote": "4a661bab1201393a91deeb6037b19f9feb99d9df6847fabf54bc146601b0d084",
+    "match": true
+  },
+  {
+    "path": "assets/social-card.webp",
+    "status": 200,
+    "local": "f68c4b133b5d67bfd27c4fe33379b64ddf5698638bd14ca81434e3ead2e5924a",
+    "remote": "f68c4b133b5d67bfd27c4fe33379b64ddf5698638bd14ca81434e3ead2e5924a",
+    "match": true
+  },
+  {
+    "path": "favicon.svg",
+    "status": 200,
+    "local": "7e2e6c850b8f64bd807126f7d26d24546a2617e363ea43e372e89d81952857b3",
+    "remote": "7e2e6c850b8f64bd807126f7d26d24546a2617e363ea43e372e89d81952857b3",
+    "match": true
+  },
+  {
+    "path": "index.html",
+    "status": 200,
+    "local": "97d009263268ddfaaed81a77fd9777dfb650b44df95d274b3f9c527e6dc6584f",
+    "remote": "97d009263268ddfaaed81a77fd9777dfb650b44df95d274b3f9c527e6dc6584f",
+    "match": true
+  },
+  {
+    "path": "robots.txt",
+    "status": 200,
+    "local": "c33725643d187b2b095ba2eb063a8b52329a497f9a9db52a2481321ae7fad290",
+    "remote": "c33725643d187b2b095ba2eb063a8b52329a497f9a9db52a2481321ae7fad290",
+    "match": true
+  },
+  {
+    "path": "sitemap.xml",
+    "status": 200,
+    "local": "4bef87f09096eb2d26e3be2123b38ac94b861d6ba2b8ec0ebc541ac3ca1a9580",
+    "remote": "4bef87f09096eb2d26e3be2123b38ac94b861d6ba2b8ec0ebc541ac3ca1a9580",
+    "match": true
+  },
+  {
+    "path": "sw.js",
+    "status": 200,
+    "local": "3c238ae8c1565890a384c26c0995d6645c243ac8baf8ae3b62c7427c201f9e13",
+    "remote": "3c238ae8c1565890a384c26c0995d6645c243ac8baf8ae3b62c7427c201f9e13",
+    "match": true
+  }
+]
