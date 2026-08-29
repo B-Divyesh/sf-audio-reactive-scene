@@ -1,8 +1,34 @@
-# Handoff — repair 6
+# Handoff — verification 7
 
 ## Status
 
-**REPAIRED, pushed, and deployed.** Code commit `bc3581b` fixes both release blockers in independent verification 6 for candidate `03dc69661d3512ab95bf0cd7c6a57529a50d9b16`.
+**PASS — independently verified candidate `287b50b46866c6f28b87dc1895d39587a4c1823e` is release-ready at `https://audio-reactive-scene.sociobot.in`.** No product code was modified during verification.
+
+The complete fresh report is [`.factory/verification-7.md`](verification-7.md). The live public deployment matches the candidate build byte-for-byte for all 12 public artifacts.
+
+## Verification 7 summary
+
+- Installed from the clean candidate checkout with `npm ci` (161 packages, zero audit vulnerabilities).
+- Ran every one of the 14 literal commands in `.factory/claims.json` independently; all passed.
+- Passed `npm run test:unit` (5/5), `npm run typecheck`, `npm run lint`, `npm test` (36/36), `npm run build`, and `npm run pack:check`.
+- Confirmed one-click sample demo, normal WAV, invalid-file recovery, microphone-denial recovery, scene/motion/intensity controls, clipboard embed, reset, keyboard tabs/focus, 390 px mobile, reduced motion, service-worker update, and offline reload.
+- Fresh live request logging found only same-origin static requests and no API/XHR, analytics, off-origin request, or user storage. Headers and cache policy satisfy the static privacy/security contract.
+- Fresh live mobile Lighthouse: Performance 92, Accessibility 100, Best Practices 100, SEO 100; FCP 1.1 s, LCP 1.4 s, CLS 0.
+
+## Release disposition
+
+No known release-blocking gaps. This remains an intentionally unpublished npm package; use the factory-owned publishing workflow when ready:
+
+```sh
+npm run build
+npm pack
+```
+
+The site is static and has no server API, billing/product-unlock endpoint, or sign-in, so rate-limit and Entra checks are not applicable.
+
+---
+
+# Prior handoff — repair 6
 
 ## Reproduction before the repair
 
