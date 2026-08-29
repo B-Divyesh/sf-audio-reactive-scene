@@ -29,6 +29,37 @@ test('demo has no serious or critical accessibility violations', async ({ page }
   expect(blocking).toEqual([]);
 });
 
+test('QA2-01: desktop first screen keeps the action, explanation, and facts above the fold', async ({ page }) => {
+  await page.setViewportSize({ width: 1365, height: 768 });
+  await page.goto('/');
+
+  for (const locator of [
+    page.getByRole('heading', { level: 1 }),
+    page.locator('.lede'),
+    page.getByRole('link', { name: 'Try it with sample data' }),
+    page.locator('.action-note'),
+    page.locator('.facts')
+  ]) {
+    await expect(locator).toBeVisible();
+    const bounds = await locator.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      return { top: box.top, bottom: box.bottom };
+    });
+    expect(bounds.top).toBeGreaterThanOrEqual(0);
+    expect(bounds.bottom).toBeLessThanOrEqual(768);
+  }
+});
+
+test('QA2-02: the hidden file picker is not a keyboard focus stop', async ({ page }) => {
+  await page.goto('/demo');
+  const microphone = page.getByRole('button', { name: 'Use microphone' });
+  await microphone.focus();
+  await page.keyboard.press('Tab');
+
+  await expect(page.getByRole('button', { name: 'System setting' })).toBeFocused();
+  await expect(page.locator('#audio-file')).toHaveAttribute('tabindex', '-1');
+});
+
 test('every not-found route has a visible, accessible high-contrast error state', async ({ page }) => {
   for (const path of ['/missing-signal', '/another-missing-signal']) {
     await page.goto(path);
@@ -45,6 +76,16 @@ test('the static deployment 404 document has no serious or critical accessibilit
   const results = await new AxeBuilder({ page }).analyze();
   const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
   expect(blocking).toEqual([]);
+});
+
+test('QA2-03: the static deployment 404 uses the shared site shell', async ({ page }) => {
+  await page.goto('/404.html');
+  await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeVisible();
+  await expect(page.locator('header')).toHaveCount(1);
+  await expect(page.getByLabel('Main navigation')).toBeVisible();
+  await expect(page.locator('main')).toHaveCount(1);
+  await expect(page.locator('footer')).toHaveCount(1);
+  await expect(page.getByText(/v0\.1\.2 · build 2026\.08\.29/)).toBeVisible();
 });
 
 test('every route has the shared structure and one heading', async ({ page }) => {
@@ -81,6 +122,14 @@ test('mobile layout does not scroll sideways', async ({ page }) => {
     expect(target.width).toBeGreaterThanOrEqual(44);
     expect(target.height).toBeGreaterThanOrEqual(44);
   }
+});
+
+test('QA2-04: mobile supporting instructions and status text remain at least 16px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/demo');
+  const sizes = await page.locator('.action-note, .facts, .control-label, .status-line, .site-footer').evaluateAll((elements) => elements.map((element) => Number.parseFloat(getComputedStyle(element).fontSize)));
+  expect(sizes).not.toHaveLength(0);
+  for (const size of sizes) expect(size).toBeGreaterThanOrEqual(16);
 });
 
 test('reset demo restores the initial controls', async ({ page }) => {

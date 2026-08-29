@@ -1,29 +1,81 @@
-# Handoff — independent verification of Audio Reactive Scene
+# Handoff — Audio Reactive Scene release repair
 
-## Release verdict
+## Repair status
 
-**FAIL — do not release candidate `3a9042c4affd77c445a9be204a99971a9d6a7c0b`.**
+The release-blocking findings in independent verification report
+0663ff50a9de28e8515bcfe2536e8f2a5bf7b559 for candidate
+3a9042c4affd77c445a9be204a99971a9d6a7c0b are repaired locally. The library
+artifact class, local-only Web Audio flow, demo sandbox, privacy model, and
+static deployment class are unchanged.
 
-Tested on 2026-08-28 against the clean candidate and `https://audio-reactive-scene.sociobot.in`. The production artifacts match the candidate byte-for-byte, so this is not a deployment-only failure.
+## Repairs and regressions
 
-Release blockers:
+1. **QA2-01 first screen:** The hero now sizes to the available first viewport,
+   uses a laptop-appropriate display scale, and reserves less vertical
+   whitespace. At 1365 × 768 the heading, audience sentence, sample action,
+   action explanation, and all three facts are fully visible without scrolling.
+   QA2-01 asserts every element's viewport bounds.
+2. **QA2-02 keyboard focus:** The native picker remains available only to the
+   visible “Choose audio file” button and is removed from sequential navigation
+   with tabindex="-1". QA2-02 verifies Tab moves from “Use microphone” directly
+   to “System setting.”
+3. **QA2-03 static 404 shell:** 404.html now has the shared skip link,
+   wordmark/header, labelled navigation, main landmark, footer links, version,
+   and build identifier. Its standalone stylesheet carries the same
+   night-market visual system without requiring scripts. QA2-03 checks the
+   complete shell.
+4. **QA2-04 mobile legibility:** The action explanation, first-screen facts,
+   control labels, status copy, footer, and mobile navigation now use 16 px
+   text. QA2-04 computes and asserts each size at 390 × 844.
 
-1. At 1365 × 768, the cold first screen cuts off the audience sentence and places “Try it with sample data” entirely below the fold. This fails the work order's explicit first-read gate.
-2. `/demo` includes an opacity-zero native file input in the keyboard tab order. Focus lands on it after Use microphone, but no focus indication can be seen.
+## Local verification
 
-Additional defects: the deployed static 404 omits the required shared header, skip link, footer, and build identity; important mobile supporting text computes to only 12–13.44 px.
+Completed after a clean npm ci on 2026-08-29:
 
-## Verification completed
+    npm run lint
+    npm run typecheck
+    npm run test:unit
+    npm test
+    npm run build
+    npm run pack:check
+    npm audit --audit-level=low
 
-- All nine exact `.factory/claims.json` commands passed before other QA.
-- `npm ci`, lint, strict typecheck, 3 unit tests, the exact production build, all 21 Playwright tests, package dry-run, and audit passed.
-- Live desktop and 390 px mobile paths covered sample audio, all scenes, 0/100 intensity, motion controls, valid/invalid files, microphone success and denial, recovery, reset, Start for real, keyboard, reduced motion, history, axe, console/page errors, privacy storage/network logs, headers, caching, service-worker update, and offline reload.
-- Axe found zero violations on all primary routes and both not-found forms; the keyboard defect requires manual focus-order testing and is not detected by axe.
-- A packed clean consumer passed ESM, CommonJS, declarations, styles, rendering, Web Audio connection, normalization, and disconnect behavior.
-- Live files match the candidate build. Initial JS is 7,558 bytes gzip and CSS is 3,487 bytes gzip. Mobile Lighthouse scored 94/100/100/100 with LCP 1.33 s and CLS 0.
+All commands passed: lint and strict TypeScript; 3 Vitest tests; production
+build; 25 Chromium tests (including all nine .factory/claims.json claims,
+desktop, 390 px mobile, keyboard, axe, offline/update, privacy/network,
+reduced-motion, and console checks); package dry run with 8 files and a 7.5 KB
+tarball; and an audit with zero vulnerabilities. A clean temporary consumer
+installed the packed tarball and verified ESM exports, CommonJS exports, and
+the stylesheet export.
 
-Full commands, measurements, and evidence are in `.factory/verification-2.md` and `.factory/verification-artifacts-2/`.
+/opt/fleet/lib/verify-url.sh passed against the local production preview for
+both / and /demo: HTTP 200, titles, lang=en, one h1, main, complete image alt
+coverage, labelled buttons, and no console/page errors. Screenshots and
+machine-readable output are in .factory/evidence/repair-3-local/.
 
-## Required next steps
+The Playwright Axe integration found zero serious/critical issues on the demo,
+SPA not-found routes, and static 404; the full browser suite also covers the
+shared primary routes. The standalone Axe CLI could not launch its system
+Chrome in this container, so the already-installed Playwright Chromium
+integration is the authoritative accessibility run.
 
-Keep the complete first-read content above the desktop fold and add a viewport regression. Remove the transparent file input from sequential focus or make it visible when focused and add a keyboard regression. Then restore the shared shell on the static 404 and increase the small mobile instructional text before requesting another independent verification.
+Mobile Lighthouse on the local production preview scored Performance 98,
+Accessibility 100, Best Practices 100, and SEO 100; FCP was 1.0 s, LCP 1.6 s,
+CLS 0, TBT 140 ms, and transfer 58 KiB. Lighthouse wrote the complete report
+but reported a Chromium cleanup crash after gathering; the category results are
+present in .factory/evidence/repair-3-local/lighthouse.json. Built initial
+JavaScript is 7,550 bytes gzip, CSS is 3,481 bytes gzip, and the hero image is
+43,850 bytes.
+
+## Publish and deployment
+
+Do not publish the npm package from this worker. It is ready for the factory
+to review and publish with npm publish.
+
+The static deployment root is dist/site/. The repair will be deployed to the
+existing Static Web App with:
+
+    swa deploy dist/site --env production --app-name sf-audio-reactive-scene --resource-group sociobot --no-use-keychain
+
+Live deployment identity and post-deploy checks are recorded below once the
+committed repair is pushed and deployed.

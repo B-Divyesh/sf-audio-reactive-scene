@@ -44,7 +44,7 @@ function header(current: string): string {
 function footer(): string {
   return `<footer class="site-footer"><div class="footer-grid">
     <span>Make page audio move a small canvas.</span>
-    <span class="footer-links"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://hello-factory.sociobot.in" rel="noreferrer">Built by Param Factory <span class="sr-only">(external site)</span></a><span>v0.1.2 · build 2026.08.28</span></span>
+    <span class="footer-links"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://hello-factory.sociobot.in" rel="noreferrer">Built by Param Factory <span class="sr-only">(external site)</span></a><span>v0.1.2 · build 2026.08.29</span></span>
   </div></footer><div class="offline-note" role="status">You are offline. The demo and sample scene still work.</div>`;
 }
 
@@ -79,7 +79,7 @@ function playground(): string {
           <button class="source coral" id="sample-audio" type="button">Play sample audio</button>
           <button class="source" id="choose-file" type="button">Choose audio file</button>
           <button class="source" id="use-mic" type="button">Use microphone</button>
-          <input class="file-input" id="audio-file" type="file" accept="audio/*" aria-label="Choose an audio file" />
+          <input class="file-input" id="audio-file" type="file" accept="audio/*" tabindex="-1" aria-label="Choose an audio file" />
         </div>
         <span class="control-label motion-heading">Motion</span>
         <div class="motion-list">
