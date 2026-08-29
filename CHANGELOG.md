@@ -2,7 +2,10 @@
 
 ## 0.1.2 — 2026-08-28
 
-- Keep cold direct demo loads silent until Play; one gesture now creates one four-oscillator sample loop.
+- Replace the synthetic test tone with an original bundled night-market percussion loop that remains available offline.
+- Run the exact copied embed in a packed clean consumer and verify that its canvas reacts to the bundled sample.
+- Use “HTML element” consistently in visitor copy and name the demo exit “Open package instructions.”
+- Keep cold direct demo loads silent until Play; one gesture now starts one local sample loop.
 - Restore skip-link-first cold focus, the Start for real path, and a single accessible file chooser.
 - Make the mobile embed-code scroller keyboard accessible.
 - Keep the poster deterministic and idle until a user connects audio, including after demo reset.

@@ -1,1 +1,1 @@
-Make page audio move a private canvas scene.
+Make page audio drive a private, responsive canvas scene.

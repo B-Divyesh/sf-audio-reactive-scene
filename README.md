@@ -4,7 +4,7 @@ Make page audio move a small canvas.
 
 Audio Reactive Scene is a reusable HTML element for site owners, streamers, and event makers. It draws three canvas scenes from audio already playing on a page. Audio stays in the browser tab.
 
-[Try the sample demo](https://audio-reactive-scene.sociobot.in/demo?demo=1). The page opens the sample scene; choose **Play sample audio** to start its local loop. Nothing is saved.
+[Try the sample demo](https://audio-reactive-scene.sociobot.in/demo?demo=1). The page opens the scene; choose **Play sample audio** to hear an original percussion loop. Nothing is saved.
 
 ## Get the release candidate
 
@@ -18,34 +18,41 @@ npm run build:lib
 npm pack
 ```
 
-Install the generated `.tgz` file in a test site. The tarball includes JavaScript for `import` and `require`, TypeScript types, component styles, and no runtime dependencies.
+Install the generated `.tgz` file in a test site. The tarball includes JavaScript for `import` and `require`, TypeScript types, element styles, and no runtime dependencies.
 
 ## Use it
 
-The copied example in the demo contains a complete connection. Replace `/your-audio-file.mp3` with your audio file.
+The copied example in the demo contains a complete connection. Replace `/your-audio-file.wav` with your audio file.
 
 ```html
-<audio id="scene-audio" controls src="/your-audio-file.mp3"></audio>
+<button id="play-scene-audio" type="button">Play audio</button>
+<audio id="scene-audio" src="/your-audio-file.wav" preload="metadata"></audio>
 <audio-reactive-scene id="page-scene" scene="ribbons" intensity="0.7" motion="auto"></audio-reactive-scene>
 
 <script type="module">
   import 'audio-reactive-scene';
   import 'audio-reactive-scene/style.css';
 
+  const button = document.querySelector('#play-scene-audio');
   const audio = document.querySelector('#scene-audio');
   const scene = document.querySelector('#page-scene');
-  const context = new AudioContext();
-  const source = context.createMediaElementSource(audio);
+  let context;
+  let source;
 
-  audio.addEventListener('play', async () => {
-    await context.resume();
+  button.addEventListener('click', async () => {
+    context ??= new AudioContext();
+    if (!source) {
+      source = context.createMediaElementSource(audio);
+      source.connect(context.destination);
+    }
     scene.connect(source);
-    source.connect(context.destination);
-  }, { once: true });
+    audio.currentTime = 0;
+    await Promise.all([context.resume(), audio.play()]);
+  });
 </script>
 ```
 
-Web Audio is the browser connection between a playing sound and the scene. The visitor starts playback. The component does not start audio or request microphone access.
+Web Audio is the browser connection between a playing sound and the scene. The visitor starts playback. The HTML element does not start audio or request microphone access.
 
 ## API reference
 

@@ -245,7 +245,7 @@ test('a no-audio poster does not animate before audio or after Reset demo', asyn
   expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBe(0);
 
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
   await page.waitForTimeout(100);
   expect(await page.evaluate(() => (window as typeof window & { __posterAnimationFrames: number }).__posterAnimationFrames)).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Reset demo' }).click();
@@ -270,13 +270,13 @@ test('browser Back restores the anchored scroll position and focus', async ({ pa
   await expect(page.locator('#how')).toBeFocused();
 });
 
-test('route navigation focuses the Home heading and Start for real install section', async ({ page }) => {
+test('route navigation focuses the Home heading and package instructions', async ({ page }) => {
   await page.goto('/privacy');
   await page.getByRole('link', { name: 'Audio Reactive Scene home' }).click();
   await expect(page).toHaveURL('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
   await page.goto('/demo?demo=1');
-  await page.getByRole('link', { name: 'Start for real' }).click();
+  await page.getByRole('link', { name: 'Open package instructions' }).click();
   await expect(page).toHaveURL('/#install');
   await expect(page.locator('#install')).toBeFocused();
 });

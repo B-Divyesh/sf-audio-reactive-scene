@@ -149,6 +149,10 @@ input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cyan); 
 
 @media (max-width: 480px) {
   .wrap, .narrow { width: min(100% - 28px, 1180px); }
+  .demo-banner { gap: 4px 8px; padding: 4px 12px; }
+  .demo-banner > span { flex-basis: 100%; text-align: center; }
+  .demo-banner a { max-width: 180px; padding: 4px 8px; line-height: 1.15; text-align: center; }
+  .demo-banner button { padding: 4px 8px; }
   .site-header { flex-wrap: wrap; gap: 8px 16px; }
   .wordmark { min-width: 0; }
   .wordmark span:last-child { max-width: 130px; line-height: 1.1; overflow-wrap: anywhere; }

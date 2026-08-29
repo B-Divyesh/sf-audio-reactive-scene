@@ -1,11 +1,31 @@
 import { expect, test } from '@playwright/test';
-import { execFile as execFileCallback } from 'node:child_process';
-import { access, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { execFile as execFileCallback, spawn } from 'node:child_process';
+import { copyFile, access, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { promisify } from 'node:util';
+import { embedSnippet } from '../site/embed';
 
 const execFile = promisify(execFileCallback);
+
+async function availablePort(): Promise<number> {
+  const server = createServer();
+  await new Promise<void>((resolveListen, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolveListen);
+  });
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('Could not reserve a consumer test port.');
+  await new Promise<void>((resolveClose, reject) => server.close((error) => error ? reject(error) : resolveClose()));
+  return address.port;
+}
+
+async function waitForServer(url: string): Promise<void> {
+  await expect.poll(async () => {
+    try { return (await fetch(url)).ok; } catch { return false; }
+  }, { timeout: 15_000 }).toBe(true);
+}
 
 async function browserUserStorage(page: import('@playwright/test').Page): Promise<{ local: string[]; session: string[]; databases: string[]; opfs: string[] }> {
   return page.evaluate(async () => {
@@ -26,17 +46,30 @@ async function browserUserStorage(page: import('@playwright/test').Page): Promis
 }
 
 test('@claim:one-click-demo opens a working sample scene in one click', async ({ page }) => {
+  const sampleResponses: Array<{ url: string; status: number; type: string }> = [];
+  page.on('response', async (response) => {
+    if (new URL(response.url()).pathname.endsWith('/assets/night-market-loop.wav')) {
+      sampleResponses.push({
+        url: response.url(),
+        status: response.status(),
+        type: (await response.allHeaders())['content-type'] ?? ''
+      });
+    }
+  });
   await page.goto('/');
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
   await expect(page).toHaveURL(/\/demo\?demo=1$/);
   await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
-  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
   await expect(page.locator('audio-reactive-scene')).toHaveAttribute('aria-label', /connected to audio/);
+  await expect.poll(() => sampleResponses.length).toBeGreaterThan(0);
+  expect([200, 206]).toContain(sampleResponses[0].status);
+  expect(sampleResponses[0].type).toBe('audio/wav');
   await page.goto('/demo?demo=1');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Try sample audio');
   await expect(page.locator('.scene-stage')).toBeVisible();
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
 });
 
 test('@claim:three-scenes-controls changes scene, intensity, and motion', async ({ page }) => {
@@ -50,16 +83,50 @@ test('@claim:three-scenes-controls changes scene, intensity, and motion', async 
   await expect(scene).toHaveAttribute('motion', 'static');
 });
 
-test('@claim:complete-embed copies a complete user-started audio connection', async ({ page }) => {
+test('@claim:complete-embed runs the exact copied embed in a packed clean consumer', async ({ page }) => {
   await page.goto('/demo?demo=1');
   const code = page.locator('#embed-code');
-  await expect(code).toContainText('<audio id="scene-audio"');
-  await expect(code).toContainText('const context = new AudioContext()');
-  await expect(code).toContainText("audio.addEventListener('play'");
-  await expect(code).toContainText('scene.connect(source)');
-  await expect(code).toContainText('source.connect(context.destination)');
+  const copiedEmbed = await code.textContent();
+  expect(copiedEmbed).toBe(embedSnippet);
   await page.getByRole('button', { name: 'Copy embed' }).click();
   await expect(page.locator('#copy-result')).toContainText(/Embed copied|Copy was blocked/);
+
+  const root = process.cwd();
+  const temporary = await mkdtemp(join(tmpdir(), 'audio-reactive-scene-embed-consumer-'));
+  let server: ReturnType<typeof spawn> | undefined;
+  try {
+    const packed = JSON.parse((await execFile('npm', ['pack', '--json', '--pack-destination', temporary], { cwd: root })).stdout) as Array<{ filename: string }>;
+    const consumer = join(temporary, 'consumer');
+    await mkdir(consumer);
+    await writeFile(join(consumer, 'package.json'), '{"type":"module","private":true}');
+    await execFile('npm', ['install', '--ignore-scripts', '--no-package-lock', join(temporary, packed[0].filename)], { cwd: consumer });
+    await copyFile(join(root, 'site/public/assets/night-market-loop.wav'), join(consumer, 'your-audio-file.wav'));
+    await writeFile(join(consumer, 'index.html'), `<!doctype html><html lang="en"><head><meta charset="UTF-8"><title>Copied embed consumer</title></head><body><main><h1>Copied embed consumer</h1>${copiedEmbed}</main></body></html>`);
+
+    const port = await availablePort();
+    server = spawn(process.execPath, [resolve(root, 'node_modules/vite/bin/vite.js'), '--host', '127.0.0.1', '--port', String(port), '--strictPort'], {
+      cwd: consumer,
+      stdio: 'pipe'
+    });
+    const consumerUrl = `http://127.0.0.1:${port}`;
+    await waitForServer(consumerUrl);
+
+    const errors: string[] = [];
+    page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto(consumerUrl);
+    const scene = page.locator('audio-reactive-scene');
+    const canvas = scene.locator('canvas');
+    await expect(canvas).toBeVisible();
+    const poster = await canvas.screenshot();
+    await page.getByRole('button', { name: 'Play audio' }).click();
+    await expect(scene).toHaveAttribute('aria-label', /connected to audio/);
+    await expect.poll(async () => !(await canvas.screenshot()).equals(poster)).toBe(true);
+    expect(errors).toEqual([]);
+  } finally {
+    server?.kill('SIGTERM');
+    await rm(temporary, { recursive: true, force: true });
+  }
 });
 
 test('@claim:local-only-audio keeps the complete demo flow on the same origin', async ({ page }) => {
@@ -88,17 +155,21 @@ test('@claim:local-only-audio keeps the complete demo flow on the same origin', 
   expect(await browserUserStorage(page)).toEqual({ local: [], session: [], databases: [], opfs: [] });
 });
 
-test('@claim:gesture-only-input starts exactly one audio loop only after a direct-demo Play gesture', async ({ page }) => {
+test('@claim:gesture-only-input starts audio only after a direct-demo Play gesture', async ({ page }) => {
   await page.addInitScript(() => {
-    type InputSpies = { microphoneCalls: number; audioContextCalls: number; resumeCalls: number; oscillatorCalls: number };
-    const spies: InputSpies = { microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, oscillatorCalls: 0 };
+    type InputSpies = { microphoneCalls: number; audioContextCalls: number; resumeCalls: number; mediaPlayCalls: number };
+    const spies: InputSpies = { microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, mediaPlayCalls: 0 };
     Object.defineProperty(window, '__inputSpies', { value: spies });
     const NativeAudioContext = window.AudioContext;
     Object.defineProperty(window, 'AudioContext', { configurable: true, value: class extends NativeAudioContext {
       constructor(options?: AudioContextOptions) { super(options); spies.audioContextCalls += 1; }
       override resume(): Promise<void> { spies.resumeCalls += 1; return super.resume(); }
-      override createOscillator(): OscillatorNode { spies.oscillatorCalls += 1; return super.createOscillator(); }
     } });
+    const nativePlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function play(): Promise<void> {
+      spies.mediaPlayCalls += 1;
+      return nativePlay.call(this);
+    };
     Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia: async () => {
       spies.microphoneCalls += 1;
       return new MediaStream();
@@ -110,18 +181,18 @@ test('@claim:gesture-only-input starts exactly one audio loop only after a direc
   });
   await page.goto('/demo?demo=1');
   const inputSpies = () => page.evaluate(() => (window as typeof window & {
-    __inputSpies?: { microphoneCalls: number; audioContextCalls: number; resumeCalls: number; oscillatorCalls: number };
+    __inputSpies?: { microphoneCalls: number; audioContextCalls: number; resumeCalls: number; mediaPlayCalls: number };
   }).__inputSpies);
-  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, oscillatorCalls: 0 });
+  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, mediaPlayCalls: 0 });
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
-  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 1, resumeCalls: 1, oscillatorCalls: 4 });
+  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
+  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 1, resumeCalls: 1, mediaPlayCalls: 1 });
   expect(autoplayWarnings).toEqual([]);
 
   await page.reload();
-  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, oscillatorCalls: 0 });
+  expect(await inputSpies()).toEqual({ microphoneCalls: 0, audioContextCalls: 0, resumeCalls: 0, mediaPlayCalls: 0 });
   await page.getByRole('button', { name: 'Use microphone' }).click();
-  await expect.poll(inputSpies).toEqual({ microphoneCalls: 1, audioContextCalls: 1, resumeCalls: 1, oscillatorCalls: 0 });
+  await expect.poll(inputSpies).toEqual({ microphoneCalls: 1, audioContextCalls: 1, resumeCalls: 1, mediaPlayCalls: 0 });
 });
 
 test('@claim:offline-reload reloads the demo without a network', async ({ page, context }) => {
@@ -135,6 +206,8 @@ test('@claim:offline-reload reloads the demo without a network', async ({ page, 
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Try sample audio');
   await expect(page.getByText('You are offline. The demo and sample scene still work.')).toBeVisible();
+  await page.getByRole('button', { name: 'Play sample audio' }).click();
+  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
 });
 
 test('@claim:motion-reduction draws a stable poster when the system reduces motion', async ({ browser }) => {
@@ -149,7 +222,7 @@ test('@claim:motion-reduction draws a stable poster when the system reduces moti
   await context.close();
 });
 
-test('@claim:package-formats ships ESM, CommonJS, declarations, component styles, and no runtime dependencies', async () => {
+test('@claim:package-formats ships ESM, CommonJS, declarations, element styles, and no runtime dependencies', async () => {
   await access('dist/lib/audio-reactive-scene.js');
   await access('dist/lib/audio-reactive-scene.cjs');
   await access('dist/lib/index.d.ts');
@@ -348,7 +421,7 @@ test('@claim:privacy-no-personal-data keeps demo data in this browser without co
   await expect(page.getByText('This site does not collect, store, or sell personal data.')).toBeVisible();
   await page.goto('/demo');
   await page.getByRole('button', { name: 'Play sample audio' }).click();
-  await expect(page.locator('#audio-status')).toContainText('Sample audio is playing');
+  await expect(page.locator('#audio-status')).toContainText('Night-market sample is playing');
   expect(offOrigin).toEqual([]);
   expect(apiRequests).toEqual([]);
   expect(await browserUserStorage(page)).toEqual({ local: [], session: [], databases: [], opfs: [] });

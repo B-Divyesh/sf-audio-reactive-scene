@@ -5,16 +5,16 @@ describe('copy audit', () => {
   it('records the verifier-cited landing, privacy, and status copy', async () => {
     const audit = await readFile('.factory/copy-audit.md', 'utf8');
     const requiredCopy = [
-      'Install the package and place the custom element where the scene belongs.',
+      'Install the package and place the HTML element where the scene belongs.',
       'Pass a Web Audio node after the visitor starts playback.',
       'Keep automatic motion reduction or choose the static poster.',
-      'The component has no analytics or account system.',
+      'The HTML element has no analytics or account system.',
       'It reads levels from the browser’s audio connection and sends no audio to an API.',
       'It does not start audio on page load.',
       'It does not ask for microphone access by itself.',
       'It does not upload or save an audio file.',
       'It does not load scripts or fonts from another site.',
-      'Sample audio is playing.',
+      'Night-market sample is playing.',
       'The sample could not start.',
       'That file is not recognised as audio.',
       'The audio file could not play.',

@@ -1,4 +1,4 @@
-# Copy audit — repair 4
+# Copy audit — polish 2
 
 Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, label, action, status, recovery message, and route description in the site. Code in the embed example is excluded because it is code, not product prose. Every sentence is at most 22 words. No prohibited marketing term appears.
 
@@ -21,21 +21,21 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 | The demo and sample scene still work. | 7 |
 | Demo — sample data, nothing is saved | 6 |
 | Reset demo | 2 |
-| Start for real | 3 |
+| Open package instructions | 3 |
 
 ## Landing page
 
 | Copy | Words |
 | --- | ---: |
-| A web component for page audio | 6 |
+| A reusable HTML element for page audio | 7 |
 | Make your audio move a scene | 6 |
 | For site owners, streamers, and event makers who need a restrained visual without sending audio away. | 16 |
 | Try it with sample data | 5 |
-| It opens the sample scene and starts a local sound loop. | 11 |
+| It opens the sample scene and plays an original percussion loop. | 11 |
 | Audio stays in this tab | 5 |
 | Demo works offline after your first visit | 7 |
 | Free under the MIT license | 6 |
-| Three scenes / one small component / your audio | 8 |
+| Three scenes / one small HTML element / your audio | 9 |
 | Audio scene playground | 3 |
 | Choose and test a scene | 5 |
 | Choose a scene, then play the sample, use a file, or allow the microphone. | 14 |
@@ -43,14 +43,14 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 | How it works | 3 |
 | Connect audio in three steps | 5 |
 | Add the element | 3 |
-| Install the package and place the custom element where the scene belongs. | 12 |
+| Install the package and place the HTML element where the scene belongs. | 12 |
 | Connect your source | 3 |
 | Pass a Web Audio node after the visitor starts playback. | 10 |
 | Set the fallback | 3 |
 | Keep automatic motion reduction or choose the static poster. | 9 |
 | Audio privacy | 2 |
 | Your audio does not leave | 5 |
-| The component has no analytics or account system. | 8 |
+| The HTML element has no analytics or account system. | 9 |
 | It reads levels from the browser’s audio connection and sends no audio to an API. | 15 |
 | It does not start audio on page load. | 8 |
 | It does not ask for microphone access by itself. | 9 |
@@ -60,7 +60,7 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 | Prepare the package locally | 4 |
 | This package name is not published to npm yet. | 9 |
 | Get the release candidate from the source repository and build a local tarball. | 13 |
-| The local tarball includes JavaScript for import and require, TypeScript types, component styles, and no runtime dependencies. | 17 |
+| The local tarball includes JavaScript for import and require, TypeScript types, element styles, and no runtime dependencies. | 17 |
 | Open the source repository | 4 |
 
 ## Playground and demo page
@@ -69,9 +69,9 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 | --- | ---: |
 | Sample audio scene | 3 |
 | Try sample audio | 3 |
-| Choose Play sample audio to hear the local loop and watch the scene respond. | 14 |
+| Choose Play sample audio to hear the bundled percussion loop and watch the scene respond. | 15 |
 | Play sample audio | 3 |
-| Starts the bundled local loop. | 5 |
+| Plays an original night-market rhythm. | 5 |
 | Live scene | 2 |
 | Ribbons | 1 |
 | Lanterns | 1 |
@@ -95,7 +95,7 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 
 | Copy | Words |
 | --- | ---: |
-| Sample audio is playing. | 4 |
+| Night-market sample is playing. | 4 |
 | Press the button again to restart it. | 7 |
 | The sample could not start. | 5 |
 | Check browser audio permission and try again. | 7 |
@@ -176,7 +176,7 @@ Reviewed 2026-08-29. This inventory covers every user-facing sentence, heading, 
 
 | Concept | Product term |
 | --- | --- |
-| Reusable browser element | component |
+| Reusable browser element | HTML element |
 | Test-only sample state | demo |
 | Browser sound connection | audio source |
 | Generated visual | scene |
