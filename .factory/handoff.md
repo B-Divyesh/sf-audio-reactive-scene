@@ -1,4 +1,27 @@
-# Handoff — verification 7
+# Handoff — adversarial review 2
+
+## Status
+
+**FAIL — review-only work; no product code was changed.** The committed report is [`.factory/review-2.md`](review-2.md).
+
+The live deployment is clear at first read and its declared tests pass, but four blocking issues remain: the copied integration is not executed by its claim test, the bundled audio sample is only a synthetic oscillator signal, and two prior plain-language closures are not present in the live copy.
+
+## Verification performed
+
+- Fresh live Chromium contexts at 390 × 844 and 1365 × 768, including first-read, one-click demo, reset, route metadata, links, 404, console, and request-log checks.
+- Live demo isolation check with seeded localStorage, sessionStorage, IndexedDB, and OPFS sentinels. Demo play/reset did not alter real sentinels and made no API, XHR, or off-origin request.
+- Fresh clone at `/tmp/audio-reactive-scene-review2.fjJMgc`: `npm ci`, all 14 literal claim commands, `npm test` (36 tests), lint, typecheck, unit tests, and package dry run passed.
+- Read and rechecked `.factory/review-1.md`, `.factory/polish-1.md`, and handoff history. Reopened F-1-4, F-1-14, and F-1-15 where the claimed fix was incomplete or absent.
+
+## Next steps
+
+1. Execute the copied embed as a packed fresh consumer and assert the rendered component reacts after user playback.
+2. Replace the oscillator test tone with a short original local audio sample that remains offline-capable.
+3. Use one plain component term on the landing page and rename “Start for real” to its actual destination.
+
+---
+
+# Prior handoff — verification 7
 
 ## Status
 
