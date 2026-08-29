@@ -1,6 +1,6 @@
 # Polish 1 — adversarial finding closure
 
-Repair commit: `2f3b9abffeecd2973d7f07b51349add3662a8de5` (amended after this record is added). Local evidence uses `http://127.0.0.1:4173`; live evidence is added after deployment.
+Repair commit: `10fb5dda6c354b35605a02f41777154ae3f13f21`. Local evidence uses `http://127.0.0.1:4173`.
 
 | Finding | Change made | Evidence |
 | --- | --- | --- |
@@ -31,3 +31,13 @@ Repair commit: `2f3b9abffeecd2973d7f07b51349add3662a8de5` (amended after this re
 - Local full suite: `npm test` — 33 Chromium tests passed, including every route in axe-core with no serious or critical violations.
 - Clean clone: `npm ci`, lint, typecheck, unit tests, every exact `claims.json` command, build, pack check, audit, and full `npm test` all passed from `/tmp/audio-reactive-scene-clean-idVwGU`.
 - Local screenshots: `evidence/polish-1/local-home-desktop.png`, `evidence/polish-1/local-demo-mobile.png`, and `evidence/polish-1/local-404-desktop.png`.
+
+## Live deployment evidence
+
+Deployment `aebcb004-01c8-4ac0-bbf8-94872f4a283a` was uploaded through the static work order. A cold Chromium check on 2026-08-29 passed at [the live site](https://audio-reactive-scene.sociobot.in/):
+
+- [Landing](https://audio-reactive-scene.sociobot.in/) returned 200 with the plain-words heading, primary action, three facts, no console errors, and a working one-click transition to `/demo?demo=1` that reports sample playback.
+- [Direct demo](https://audio-reactive-scene.sociobot.in/demo?demo=1) returned 200. At 390 × 844 its canvas occupied y=520.6–725.6 and its status y=743.6–815.2; its Play sample audio control connected and animated the scene. Screenshot: `evidence/polish-1/live-demo-mobile.png`.
+- [Privacy](https://audio-reactive-scene.sociobot.in/privacy) and [Terms](https://audio-reactive-scene.sociobot.in/terms) returned route-specific title, description, canonical, Open Graph, and Twitter metadata.
+- [Unknown route](https://audio-reactive-scene.sociobot.in/missing-signal) returned HTTP 404, title “Page not found — Audio Reactive Scene,” heading “This page does not exist,” and recovery to `/demo?demo=1`. The static [404](https://audio-reactive-scene.sociobot.in/404.html) has the same metadata and shell. Screenshot: `evidence/polish-1/live-404-mobile.png`.
+- Fresh axe-core checks on `/`, `/demo?demo=1`, `/privacy`, `/terms`, `/missing-signal`, and `/404.html` found zero serious or critical violations.

@@ -2,7 +2,7 @@
 
 ## Status
 
-Repair complete at commit `2f3b9abffeecd2973d7f07b51349add3662a8de5` (this handoff is amended into the final repair commit). The full finding-to-evidence record is [.factory/polish-1.md](polish-1.md).
+Repair complete at commit `10fb5dda6c354b35605a02f41777154ae3f13f21`. The full finding-to-evidence record is [.factory/polish-1.md](polish-1.md).
 
 ## What changed
 
@@ -39,6 +39,16 @@ Local visual evidence:
 - `evidence/polish-1/local-demo-mobile.png`
 - `evidence/polish-1/local-404-desktop.png`
 - `evidence/polish-1/lighthouse-local-mobile.json`
+
+## Live deployment
+
+Static deployment `aebcb004-01c8-4ac0-bbf8-94872f4a283a` completed successfully. Cold Chromium verification of `https://audio-reactive-scene.sociobot.in` confirmed the landing one-click demo, compact direct `/demo?demo=1` view, reset/leave behavior, metadata, heading focus, and 404 recovery. Fresh axe-core checks on all public routes found zero serious or critical issues.
+
+Live screenshots:
+
+- `evidence/polish-1/live-home-desktop.png`
+- `evidence/polish-1/live-demo-mobile.png`
+- `evidence/polish-1/live-404-mobile.png`
 
 ## Run and deploy
 
