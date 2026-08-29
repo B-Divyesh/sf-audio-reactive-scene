@@ -31,6 +31,18 @@ test('every application route has no serious or critical accessibility violation
   }
 });
 
+test('QA4-05: mobile scroll regions remain keyboard accessible', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of ['/', '/demo?demo=1']) {
+    await page.goto(path);
+    const results = await new AxeBuilder({ page }).analyze();
+    const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
+    expect(blocking).toEqual([]);
+    await expect(page.locator('pre')).toHaveAttribute('tabindex', '0');
+    await expect(page.locator('pre')).toHaveAccessibleName('Copy this embed');
+  }
+});
+
 test('QA2-01: desktop first screen keeps the action, explanation, and facts above the fold', async ({ page }) => {
   await page.setViewportSize({ width: 1365, height: 768 });
   await page.goto('/');

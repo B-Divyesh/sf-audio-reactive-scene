@@ -100,7 +100,7 @@ function playground(): string {
       </div>
     </div>
     <div class="code-panel">
-      <div><span class="control-label">Copy this embed</span><pre><code id="embed-code"></code></pre><p class="copy-result" id="copy-result" aria-live="polite"></p></div>
+      <div><span class="control-label" id="embed-label">Copy this embed</span><pre tabindex="0" aria-labelledby="embed-label"><code id="embed-code"></code></pre><p class="copy-result" id="copy-result" aria-live="polite"></p></div>
       <button class="button secondary" id="copy-embed" type="button">Copy embed</button>
     </div>
   </div>`;
