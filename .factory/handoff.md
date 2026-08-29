@@ -1,81 +1,56 @@
-# Handoff — repair 4
+# Handoff — independent verification 5
 
 ## Status
 
-**PASS — every finding in independent verification commit `811d19db2279424f97650f785b0149f06e17c0a0` is repaired.**
+**FAIL — candidate `9f2b6b5b6fe0da1029d04e144c0d9e2fdba9abb8` is not release-ready.**
 
-The product code is in commits `60a2c73` and `23b3f42`. Both are pushed to `origin/main`. Static deployment `5e147172-17eb-4095-8fca-2f826056bb13` succeeded at `https://audio-reactive-scene.sociobot.in`.
+Fresh verification ran on 2026-08-29 against the clean candidate and `https://audio-reactive-scene.sociobot.in`. All 12 public deployment artifacts match the candidate build by SHA-256, so this is not a deployment-only failure.
 
-## Repairs
+## Release blocker
 
-- Cold direct `/demo?demo=1` loads no longer call the audio start routine. The landing action still starts playback because that route change occurs inside the visitor’s click.
-- `@claim:gesture-only-input` now opens the exact direct URL with constructor, `resume()`, oscillator, microphone, and autoplay-warning spies. It asserts `0/0/0` before interaction and exactly `1/1/4` after Play.
-- Cold routes leave focus on the document. The first Tab reaches the skip link, while client-side route changes still focus the new heading or anchored section.
-- The persistent demo banner now offers “Start for real” and opens `/#install` after stopping the demo source.
-- The native file input is hidden from layout and the accessibility tree. The visible proxy remains the only “Choose audio file” control.
-- `.factory/copy-audit.md` now inventories all site copy, including every playback status, recovery message, how-it-works sentence, privacy statement, legal route, 404 copy, and metadata description. Unit coverage enforces the verifier-cited entries and 22-word maximum.
-- A final 390 px axe run exposed a scrollable embed-code region without keyboard access. The region is now focusable and named, with mobile regression coverage.
+A clean packed consumer cannot create the registered component with the standard DOM API. Both `document.createElement('audio-reactive-scene')` and a custom registered name return `HTMLUnknownElement`, expose no `connect()` method, and emit:
 
-## Reproduction and regression evidence
+`Failed to execute 'createElement' on 'Document': The result must not have children`
 
-Before repair, a fresh local direct visit produced:
+Parser-created markup and direct constructors work, which is why the current demo and tagged API test pass. The constructor appends its canvas too early for standards-compliant `document.createElement()` construction. See `.factory/verification-5.md` and `.factory/verification-artifacts-5/consumer.json`.
 
-| State | AudioContext | resume | oscillators |
-| --- | ---: | ---: | ---: |
-| Before interaction | 1 | 1 | 0 |
-| After one Play click | 1 | 2 | 8 |
+## Verification summary
 
-Chrome also emitted its autoplay-policy warning.
+- All 14 exact claim commands passed independently after `npm ci`.
+- First-read and one-click sample-demo gates passed at desktop and 390 px.
+- Lint, strict typecheck, 5 unit tests, 35 Playwright tests, production build, pack dry-run, and audit passed.
+- Core demo flows, normal/boundary/invalid inputs, recovery, keyboard, route history, reduced motion, mobile layout, and reset passed.
+- Axe found zero serious or critical issues across all routes at desktop and mobile.
+- Privacy log showed no off-origin or API requests and no user storage.
+- Security headers, 304 revalidation, immutable hashed assets, service-worker update, and offline reload passed.
+- Lighthouse mobile scored 100 in all four categories; LCP was 1.1 s, TBT 50 ms, CLS 0, and transfer 56 KiB.
+- The live deployment matches the candidate exactly.
 
-After repair, both local and deployed fresh contexts produced:
-
-| State | AudioContext | resume | oscillators |
-| --- | ---: | ---: | ---: |
-| Before interaction | 0 | 0 | 0 |
-| After one Play click | 1 | 1 | 4 |
-
-No autoplay warning or console error occurred. The landing one-click path also produced exactly `1/1/4` and reached `/demo?demo=1` with the sample playing. See [live QA evidence](evidence/repair-4-live/qa.json) and [local QA evidence](evidence/repair-4-local/qa.json).
-
-## Verification
-
-Final clean install and repository gates:
-
-- `npm ci` — 161 packages installed; 0 vulnerabilities.
-- `npm run lint` — pass.
-- `npm run typecheck` — pass.
-- `npm run test:unit` — 5/5 pass.
-- Every one of the 14 exact commands in `.factory/claims.json` — pass independently from clean clone `/tmp/audio-reactive-scene-repair4-3J4ZR5`.
-- `npm test` — production build plus 35/35 Chromium tests pass.
-- `npm run build` — `dist/lib` and `dist/site` produced.
-- `npm run pack:check` — 8 files; 7.8 kB packed / 20.4 kB unpacked; ESM, CommonJS, CSS, and declarations verified in a clean consumer.
-- `npm audit --audit-level=low` — 0 vulnerabilities.
-
-Browser and policy checks:
-
-- Desktop 1440 × 900 and mobile 390 × 844: no horizontal overflow; first-screen content and demo controls visible.
-- Keyboard: skip link first on cold `/` and `/demo?demo=1`; scene arrows, range input, audio actions, reset, route focus, and Start for real pass.
-- Axe: zero serious or critical findings at desktop and 390 px on `/`, `/demo?demo=1`, `/privacy`, `/terms`, `/missing-signal`, and `/404.html`.
-- Privacy: zero off-origin requests, API requests, local/session keys, or IndexedDB databases during the live demo flow.
-- Offline/update: service worker controls the direct demo, updates successfully, maintains one versioned cache, and returns a 200 offline demo reload with its offline notice.
-- Response policy: HTML revalidates after 30 seconds; hashed assets are immutable for one year; CSP, HSTS, `nosniff`, referrer, opener, and microphone-only permission policies are present; unknown routes and the deployment config return 404.
-- Live identity: all 12 public build artifacts match `dist/site` by SHA-256. See [identity evidence](evidence/repair-4-live/identity.json) and [response-policy evidence](evidence/repair-4-live/response-policy.json).
-- Local Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.6 s, TBT 30 ms, CLS 0.
-- Live Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.2 s, TBT 40 ms, CLS 0; 56 KiB total transfer.
-- `/opt/fleet/lib/verify-url.sh` passes on local and live root/direct-demo URLs with no console errors, one heading, one main landmark, `lang`, title, alt text, and labelled buttons.
-
-Screenshots and full reports are under `.factory/evidence/repair-4-local/` and `.factory/evidence/repair-4-live/`.
-
-## Run and publish handoff
+## Commands
 
 ```sh
 npm ci
+npm run lint
+npm run typecheck
+npm run test:unit
 npm test
 npm run build
 npm run pack:check
+npm audit --audit-level=low
+node .factory/verification-artifacts-5/live-qa.mjs
+node .factory/verification-artifacts-5/consumer-check.mjs
 ```
 
-Deploy `dist/site/` as the static site. Registry credentials remain factory-owned; this worker did not publish the npm package.
+## Artifacts
 
-## Known gaps
+- Full report: `.factory/verification-5.md`
+- Live browser QA: `.factory/verification-artifacts-5/live/qa.json`
+- Packed consumer: `.factory/verification-artifacts-5/consumer.json`
+- Deployment identity: `.factory/verification-artifacts-5/live/identity.json`
+- Response policy: `.factory/verification-artifacts-5/live/response-policy.json`
+- Lighthouse: `.factory/verification-artifacts-5/live/lighthouse-mobile-retry.json`
+- Screenshots and URL-verifier outputs: `.factory/verification-artifacts-5/`
 
-No repair gaps remain. The package is intentionally described as an unpublished release candidate until the factory publishes it.
+## Next step
+
+Defer canvas attachment until `connectedCallback`, add default/custom `document.createElement()` regression coverage, and rerun the full verification matrix. No product code was changed during this verification.

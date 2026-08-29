@@ -1,0 +1,162 @@
+{
+  "candidate": "9f2b6b5b6fe0da1029d04e144c0d9e2fdba9abb8",
+  "testedAt": "2026-08-29T07:18:57.202Z",
+  "rows": [
+    {
+      "file": "404.css",
+      "url": "https://audio-reactive-scene.sociobot.in/404.css",
+      "status": 200,
+      "localBytes": 3164,
+      "liveBytes": 3164,
+      "localSha256": "4f17b2cde45166ee71315e8d57cb8edc51d98d3af89361a0087206f56e5a69d2",
+      "liveSha256": "4f17b2cde45166ee71315e8d57cb8edc51d98d3af89361a0087206f56e5a69d2",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/css"
+    },
+    {
+      "file": "404.html",
+      "url": "https://audio-reactive-scene.sociobot.in/404.html",
+      "status": 200,
+      "localBytes": 2578,
+      "liveBytes": 2578,
+      "localSha256": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+      "liveSha256": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "file": "apple-touch-icon.png",
+      "url": "https://audio-reactive-scene.sociobot.in/apple-touch-icon.png",
+      "status": 200,
+      "localBytes": 53438,
+      "liveBytes": 53438,
+      "localSha256": "d9d4a8e6f33ca0d2f039ec70db1f0824f56283f4d288f02404b796999b91ea78",
+      "liveSha256": "d9d4a8e6f33ca0d2f039ec70db1f0824f56283f4d288f02404b796999b91ea78",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "image/png"
+    },
+    {
+      "file": "assets/hero-market.webp",
+      "url": "https://audio-reactive-scene.sociobot.in/assets/hero-market.webp",
+      "status": 200,
+      "localBytes": 43850,
+      "liveBytes": 43850,
+      "localSha256": "c5189ca3a67563a41661891705270a49396533c6b45626bd7a2d0655e29ca390",
+      "liveSha256": "c5189ca3a67563a41661891705270a49396533c6b45626bd7a2d0655e29ca390",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "image/webp"
+    },
+    {
+      "file": "assets/index-B9t5_k2q.js",
+      "url": "https://audio-reactive-scene.sociobot.in/assets/index-B9t5_k2q.js",
+      "status": 200,
+      "localBytes": 23212,
+      "liveBytes": 23212,
+      "localSha256": "4c99c8ba2c2e1210f156c76d6979de3cb5320e50c0a8c23b917265efb0eb0a1d",
+      "liveSha256": "4c99c8ba2c2e1210f156c76d6979de3cb5320e50c0a8c23b917265efb0eb0a1d",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "text/javascript"
+    },
+    {
+      "file": "assets/index-BuJRuPAP.css",
+      "url": "https://audio-reactive-scene.sociobot.in/assets/index-BuJRuPAP.css",
+      "status": 200,
+      "localBytes": 12316,
+      "liveBytes": 12316,
+      "localSha256": "4a661bab1201393a91deeb6037b19f9feb99d9df6847fabf54bc146601b0d084",
+      "liveSha256": "4a661bab1201393a91deeb6037b19f9feb99d9df6847fabf54bc146601b0d084",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "text/css"
+    },
+    {
+      "file": "assets/social-card.webp",
+      "url": "https://audio-reactive-scene.sociobot.in/assets/social-card.webp",
+      "status": 200,
+      "localBytes": 88714,
+      "liveBytes": 88714,
+      "localSha256": "f68c4b133b5d67bfd27c4fe33379b64ddf5698638bd14ca81434e3ead2e5924a",
+      "liveSha256": "f68c4b133b5d67bfd27c4fe33379b64ddf5698638bd14ca81434e3ead2e5924a",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "image/webp"
+    },
+    {
+      "file": "favicon.svg",
+      "url": "https://audio-reactive-scene.sociobot.in/favicon.svg",
+      "status": 200,
+      "localBytes": 358,
+      "liveBytes": 358,
+      "localSha256": "7e2e6c850b8f64bd807126f7d26d24546a2617e363ea43e372e89d81952857b3",
+      "liveSha256": "7e2e6c850b8f64bd807126f7d26d24546a2617e363ea43e372e89d81952857b3",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "image/svg+xml"
+    },
+    {
+      "file": "index.html",
+      "url": "https://audio-reactive-scene.sociobot.in/",
+      "status": 200,
+      "localBytes": 1864,
+      "liveBytes": 1864,
+      "localSha256": "97d009263268ddfaaed81a77fd9777dfb650b44df95d274b3f9c527e6dc6584f",
+      "liveSha256": "97d009263268ddfaaed81a77fd9777dfb650b44df95d274b3f9c527e6dc6584f",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "file": "robots.txt",
+      "url": "https://audio-reactive-scene.sociobot.in/robots.txt",
+      "status": 200,
+      "localBytes": 86,
+      "liveBytes": 86,
+      "localSha256": "c33725643d187b2b095ba2eb063a8b52329a497f9a9db52a2481321ae7fad290",
+      "liveSha256": "c33725643d187b2b095ba2eb063a8b52329a497f9a9db52a2481321ae7fad290",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/plain"
+    },
+    {
+      "file": "sitemap.xml",
+      "url": "https://audio-reactive-scene.sociobot.in/sitemap.xml",
+      "status": 200,
+      "localBytes": 390,
+      "liveBytes": 390,
+      "localSha256": "4bef87f09096eb2d26e3be2123b38ac94b861d6ba2b8ec0ebc541ac3ca1a9580",
+      "liveSha256": "4bef87f09096eb2d26e3be2123b38ac94b861d6ba2b8ec0ebc541ac3ca1a9580",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/xml"
+    },
+    {
+      "file": "staticwebapp.config.json",
+      "url": "https://audio-reactive-scene.sociobot.in/staticwebapp.config.json",
+      "status": 404,
+      "localBytes": 990,
+      "liveBytes": 2578,
+      "localSha256": "2faed3b33e2c77df9ea1534ad72480d77d97406f4f870c006a12f66bf0da7498",
+      "liveSha256": "c5365c68723337a73fb79d2e08172627fadeab3a9bc7a800521d85c6ce1e7fab",
+      "match": null,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "file": "sw.js",
+      "url": "https://audio-reactive-scene.sociobot.in/sw.js",
+      "status": 200,
+      "localBytes": 1215,
+      "liveBytes": 1215,
+      "localSha256": "3c238ae8c1565890a384c26c0995d6645c243ac8baf8ae3b62c7427c201f9e13",
+      "liveSha256": "3c238ae8c1565890a384c26c0995d6645c243ac8baf8ae3b62c7427c201f9e13",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/javascript"
+    }
+  ]
+}

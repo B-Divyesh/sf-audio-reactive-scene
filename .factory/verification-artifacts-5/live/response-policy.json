@@ -1,0 +1,170 @@
+{
+  "testedAt": "2026-08-29T07:20:55.766Z",
+  "responses": [
+    {
+      "path": "/",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/html",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/demo?demo=1",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/html",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/html",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/html",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/javascript",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/assets/index-B9t5_k2q.js",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": "\"62852223\"",
+        "content-type": "text/javascript",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/assets/index-BuJRuPAP.css",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": "\"62852223\"",
+        "content-type": "text/css",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/assets/hero-market.webp",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": "\"62852223\"",
+        "content-type": "image/webp",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/missing-signal",
+      "status": 404,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/html",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    },
+    {
+      "path": "/staticwebapp.config.json",
+      "status": 404,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "etag": "\"62852223\"",
+        "content-type": "text/html",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(), geolocation=(), microphone=(self)",
+        "cross-origin-opener-policy": "same-origin",
+        "location": null
+      }
+    }
+  ],
+  "conditionalRoot": {
+    "status": 304,
+    "etag": null,
+    "cacheControl": null
+  }
+}

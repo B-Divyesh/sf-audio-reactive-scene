@@ -1,0 +1,74 @@
+{
+  "pack": {
+    "filename": "audio-reactive-scene-0.1.2.tgz",
+    "size": 7796,
+    "unpackedSize": 20433,
+    "files": [
+      "CHANGELOG.md",
+      "LICENSE",
+      "README.md",
+      "dist/lib/audio-reactive-scene.cjs",
+      "dist/lib/audio-reactive-scene.css",
+      "dist/lib/audio-reactive-scene.js",
+      "dist/lib/index.d.ts",
+      "package.json"
+    ],
+    "bundled": []
+  },
+  "install": {
+    "stdout": "added 1 package, and audited 2 packages in 549ms\n\nfound 0 vulnerabilities",
+    "stderr": "",
+    "dependencies": {},
+    "esm": "AudioReactiveScene,defineAudioReactiveScene",
+    "commonjs": "AudioReactiveScene,defineAudioReactiveScene"
+  },
+  "browser": {
+    "api": {
+      "exports": [
+        "AudioReactiveScene",
+        "defineAudioReactiveScene"
+      ],
+      "registered": true,
+      "customRegistered": true,
+      "documentCreateElement": {
+        "defaultConstructor": "HTMLUnknownElement",
+        "defaultConnect": "undefined",
+        "customConstructor": "HTMLUnknownElement",
+        "customConnect": "undefined"
+      },
+      "parserCreated": {
+        "constructor": "",
+        "connect": "function",
+        "canvas": true
+      },
+      "directCustomConstruction": {
+        "constructor": "",
+        "connect": "function",
+        "canvas": true
+      },
+      "canvas": true,
+      "role": "img",
+      "invalid": {
+        "scene": "ribbons",
+        "motion": "auto",
+        "intensity": 0
+      },
+      "minimum": 0,
+      "maximum": 1,
+      "current": {
+        "scene": "horizon",
+        "motion": "static",
+        "intensity": 1
+      },
+      "analyser": true,
+      "connectedLabel": "Consumer visual",
+      "disconnectedLabel": "Consumer visual",
+      "posterDeterministic": true
+    },
+    "consoleErrors": [],
+    "pageErrors": [
+      "Failed to execute 'createElement' on 'Document': The result must not have children",
+      "Failed to execute 'createElement' on 'Document': The result must not have children"
+    ]
+  }
+}
