@@ -1,0 +1,104 @@
+{
+  "checkedAt": "2026-08-29T10:57:41.047Z",
+  "base": "https://audio-reactive-scene.sociobot.in",
+  "desktopFirstScreen": {
+    "title": "Audio Reactive Scene — Make audio move a canvas",
+    "eyebrow": "A reusable HTML element for page audio",
+    "h1": "Make your audio move a scene",
+    "action": "Try it with sample data",
+    "facts": [
+      "Audio stays in this tab",
+      "Demo works offline after your first visit",
+      "Free under the MIT license"
+    ],
+    "allInViewport": true
+  },
+  "desktopErrors": [],
+  "oneClickDemo": {
+    "url": "https://audio-reactive-scene.sociobot.in/demo?demo=1",
+    "banner": "Demo — sample data, nothing is saved\nReset demo\nOpen package instructions",
+    "exitLabel": "Open package instructions",
+    "status": "Percussion loop is playing.",
+    "connected": "ribbons audio-reactive scene, connected to audio",
+    "canvasChanged": true,
+    "sampleResponses": [
+      {
+        "url": "https://audio-reactive-scene.sociobot.in/assets/night-market-loop.wav",
+        "status": 206,
+        "type": "audio/wav"
+      }
+    ],
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "stageBottom": 742.421875,
+      "statusBottom": 808.421875,
+      "scrollWidth": 390
+    }
+  },
+  "demoExit": {
+    "url": "https://audio-reactive-scene.sociobot.in/#install",
+    "focused": "install"
+  },
+  "isolation": {
+    "local": "keep",
+    "session": "keep",
+    "databases": [
+      "real-sentinel"
+    ],
+    "opfs": [
+      "real-sentinel.txt"
+    ],
+    "resetStatus": "Demo reset. Play the sample to start again."
+  },
+  "routes": [
+    {
+      "route": "/privacy",
+      "status": 200,
+      "title": "Privacy — Audio Reactive Scene",
+      "h1": "PRIVACY IN PLAIN WORDS",
+      "canonical": "https://audio-reactive-scene.sociobot.in/privacy",
+      "description": "Read how the demo handles audio, storage, and network requests.",
+      "privacyLinks": 2,
+      "termsLinks": 1,
+      "seriousOrCritical": 0
+    },
+    {
+      "route": "/terms",
+      "status": 200,
+      "title": "Terms — Audio Reactive Scene",
+      "h1": "TERMS FOR USING THE LIBRARY",
+      "canonical": "https://audio-reactive-scene.sociobot.in/terms",
+      "description": "Read the MIT license terms for Audio Reactive Scene.",
+      "privacyLinks": 2,
+      "termsLinks": 1,
+      "seriousOrCritical": 0
+    },
+    {
+      "route": "/missing-signal",
+      "status": 404,
+      "title": "Page not found — Audio Reactive Scene",
+      "h1": "THIS PAGE DOES NOT EXIST",
+      "canonical": "https://audio-reactive-scene.sociobot.in/404.html",
+      "description": "This Audio Reactive Scene page does not exist.",
+      "privacyLinks": 2,
+      "termsLinks": 1,
+      "seriousOrCritical": 0
+    },
+    {
+      "route": "/404.html",
+      "status": 200,
+      "title": "Page not found — Audio Reactive Scene",
+      "h1": "THIS PAGE DOES NOT EXIST",
+      "canonical": "https://audio-reactive-scene.sociobot.in/404.html",
+      "description": "This Audio Reactive Scene page does not exist.",
+      "privacyLinks": 2,
+      "termsLinks": 1,
+      "seriousOrCritical": 0
+    }
+  ],
+  "offOrigin": [],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 404 ()"
+  ]
+}
