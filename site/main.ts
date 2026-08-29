@@ -8,15 +8,24 @@ const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-const snippet = `<script type="module">
+const snippet = `<audio id="scene-audio" controls src="/your-audio-file.mp3"></audio>
+<audio-reactive-scene id="page-scene" scene="ribbons" intensity="0.7" motion="auto"></audio-reactive-scene>
+
+<script type="module">
   import 'audio-reactive-scene';
   import 'audio-reactive-scene/style.css';
-<\/script>
-<audio-reactive-scene
-  scene="ribbons"
-  intensity="0.7"
-  motion="auto">
-</audio-reactive-scene>`;
+
+  const audio = document.querySelector('#scene-audio');
+  const scene = document.querySelector('#page-scene');
+  const context = new AudioContext();
+  const source = context.createMediaElementSource(audio);
+
+  audio.addEventListener('play', async () => {
+    await context.resume();
+    scene.connect(source);
+    source.connect(context.destination);
+  }, { once: true });
+<\/script>`;
 
 let audioContext: AudioContext | undefined;
 let sourceNode: AudioNode | undefined;
@@ -49,15 +58,17 @@ function footer(): string {
 }
 
 function demoBanner(): string {
-  return `<aside class="demo-banner" aria-label="Demo mode"><span>Demo — sample data, nothing is saved</span><button id="reset-demo" type="button">Reset demo</button><a href="/" data-link>Start for real</a></aside>`;
+  return `<aside class="demo-banner" aria-label="Demo mode"><span>Demo — sample data, nothing is saved</span><button id="reset-demo" type="button">Reset demo</button><a href="/" data-link>Leave demo</a></aside>`;
 }
 
 function playground(): string {
   return `<div class="playground-shell">
+    <div class="quick-source"><button class="source coral" id="sample-audio" type="button">Play sample audio</button><span>Starts the bundled local loop.</span></div>
     <div class="scene-stage">
       <span class="scene-label">Live scene / <span id="scene-name">Ribbons</span></span>
       <audio-reactive-scene id="scene" scene="ribbons" intensity="0.7" motion="auto"></audio-reactive-scene>
     </div>
+    <p class="status-line" id="audio-status" role="status"><span class="status-dot" aria-hidden="true"></span><span>Static poster is ready. Choose audio to make it move.</span></p>
     <div class="controls">
       <div class="control-group">
         <span class="control-label" id="scene-tabs-label">Choose a scene</span>
@@ -76,7 +87,6 @@ function playground(): string {
       <div class="control-group">
         <span class="control-label">Choose audio</span>
         <div class="source-list">
-          <button class="source coral" id="sample-audio" type="button">Play sample audio</button>
           <button class="source" id="choose-file" type="button">Choose audio file</button>
           <button class="source" id="use-mic" type="button">Use microphone</button>
           <input class="file-input" id="audio-file" type="file" accept="audio/*" tabindex="-1" aria-label="Choose an audio file" />
@@ -87,7 +97,6 @@ function playground(): string {
           <button class="motion-button" type="button" data-motion="full" aria-pressed="false">Full motion</button>
           <button class="motion-button" type="button" data-motion="static" aria-pressed="false">Static</button>
         </div>
-        <p class="status-line" id="audio-status" role="status"><span class="status-dot" aria-hidden="true"></span><span>Static poster is ready. Choose audio to make it move.</span></p>
       </div>
     </div>
     <div class="code-panel">
@@ -97,21 +106,21 @@ function playground(): string {
   </div>`;
 }
 
-function home(isDemo = false): string {
-  return `${header(isDemo ? 'demo' : 'home')}${isDemo ? demoBanner() : ''}<main id="main" tabindex="-1">
+function home(): string {
+  return `${header('home')}<main id="main" tabindex="-1">
     <section class="hero wrap">
       <div>
         <p class="eyebrow">A web component for page audio</p>
-        <h1>${isDemo ? 'Make sample audio move a scene' : 'Make your audio move a scene'}</h1>
+        <h1>Make your audio move a scene</h1>
         <p class="lede">For site owners, streamers, and event makers who need a restrained visual without sending audio away.</p>
-        <div class="hero-action"><a class="button coral" href="/demo" data-link data-start-sample>Try it with sample data</a><span class="action-note">It opens the playground and starts a local sound loop.</span></div>
-        <ul class="facts"><li>Audio stays in this tab</li><li>Works after the first visit</li><li>Free under the MIT license</li></ul>
+        <div class="hero-action"><a class="button coral" href="/demo?demo=1" data-link data-start-sample>Try it with sample data</a><span class="action-note">It opens the sample scene and starts a local sound loop.</span></div>
+        <ul class="facts"><li>Audio stays in this tab</li><li>Demo works offline after your first visit</li><li>Free under the MIT license</li></ul>
       </div>
       <div class="hero-art" aria-hidden="true"><img src="/assets/hero-market.webp" width="768" height="512" fetchpriority="high" alt="" /><span class="art-ticket">Three scenes / one small component / your audio</span></div>
     </section>
     <section class="section" id="playground"><div class="wrap">
-      <p class="section-kicker">The working component</p><h2>Shape the scene here</h2>
-      <p class="section-intro">Pick a look. Play the bundled sample, choose a file, or allow the microphone. The browser handles the selected audio source.</p>
+      <p class="section-kicker">Audio scene playground</p><h2>Choose and test a scene</h2>
+      <p class="section-intro">Choose a scene, then play the sample, use a file, or allow the microphone. The browser handles the audio source.</p>
       ${playground()}
     </div></section>
     <section class="section" id="how"><div class="wrap">
@@ -119,10 +128,21 @@ function home(isDemo = false): string {
       <div class="steps"><article class="step"><h3>Add the element</h3><p>Install the package and place the custom element where the scene belongs.</p></article><article class="step"><h3>Connect your source</h3><p>Pass a Web Audio node after the visitor starts playback.</p></article><article class="step"><h3>Set the fallback</h3><p>Keep automatic motion reduction or choose the static poster.</p></article></div>
     </div></section>
     <section class="section"><div class="wrap boundary">
-      <div><p class="section-kicker">Clear boundaries</p><h2>Your audio does not leave</h2><p class="section-intro">The component has no analytics or account system. It reads levels from the browser audio graph and sends no audio to an API.</p></div>
+      <div><p class="section-kicker">Audio privacy</p><h2>Your audio does not leave</h2><p class="section-intro">The component has no analytics or account system. It reads levels from the browser’s audio connection and sends no audio to an API.</p></div>
       <ul class="not-list"><li>It does not start audio on page load.</li><li>It does not ask for microphone access by itself.</li><li>It does not upload or save an audio file.</li><li>It does not load scripts or fonts from another site.</li></ul>
     </div></section>
-    <section class="section" id="install"><div class="narrow"><p class="section-kicker">Open package</p><h2>Install it in one line</h2><p>The package ships ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies.</p><div class="install-command"><code>npm install audio-reactive-scene</code><button class="button secondary" type="button" id="copy-install">Copy command</button></div></div></section>
+    <section class="section" id="install"><div class="narrow"><p class="section-kicker">Package formats</p><h2>Prepare the package locally</h2><p>This package name is not published to npm yet. Get the release candidate from the source repository and build a local tarball.</p><p>The local tarball includes JavaScript for import and require, TypeScript types, component styles, and no runtime dependencies.</p><a class="button secondary" href="https://github.com/B-Divyesh/sf-audio-reactive-scene" rel="noreferrer">Open the source repository <span class="sr-only">(external site)</span></a></div></section>
+  </main>${footer()}`;
+}
+
+function demoPage(): string {
+  return `${header('demo')}${demoBanner()}<main id="main" class="demo-main" tabindex="-1">
+    <section class="demo-workbench wrap">
+      <p class="eyebrow">Sample audio scene</p>
+      <h1>Try sample audio</h1>
+      <p class="lede">Choose Play sample audio to hear the local loop and watch the scene respond.</p>
+      ${playground()}
+    </section>
   </main>${footer()}`;
 }
 
@@ -134,7 +154,7 @@ function legal(kind: 'privacy' | 'terms'): string {
 }
 
 function notFound(): string {
-  return `${header('404')}<main id="main" class="error-page narrow" tabindex="-1"><div><div class="error-code" aria-hidden="true">404</div><h1>This signal went quiet</h1><p>The page does not exist. Return to the playground to start a scene.</p><a class="button" href="/" data-link>Return to the playground</a></div></main>${footer()}`;
+  return `${header('404')}<main id="main" class="error-page narrow" tabindex="-1"><div><div class="error-code" aria-hidden="true">404</div><h1>This page does not exist</h1><p>The address does not match a page on this site.</p><a class="button" href="/demo?demo=1" data-link>Open the sample playground</a></div></main>${footer()}`;
 }
 
 function stopAudio(): void {
@@ -280,7 +300,6 @@ function setupPlayground(autoStart: boolean): void {
     try { await navigator.clipboard.writeText(snippet); document.querySelector('#copy-result')!.textContent = 'Embed copied.'; }
     catch { document.querySelector('#copy-result')!.textContent = 'Copy was blocked. Select the code and copy it.'; }
   });
-  document.querySelector('#copy-install')?.addEventListener('click', async () => navigator.clipboard.writeText('npm install audio-reactive-scene'));
   document.querySelector('#reset-demo')?.addEventListener('click', () => { stopAudio(); scene.scene = 'ribbons'; scene.intensity = .7; scene.motion = 'auto'; intensity.value = '70'; document.querySelector('#intensity-value')!.textContent = '70%'; tabs[0].click(); document.querySelector<HTMLButtonElement>('[data-motion="auto"]')?.click(); setStatus('Demo reset. Play the sample to start again.'); });
   if (autoStart) void playSample();
 }
@@ -302,14 +321,33 @@ function targetScrollY(target: HTMLElement): number {
   return Math.max(0, target.getBoundingClientRect().top + window.scrollY);
 }
 
+interface Metadata { title: string; description: string; canonical: string; }
+
+function setMetadata(metadata: Metadata): void {
+  document.title = metadata.title;
+  canonical.href = `https://audio-reactive-scene.sociobot.in${metadata.canonical}`;
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')!.content = metadata.description;
+  document.querySelector<HTMLMetaElement>('meta[property="og:title"]')!.content = metadata.title;
+  document.querySelector<HTMLMetaElement>('meta[property="og:description"]')!.content = metadata.description;
+  document.querySelector<HTMLMetaElement>('meta[name="twitter:title"]')!.content = metadata.title;
+  document.querySelector<HTMLMetaElement>('meta[name="twitter:description"]')!.content = metadata.description;
+}
+
 function route(path = location.pathname, autoStart = false, restoredState?: RouteState | null): void {
   stopAudio();
   const isHome = path === '/';
   const isDemo = path === '/demo';
-  const title = isDemo ? 'Demo — Audio Reactive Scene' : path === '/privacy' ? 'Privacy — Audio Reactive Scene' : path === '/terms' ? 'Terms — Audio Reactive Scene' : isHome ? 'Audio Reactive Scene — Make audio move a canvas' : 'Page not found — Audio Reactive Scene';
-  document.title = title;
-  canonical.href = `https://audio-reactive-scene.sociobot.in${isHome ? '/' : path}`;
-  app.innerHTML = isHome || isDemo ? home(isDemo) : path === '/privacy' ? legal('privacy') : path === '/terms' ? legal('terms') : notFound();
+  const metadata = isDemo
+    ? { title: 'Demo — Audio Reactive Scene', description: 'Try a local sample audio scene. Nothing is saved or uploaded.', canonical: '/demo' }
+    : path === '/privacy'
+      ? { title: 'Privacy — Audio Reactive Scene', description: 'Read how the demo handles audio, storage, and network requests.', canonical: '/privacy' }
+      : path === '/terms'
+        ? { title: 'Terms — Audio Reactive Scene', description: 'Read the MIT license terms for Audio Reactive Scene.', canonical: '/terms' }
+        : isHome
+          ? { title: 'Audio Reactive Scene — Make audio move a canvas', description: 'Add a small audio-reactive scene to a website. Audio stays in the browser tab.', canonical: '/' }
+          : { title: 'Page not found — Audio Reactive Scene', description: 'This page does not exist. Open the sample audio scene instead.', canonical: path };
+  setMetadata(metadata);
+  app.innerHTML = isDemo ? demoPage() : isHome ? home() : path === '/privacy' ? legal('privacy') : path === '/terms' ? legal('terms') : notFound();
   setupLinks();
   if (isHome || isDemo) setupPlayground(autoStart);
   const heading = document.querySelector<HTMLHeadingElement>('h1');
@@ -327,9 +365,9 @@ function route(path = location.pathname, autoStart = false, restoredState?: Rout
         history.replaceState({ ...history.state, scrollY: targetScrollY(target), focusId: target.id }, '', location.href);
       });
     }
-    if (!isHome || autoStart) focusRouteTarget(null, heading);
+    focusRouteTarget(target, heading);
   }
-  announce.textContent = title;
+  announce.textContent = metadata.title;
 }
 
 function rememberCurrentRoute(): void {
@@ -347,7 +385,7 @@ function setupLinks(): void {
     event.preventDefault();
     const start = link.hasAttribute('data-start-sample');
     rememberCurrentRoute();
-    history.pushState({ scrollY: 0 }, '', url.pathname + url.hash);
+    history.pushState({ scrollY: 0 }, '', url.pathname + url.search + url.hash);
     route(url.pathname, start);
   }));
 }

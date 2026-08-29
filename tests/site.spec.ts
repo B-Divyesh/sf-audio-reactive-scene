@@ -22,11 +22,13 @@ test('production preview enforces the deployed CSP without violations', async ({
   expect(await page.locator('[style], style').count()).toBe(0);
 });
 
-test('demo has no serious or critical accessibility violations', async ({ page }) => {
-  await page.goto('/demo');
-  const results = await new AxeBuilder({ page }).analyze();
-  const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
-  expect(blocking).toEqual([]);
+test('every application route has no serious or critical accessibility violations', async ({ page }) => {
+  for (const path of ['/', '/demo?demo=1', '/privacy', '/terms', '/missing-signal', '/404.html']) {
+    await page.goto(path);
+    const results = await new AxeBuilder({ page }).analyze();
+    const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
+    expect(blocking).toEqual([]);
+  }
 });
 
 test('QA2-01: desktop first screen keeps the action, explanation, and facts above the fold', async ({ page }) => {
@@ -63,7 +65,7 @@ test('QA2-02: the hidden file picker is not a keyboard focus stop', async ({ pag
 test('every not-found route has a visible, accessible high-contrast error state', async ({ page }) => {
   for (const path of ['/missing-signal', '/another-missing-signal']) {
     await page.goto(path);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('This signal went quiet');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('This page does not exist');
     await expect(page.locator('.error-code')).toBeVisible();
     const results = await new AxeBuilder({ page }).analyze();
     const blocking = results.violations.filter((item) => item.impact === 'serious' || item.impact === 'critical');
@@ -86,6 +88,27 @@ test('QA2-03: the static deployment 404 uses the shared site shell', async ({ pa
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.locator('footer')).toHaveCount(1);
   await expect(page.getByText(/v0\.1\.2 · build 2026\.08\.29/)).toBeVisible();
+});
+
+test('each route has route-specific metadata and canonical URL', async ({ page }) => {
+  const routes = [
+    ['/demo?demo=1', 'Demo — Audio Reactive Scene', 'Try a local sample audio scene. Nothing is saved or uploaded.', '/demo'],
+    ['/privacy', 'Privacy — Audio Reactive Scene', 'Read how the demo handles audio, storage, and network requests.', '/privacy'],
+    ['/terms', 'Terms — Audio Reactive Scene', 'Read the MIT license terms for Audio Reactive Scene.', '/terms'],
+    ['/missing-signal', 'Page not found — Audio Reactive Scene', 'This page does not exist. Open the sample audio scene instead.', '/missing-signal']
+  ];
+  for (const [path, title, description, canonical] of routes) {
+    await page.goto(path);
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', description);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title);
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://audio-reactive-scene.sociobot.in${canonical}`);
+  }
+  await page.goto('/404.html');
+  await expect(page).toHaveTitle('Page not found — Audio Reactive Scene');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', 'Page not found — Audio Reactive Scene');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://audio-reactive-scene.sociobot.in/404.html');
 });
 
 test('every route has the shared structure and one heading', async ({ page }) => {
@@ -121,6 +144,19 @@ test('mobile layout does not scroll sideways', async ({ page }) => {
   for (const target of targets) {
     expect(target.width).toBeGreaterThanOrEqual(44);
     expect(target.height).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test('demo puts the live scene and playback status in the first mobile and desktop viewports', async ({ page }) => {
+  for (const viewport of [{ width: 390, height: 844 }, { width: 1365, height: 768 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/demo?demo=1');
+    for (const locator of [page.locator('.scene-stage'), page.locator('#audio-status')]) {
+      const box = await locator.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.y).toBeGreaterThanOrEqual(0);
+      expect(box!.y + box!.height).toBeLessThanOrEqual(viewport.height);
+    }
   }
 });
 
@@ -183,6 +219,17 @@ test('browser Back restores the anchored scroll position and focus', async ({ pa
   await expect(page).toHaveURL(/\/#how$/);
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
   await expect(page.locator('#how')).toBeFocused();
+});
+
+test('ordinary Home navigation focuses the destination heading', async ({ page }) => {
+  await page.goto('/privacy');
+  await page.getByRole('link', { name: 'Audio Reactive Scene home' }).click();
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await page.goto('/demo?demo=1');
+  await page.getByRole('link', { name: 'Leave demo' }).click();
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
 });
 
 test('service worker controls the demo and checks for updates', async ({ page }) => {

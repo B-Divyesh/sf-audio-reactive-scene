@@ -39,8 +39,8 @@ img { max-width: 100%; height: auto; }
 .site-nav a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding-inline: 8px; color: var(--smoke); font-size: .86rem; text-decoration: none; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--paper); text-decoration: underline; text-decoration-color: var(--coral); }
 
-.demo-banner { position: sticky; z-index: 4; top: 0; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 16px; min-height: 52px; padding: 8px 20px; color: var(--ink); background: var(--marigold); font-size: .84rem; font-weight: 700; }
-.demo-banner button, .demo-banner a { min-height: 44px; padding: 8px 12px; color: var(--ink); border: 2px solid var(--ink); background: transparent; cursor: pointer; text-decoration: none; }
+.demo-banner { position: sticky; z-index: 4; top: 0; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 16px; min-height: 52px; padding: 8px 20px; color: var(--ink); background: var(--marigold); font-size: 1rem; font-weight: 700; }
+.demo-banner button, .demo-banner a { min-height: 44px; padding: 8px 12px; color: var(--ink); border: 2px solid var(--ink); background: transparent; cursor: pointer; font-size: 1rem; text-decoration: none; }
 
 main { display: block; }
 .wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
@@ -93,8 +93,11 @@ input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cyan); 
 .status-dot { flex: 0 0 auto; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--safe); box-shadow: 0 0 10px var(--safe); }
 .status-line.error .status-dot { background: var(--danger); box-shadow: none; }
 .file-input { position: absolute; opacity: 0; pointer-events: none; }
+.quick-source { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-bottom: 14px; color: var(--smoke); }
+.quick-source .source { border-color: var(--coral); color: var(--ink); background: var(--coral); font-weight: 800; }
 
 .code-panel { margin-top: 32px; display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 12px; padding: 18px; border: 1px dashed #5c6070; background: #080a10; }
+.code-panel, .code-panel > div { min-width: 0; }
 .code-panel pre { margin: 0; overflow-x: auto; color: #d7d2b8; font: .8rem/1.55 var(--body); white-space: pre; }
 .copy-result { min-height: 24px; margin: 8px 0 0; color: var(--safe); font-size: .78rem; }
 
@@ -108,6 +111,16 @@ input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cyan); 
 .not-list li::before { content: "×"; position: absolute; left: 0; color: var(--coral); font-size: 1.3rem; }
 .install-command { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px; background: var(--paper); color: var(--ink); font-weight: 800; }
 .install-command .button.secondary { color: var(--ink); border-color: #5a5d6a; }
+
+.demo-main { min-height: calc(100vh - 124px); }
+.demo-workbench { padding-block: 24px 56px; }
+.demo-workbench h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+.demo-workbench .lede { margin-block: 12px 18px; }
+.demo-workbench .playground-shell { margin-top: 0; }
+.demo-workbench .scene-stage { height: clamp(200px, 28vh, 270px); min-height: 0; aspect-ratio: auto; }
+.demo-workbench .scene-stage audio-reactive-scene { height: 100%; min-height: 0; }
+.demo-workbench .controls { margin-top: 18px; }
+.demo-workbench .code-panel { margin-top: 24px; }
 
 .legal { padding-block: 72px 120px; }
 .legal h1, .error-page h1 { font-size: clamp(2.7rem, 7vw, 5rem); }
@@ -131,6 +144,7 @@ input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cyan); 
   .hero-art { min-height: min(440px, 95vw); }
   .controls, .boundary { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
+  .demo-workbench { padding-top: 18px; }
 }
 
 @media (max-width: 480px) {
@@ -143,6 +157,10 @@ input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cyan); 
   .facts { display: grid; }
   .scene-stage { min-height: 225px; aspect-ratio: 4 / 3; }
   .scene-stage audio-reactive-scene { min-height: 225px; }
+  .demo-workbench h1 { font-size: clamp(2.35rem, 12vw, 3.15rem); }
+  .demo-workbench .lede { margin-block: 10px 14px; }
+  .demo-workbench .scene-stage { height: 205px; min-height: 0; aspect-ratio: auto; }
+  .demo-workbench .scene-stage audio-reactive-scene { height: 100%; min-height: 0; }
   .tab-list, .source-list, .motion-list { display: grid; grid-template-columns: 1fr 1fr; }
   .tab, .source, .motion-button { width: 100%; }
   .code-panel { grid-template-columns: 1fr; }

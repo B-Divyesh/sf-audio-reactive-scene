@@ -1,0 +1,1 @@
+Make page audio move a private canvas scene.

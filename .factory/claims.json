@@ -1,65 +1,16 @@
 [
-  {
-    "id": "one-click-demo",
-    "claim": "Try it with sample data opens the playground and starts a local sound loop.",
-    "where": "landing hero and README",
-    "test": "npm test -- --grep @claim:one-click-demo",
-    "sandbox": "fresh browser context; click the landing action; assert demo banner, live source status, and component connection"
-  },
-  {
-    "id": "three-scenes-controls",
-    "claim": "The component has three scenes, intensity control, and motion control.",
-    "where": "playground and README",
-    "test": "npm test -- --grep @claim:three-scenes-controls",
-    "sandbox": "demo route; select a scene, move the intensity slider, and choose static motion"
-  },
-  {
-    "id": "local-only-audio",
-    "claim": "Sample and file audio stay in this tab; the demo sends no API requests and writes no user storage.",
-    "where": "landing hero, privacy section, privacy page, and README",
-    "test": "npm test -- --grep @claim:local-only-audio",
-    "sandbox": "fresh browser context; play sample and generated WAV inputs, record requests, and inspect localStorage, sessionStorage, IndexedDB, and OPFS"
-  },
-  {
-    "id": "gesture-only-input",
-    "claim": "Audio and microphone input start only after a user action.",
-    "where": "playground, privacy section, privacy page, and README",
-    "test": "npm test -- --grep @claim:gesture-only-input",
-    "sandbox": "fresh browser context with AudioContext and microphone spies; assert neither starts on load and each starts only after its control is pressed"
-  },
-  {
-    "id": "offline-reload",
-    "claim": "The demo works offline after the first visit.",
-    "where": "landing hero, offline state, and README",
-    "test": "npm test -- --grep @claim:offline-reload",
-    "sandbox": "fresh browser context; wait for service worker, set context offline, and reload /demo"
-  },
-  {
-    "id": "motion-reduction",
-    "claim": "Automatic motion reduction shows a stable poster when the system reduces motion.",
-    "where": "playground, README, and design document",
-    "test": "npm test -- --grep @claim:motion-reduction",
-    "sandbox": "fresh browser context with reducedMotion=reduce; compare canvas pixels across time"
-  },
-  {
-    "id": "package-formats",
-    "claim": "The package ships ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies.",
-    "where": "install section and README",
-    "test": "npm test -- --grep @claim:package-formats",
-    "sandbox": "clean build; assert all four package outputs exist, package dependencies are empty, and the ESM library stays below 20 KB"
-  },
-  {
-    "id": "mit-license",
-    "claim": "The library is free under the MIT license.",
-    "where": "landing hero, terms page, and README",
-    "test": "npm test -- --grep @claim:mit-license",
-    "sandbox": "repository files; assert package license field and MIT license text"
-  },
-  {
-    "id": "privacy-no-personal-data",
-    "claim": "This site does not collect, store, or sell personal data.",
-    "where": "privacy page",
-    "test": "npm test -- --grep @claim:privacy-no-personal-data",
-    "sandbox": "fresh browser context; exercise the sample demo and assert no off-origin/API requests and no local, session, IndexedDB, or OPFS user data"
-  }
+  {"id":"one-click-demo","claim":"Try it with sample data opens an isolated sample scene and starts a local sound loop.","where":"landing hero and demo route","test":"npm test -- --grep @claim:one-click-demo","sandbox":"fresh browser context; click the landing action, then open /demo?demo=1 directly; assert the demo banner, live source status, and component connection"},
+  {"id":"three-scenes-controls","claim":"The component has three scenes, intensity control, and motion control.","where":"playground and README","test":"npm test -- --grep @claim:three-scenes-controls","sandbox":"demo route; select a scene, move the intensity slider, and choose static motion"},
+  {"id":"complete-embed","claim":"Copy embed includes a complete user-started audio connection for the component.","where":"demo playground and README","test":"npm test -- --grep @claim:complete-embed","sandbox":"demo route; inspect copied example for its audio element, user play handler, AudioContext, source connection, and scene.connect call"},
+  {"id":"local-only-audio","claim":"Sample and file audio stay in this tab; the demo sends no API requests and writes no user storage.","where":"landing hero, privacy section, privacy page, and README","test":"npm test -- --grep @claim:local-only-audio","sandbox":"fresh browser context; play sample and generated WAV inputs, record requests, and inspect localStorage, sessionStorage, IndexedDB, and OPFS"},
+  {"id":"gesture-only-input","claim":"Audio and microphone input start only after a user action.","where":"playground, privacy section, privacy page, and README","test":"npm test -- --grep @claim:gesture-only-input","sandbox":"fresh browser context with AudioContext and microphone spies; assert neither starts on load and each starts only after its control is pressed"},
+  {"id":"offline-reload","claim":"The demo works offline after the first visit.","where":"landing hero, offline state, and README","test":"npm test -- --grep @claim:offline-reload","sandbox":"fresh browser context; wait for service worker, set context offline, and reload /demo?demo=1"},
+  {"id":"motion-reduction","claim":"Automatic motion reduction shows a stable poster when the system reduces motion.","where":"playground, README, and design document","test":"npm test -- --grep @claim:motion-reduction","sandbox":"fresh browser context with reducedMotion=reduce; compare canvas pixels across time"},
+  {"id":"package-formats","claim":"The local release-candidate tarball includes ESM, CommonJS, TypeScript declarations, component styles, and no runtime dependencies.","where":"package section and README","test":"npm test -- --grep @claim:package-formats","sandbox":"clean build; pack the tarball, install it in a fresh temporary project, and import both module formats"},
+  {"id":"library-api","claim":"The documented component attributes, audio methods, deterministic poster, accessible label, and custom tag registration work.","where":"README API reference","test":"npm test -- --grep @claim:library-api","sandbox":"fresh browser context on the demo; exercise the documented public API with a Web Audio node and a custom element name"},
+  {"id":"node-support","claim":"Building this release candidate requires Node.js 20 or newer.","where":"README","test":"npm test -- --grep @claim:node-support","sandbox":"clean checkout; assert the package engine floor and the build-test runtime major version"},
+  {"id":"site-build-output","claim":"npm run build:site writes the deployable site with index.html at dist/site/.","where":"README","test":"npm test -- --grep @claim:site-build-output","sandbox":"clean build; assert the site root, index document, route assets, and service worker exist"},
+  {"id":"npm-unpublished","claim":"audio-reactive-scene is not published to npm yet.","where":"package section and README","test":"npm test -- --grep @claim:npm-unpublished","sandbox":"fresh command context; query npm registry and assert the package name returns its documented not-found response"},
+  {"id":"mit-license","claim":"The library is free under the MIT license.","where":"landing hero, terms page, and README","test":"npm test -- --grep @claim:mit-license","sandbox":"repository files; assert package license field and MIT license text"},
+  {"id":"privacy-no-personal-data","claim":"This site does not collect, store, or sell personal data.","where":"privacy page","test":"npm test -- --grep @claim:privacy-no-personal-data","sandbox":"fresh browser context; exercise the sample demo and assert no off-origin/API requests and no local, session, IndexedDB, or OPFS user data"}
 ]

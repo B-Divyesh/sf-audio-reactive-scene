@@ -255,7 +255,9 @@ export class AudioReactiveScene extends HTMLElementBase {
 }
 
 export function defineAudioReactiveScene(tagName = 'audio-reactive-scene'): typeof AudioReactiveScene {
-  if (!customElements.get(tagName)) customElements.define(tagName, AudioReactiveScene);
+  if (!customElements.get(tagName)) {
+    customElements.define(tagName, tagName === 'audio-reactive-scene' ? AudioReactiveScene : class extends AudioReactiveScene {});
+  }
   return AudioReactiveScene;
 }
 
